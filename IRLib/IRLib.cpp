@@ -9,7 +9,7 @@
 #include "IRLib.h"
 
 volatile static uint8_t IRLib::received = 0;
-volatile static long IRLib::signalStart = 0;
+volatile static long IRLib::time = 0;
 volatile static uint8_t IRLib::count = 0;
 volatile static uint8_t IRLib::receiving = 0;
 volatile static uint8_t IRLib::bit = 0;
@@ -18,20 +18,20 @@ volatile static bool IRLib::_available = false;
 
 ISR(INT0_vect){
 	if(!(PIND & 1 << 2)) {
-			IRLib::signalStart = micros();
+			IRLib::time = 0;
 	} else {
-		long time = micros() - IRLib::signalStart;
+		long time = IRLib::time;
 		if(time > 20000 && time < 35000) { //1 voor 400 milli
 			IRLib::receiving |= 1 << IRLib::bit;
 			IRLib::bit++;
 			IRLib::count++;
-			} else if (time > 10000 && time < 20000) { // 200 voor 5
+		} else if (time > 10000 && time < 20000) { // 200 voor 5
 			IRLib::bit++;
-			} else if (time > 35000 && time < 45000) { //start bit 600
+		} else if (time > 35000 && time < 45000) { //start bit 600
 			IRLib::bit = 0;
 			IRLib::receiving = 0;
 			IRLib::count = 0;
-			} else if (time > 45000 && time < 60000) { //stop bit 800
+		} else if (time > 45000 && time < 60000) { //stop bit 800
 			IRLib::_available = true;
 			IRLib::received = IRLib::receiving;
 			IRLib::receiving == 0;
@@ -41,11 +41,15 @@ ISR(INT0_vect){
 			if(IRLib::count & 1) {
 				Serial.println("parity");
 			}
-			} else {
+		} else {
 			Serial.print("error ");
 			Serial.println(time);
 		}
 	}
+}
+
+ISR(TIMER2_OVF_vect) {
+	IRLib::time += 4;
 }
 
 void IRLib::begin(int frequency) {
@@ -54,9 +58,8 @@ void IRLib::begin(int frequency) {
 	EIMSK |= 1 << INT0; //enable interrupt
 	
 	//setup micros()
-	//TCCR0A |= 1 << WGM01 | 1 << WGM00;
-	//TCCR0B |= 1 << CS01 || 1 << CS00;
-	//TIMSK0 |= 1 << TOIE0;
+	TCCR2B |= 1 << CS22;
+	TIMSK2 |= 1 << TOIE2;
 	
 	
 	//setup signal

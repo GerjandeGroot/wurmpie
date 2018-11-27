@@ -21,7 +21,7 @@ class IRLib
 //variables
 public:
 volatile static uint8_t received;
-volatile static long signalStart;
+volatile static long time;
 volatile static uint8_t count;
 volatile static uint8_t receiving;
 volatile static uint8_t bit;
