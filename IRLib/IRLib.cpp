@@ -76,3 +76,40 @@ bool IRLib::available() {
 	return IRLib::_available;
 }
 
+static void send(uint16_t data) {
+	 TCCR0A |= 1 << COM0A0;
+	 _delay_us(startBit);
+	 TCCR0A &= ~(1 << COM0A0);
+	 _delay_us(spacer);
+	 uint8_t count = 0;
+	 for(int i = 0; i < 8; i++){
+		 if(data & 1 << i){
+			 TCCR0A |= 1 << COM0A0;
+			 _delay_us(highBit);
+			 TCCR0A &= ~(1 << COM0A0);
+			 _delay_us(spacer);
+			 count++;
+			 }else{
+			 TCCR0A |= 1 << COM0A0;
+			 _delay_us(lowBit);
+			 TCCR0A &= ~(1 << COM0A0);
+			 _delay_us(spacer);
+		 }
+	 }
+	 if(count & 1){
+		 TCCR0A |= 1 << COM0A0;
+		 _delay_us(highBit);
+		 TCCR0A &= ~(1 << COM0A0);
+		 _delay_us(spacer);
+		 count++;
+		 }else{
+		 TCCR0A |= 1 << COM0A0;
+		 _delay_us(lowBit);
+		 TCCR0A &= ~(1 << COM0A0);
+		 _delay_us(spacer);
+	 }
+	 TCCR0A |= 1 << COM0A0;
+	 _delay_us(stopBit);
+	 TCCR0A &= ~(1 << COM0A0);
+	 _delay_us(spacer);
+}

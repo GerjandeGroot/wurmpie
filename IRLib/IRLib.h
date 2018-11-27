@@ -34,6 +34,7 @@ public:
 	static read();
 	static bool available();
 	static void begin(int frequency);
+	static void send(uint16_t data);
 protected:
 private:
 }; //IRLib
