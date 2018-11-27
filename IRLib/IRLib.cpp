@@ -76,7 +76,7 @@ bool IRLib::available() {
 	return IRLib::_available;
 }
 
-static void send(uint16_t data) {
+static void IRLib::send(uint16_t data) {
 	 TCCR0A |= 1 << COM0A0;
 	 _delay_us(startBit);
 	 TCCR0A &= ~(1 << COM0A0);
