@@ -11,7 +11,7 @@
 #ifndef __IRLIB_H__
 #define __IRLIB_H__
 
-#define spacer 350 //300
+#define spacer 500 //300
 #define startBit 600
 #define stopBit 800
 #define highBit 400

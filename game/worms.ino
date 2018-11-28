@@ -16,14 +16,22 @@ main() {
 	sei();
 	player1 = new Player();
 	player2 = new Player();
-	
 	Communication::begin();
-	Communication::handshake();
+	Serial.print("debugging");
+	Communication::handshake();	
+	while(1) {
 		if(Communication::parameters >= 1 && Communication::buffer[0] == 1) {
 			Communication::clearBuffer();
 			Communication::send(2);
+			Serial.println("hallo there");
+			break;
 		}
-	
+		if(Communication::parameters >= 1 && Communication::buffer[0] == 2) {
+			Communication::clearBuffer();
+			Serial.println("hallo there to");
+			break;
+		}
+	}
 	while(1) {
 		game();
 	}
@@ -47,7 +55,9 @@ void game() {
 		if(Communication::parameters >= 1 && Communication::buffer[0] == 1) {
 			Communication::clearBuffer();
 			Communication::send(2);
+			Serial.println("hallo there");
 		}
+		//Serial.println(Communication::parameters);
 		
 		//draw changes from other arduino
 	}
