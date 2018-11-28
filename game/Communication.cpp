@@ -28,8 +28,9 @@ bool Communication::handshake() {
 	Serial.write(1);
 	
 	for(int i = 0; i < 1000; i++) {
-		if(parameters == 2 && buffer[0] == 1) {
+		if(parameters == 1 && buffer[0] == 2) {
 			Communication::serial = true;
+			Communication::clearBuffer();
 			return true;
 		}
 		_delay_ms(1);
@@ -38,8 +39,8 @@ bool Communication::handshake() {
 	IRLib::send(1);
 	
 	for(int i = 0; i < 1000; i++) {
-		if(parameters == 2 && buffer[0] == 1) {
-			Communication::serial = true;
+		if(parameters == 1 && buffer[0] == 2) {
+			Communication::clearBuffer();
 			return true;
 		}
 		_delay_ms(1);

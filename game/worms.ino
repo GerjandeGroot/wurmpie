@@ -18,6 +18,12 @@ main() {
 	player2 = new Player();
 	
 	Communication::begin();
+	Communication::handshake();
+		if(Communication::parameters >= 1 && Communication::buffer[0] == 1) {
+			Communication::clearBuffer();
+			Communication::send(2);
+		}
+	
 	while(1) {
 		game();
 	}
@@ -37,6 +43,10 @@ void game() {
 		if(Communication::parameters >= 3 && Communication::buffer[0] == 10) {
 			player2->moveTo(1,1);
 			Communication::clearBuffer();
+		}
+		if(Communication::parameters >= 1 && Communication::buffer[0] == 1) {
+			Communication::clearBuffer();
+			Communication::send(2);
 		}
 		
 		//draw changes from other arduino
