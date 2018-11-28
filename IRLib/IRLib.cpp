@@ -19,24 +19,25 @@ volatile static bool IRLib::_available = false;
 ISR(INT0_vect){
 	if(!(PIND & 1 << 2)) {
 			IRLib::time = 0;
+			TCNT2 = 0;
 	} else {
-		long time = IRLib::time;
-		if(time > 20000 && time < 35000) { //1 voor 400 milli
+		long time = IRLib::custom_micros();
+		if(time > highBit - negMargin && time < highBit + posMargin) { //1 voor 400 milli
 			IRLib::receiving |= 1 << IRLib::bit;
 			IRLib::bit++;
 			IRLib::count++;
-		} else if (time > 10000 && time < 20000) { // 200 voor 5
+		} else if (time > lowBit - negMargin && time < lowBit + posMargin) { // 200 voor 5
 			IRLib::bit++;
-		} else if (time > 35000 && time < 45000) { //start bit 600
+		} else if (time > startBit - negMargin && time < startBit + posMargin) { //start bit 600
 			IRLib::bit = 0;
 			IRLib::receiving = 0;
 			IRLib::count = 0;
-		} else if (time > 45000 && time < 60000) { //stop bit 800
+		} else if (time > stopBit - negMargin && time < stopBit + posMargin) { //stop bit 800
 			IRLib::_available = true;
 			IRLib::received = IRLib::receiving;
 			IRLib::receiving == 0;
 			if(IRLib::bit != 9) {
-				Serial.println("lenght");
+				Serial.println("length");
 			}
 			if(IRLib::count & 1) {
 				Serial.println("parity");
@@ -49,7 +50,11 @@ ISR(INT0_vect){
 }
 
 ISR(TIMER2_OVF_vect) {
-	IRLib::time += 4;
+	IRLib::time ++;
+}
+
+long IRLib::custom_micros() {
+	return ((IRLib::time << 8) + TCNT2)*(64/16);
 }
 
 void IRLib::begin(int frequency) {
@@ -57,7 +62,9 @@ void IRLib::begin(int frequency) {
 	EICRA |= 1 << ISC00; //interrupt on change
 	EIMSK |= 1 << INT0; //enable interrupt
 	
-	//setup micros()
+	//setup timer
+	TCCR2A = 0;
+	TCCR2B = 0;
 	TCCR2B |= 1 << CS22;
 	TIMSK2 |= 1 << TOIE2;
 	
@@ -65,7 +72,6 @@ void IRLib::begin(int frequency) {
 	//setup signal
 	TCCR0A |= 1 << WGM01;
 	TCCR0B |= 1 << CS01;
-	Serial.println(2000.0 / frequency / 2.0);
 	OCR0A = 2000.0 / frequency / 2.0;
 	DDRD = 1 << PORTB6;
 }

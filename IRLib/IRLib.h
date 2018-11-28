@@ -10,11 +10,13 @@
 #ifndef __IRLIB_H__
 #define __IRLIB_H__
 
-#define spacer 300
+#define spacer 300 //300
 #define startBit 600
 #define stopBit 800
 #define highBit 400
 #define lowBit 200
+#define posMargin 100
+#define negMargin 50
 
 class IRLib
 {
@@ -35,6 +37,7 @@ public:
 	static bool available();
 	static void begin(int frequency);
 	static void send(uint16_t data);
+	static long custom_micros();
 protected:
 private:
 }; //IRLib
