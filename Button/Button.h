@@ -13,6 +13,13 @@
 #include "Adafruit_ILI9341.h"
 #include <Adafruit_STMPE610.h>
 
+// This is calibration data for the raw touch data to the screen coordinates
+#define TS_MINX 150
+#define TS_MINY 130
+#define TS_MAXX 3800
+#define TS_MAXY 4000
+
+#define STMPE_CS 8
 
 class Button
 {
@@ -34,6 +41,8 @@ public:
 	Button(uint16_t, uint16_t, uint16_t, uint16_t, String, uint16_t);
 	~Button();
 	void draw(Adafruit_ILI9341 tft);
+	bool clicked();
+	static begin();
 protected:
 private:
 	Button( const Button &c );
