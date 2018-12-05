@@ -9,9 +9,9 @@
 #include "Communication.h"
 
 static bool Communication::serial;
-static uint16_t Communication::buffer[bufferSize];
-static uint8_t Communication::parameters = 0;
-static bool Communication::acknowledge = false;
+volatile static uint16_t Communication::buffer[bufferSize];
+volatile static bool Communication::acknowledge = false;
+volatile static bool Communication::_available = false;
 
 void Communication::begin() {
 	//Setup serial
@@ -21,40 +21,24 @@ void Communication::begin() {
 	
 	
 	IRLib::begin(irFrequency);
+	_delay_ms(100);
 }
 
 bool Communication::handshake() {
 	//Send handshake on serial
-	Serial.write(1);
 	
-	for(int i = 0; i < 1000; i++) {
-		if(parameters == 1 && buffer[0] == 2) {
-			Communication::serial = true;
-			Communication::clearBuffer();
-			return true;
-		}
-		_delay_ms(1);
-	}
-	
-	IRLib::send(1);
-	
-	for(int i = 0; i < 1000; i++) {
-		if(parameters == 1 && buffer[0] == 2) {
-			Communication::clearBuffer();
-			return true;
-		}
-		_delay_ms(1);
-	}
-	
-	return false;
+	//handshake on ir
+	Serial.println("sending handshake");
+	return Communication::send(1);
 }
 
-void Communication::send(uint16_t data) {
+bool Communication::send(uint16_t data) {
 	acknowledge = false;
 	if(serial) {
 		Serial.write(data);
+		return true;
 	} else {
-		IRLib::send(data);
+		return IRLib::sendWait(data);
 	}
 }
 
@@ -68,14 +52,46 @@ bool Communication::waitAcknowledge(uint16_t timeout) {
 }
 
 bool Communication::addParameter(uint16_t parameter) {
-	if(Communication::parameters == bufferSize) return false;
-	Communication::buffer[parameters] = parameter;
-	Communication::parameters++;
-	return true;
+	if(Communication::buffer[0] == 255) return false;
+// 	if (parameter == 255) {
+// 		Serial.print("new command");
+// 		Communication::_available = true;
+// 		return false;
+// 	}
+	for(int i = bufferSize-1; i >= 0; i--) {
+		Communication::buffer[i+1] = Communication::buffer[i];
+	}
+	Communication::buffer[0] = parameter;
+	return Communication::buffer[0] != 255;
 }
 
-void Communication::clearBuffer() {
-	Communication::parameters = 0;
+void Communication::removeParameter() {
+	if(Communication::buffer[0] == 255) {
+		IRLib::sendAcknowledge(true);
+	}
+	for(int i = 0; i < bufferSize-1; i++) {
+		Communication::buffer[i] = Communication::buffer[i+1];
+	}
+	Communication::buffer[bufferSize-1] = 0;
+}
+
+void Communication::clearBuffer(int amount) {
+	for(int i = 0; i < amount; i++) {
+		Communication::removeParameter();
+	}
+}
+
+bool Communication::endCommand() {
+	Communication::send(255);
+}
+
+bool Communication::available() {
+	return Communication::_available;
+}
+void Communication::next() {
+	Communication::_available = false;
+	IRLib::sendAcknowledge(true);
+	Serial.println("end command");
 }
 
 ISR(USART_RXC_vect)

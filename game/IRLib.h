@@ -11,13 +11,23 @@
 #ifndef __IRLIB_H__
 #define __IRLIB_H__
 
-#define spacer 500 //300
-#define startBit 600
-#define stopBit 800
-#define highBit 400
-#define lowBit 200
-#define posMargin 100
-#define negMargin 50
+#define disableSignal TCCR0A |= 1 << COM0A0
+#define enableSignal TCCR0A &= ~(1 << COM0A0)
+
+#define spacer 300 //300
+#define startBit 600  //600
+#define stopBit 800	//800
+#define highBit 400	//400
+#define lowBit 200	//200
+#define acknowledgeBit 1000 //10000
+#define nonAcknowledgeBit 1200 //12000
+#define posMargin 100	//100
+#define negMargin 70	//50
+
+#define ready 0
+#define waitingForAcknowledge 1
+#define sendSucces 2
+#define error 3
 
 class IRLib
 {
@@ -28,17 +38,18 @@ volatile static long time;
 volatile static uint8_t count;
 volatile static uint8_t receiving;
 volatile static uint8_t bit;
-volatile static bool _available;
+volatile static uint8_t status;
 protected:
 private:
 
 //functions
 public:
-	static read();
-	static bool available();
 	static void begin(int frequency);
-	static void send(uint16_t data);
+	static bool send(uint16_t data);
 	static long custom_micros();
+	static void sendAcknowledge(bool succes);
+	static void waitAcknowledge();
+	static bool sendWait(uint16_t data);
 protected:
 private:
 }; //IRLib

@@ -17,21 +17,8 @@ main() {
 	player1 = new Player();
 	player2 = new Player();
 	Communication::begin();
-	Serial.print("debugging");
-	Communication::handshake();	
-	while(1) {
-		if(Communication::parameters >= 1 && Communication::buffer[0] == 1) {
-			Communication::clearBuffer();
-			Communication::send(2);
-			Serial.println("hallo there");
-			break;
-		}
-		if(Communication::parameters >= 1 && Communication::buffer[0] == 2) {
-			Communication::clearBuffer();
-			Serial.println("hallo there to");
-			break;
-		}
-	}
+	Serial.println("starting up");
+	
 	while(1) {
 		game();
 	}
@@ -44,21 +31,27 @@ void game() {
 		player1->y++;
 		
 		//send actions to other arduino
-		player1->sendLocation();
+		//Serial.println("sending location");
+		//player1->sendLocation();
 		
 		//check for updates from other arduino
-		
-		if(Communication::parameters >= 3 && Communication::buffer[0] == 10) {
-			player2->moveTo(1,1);
-			Communication::clearBuffer();
+		//Serial.println("------------");
+		//Serial.println(Communication::buffer[0]);
+		//Serial.println(Communication::buffer[1]);
+		//Serial.println(Communication::buffer[2]);
+		if(Communication::buffer[0] == 255) {
+			Communication::clearBuffer(1);
+			if(Communication::buffer[0] == 1) {
+				Serial.println("other arduino joined");
+				Communication::clearBuffer(4);
+			}
+			if(Communication::buffer[0] == 10) {
+				player2->moveTo(1,1);
+				Communication::clearBuffer(3);
+			}
+			//Communication::next();
 		}
-		if(Communication::parameters >= 1 && Communication::buffer[0] == 1) {
-			Communication::clearBuffer();
-			Communication::send(2);
-			Serial.println("hallo there");
-		}
-		//Serial.println(Communication::parameters);
-		
+		_delay_ms(10);
 		//draw changes from other arduino
 	}
 }

@@ -34,7 +34,8 @@ void Player::moveTo(int x, int y) {
 }
 
 void Player::sendLocation() {
-	Communication::send(10);
-	Communication::send(this->x);
 	Communication::send(this->y);
+	Communication::send(this->x);
+	Communication::send(10);
+	Communication::endCommand();
 }

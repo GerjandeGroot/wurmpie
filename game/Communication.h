@@ -13,29 +13,33 @@
 #include "IRLib.h"
 
 #define serialSpeed 9600
-#define irFrequency 56
 #define bufferSize 4
+#define irFrequency 56
 
 class Communication
 {
 //variables
 public:
 	static bool serial;
-	static uint16_t buffer[bufferSize];
-	static uint8_t parameters;
-	static bool acknowledge;
+	volatile static uint16_t buffer[bufferSize];
+	volatile static bool acknowledge;
+	volatile static bool _available;
 protected:
 private:
 
 //functions
 public:
-	static void clearBuffer();
+	static void clearBuffer(int amount);
 	static bool waitAcknowledge(uint16_t timeout);
 	static void begin();
-	static void send(uint16_t data);
+	static bool send(uint16_t data);
 	static void start();
 	static bool handshake();
 	static bool addParameter(uint16_t data);
+	static bool endCommand();
+	static void removeParameter();
+	static bool available();
+	static void next();
 protected:
 private:
 }; //Communication

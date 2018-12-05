@@ -13,11 +13,11 @@ volatile static long IRLib::time = 0;
 volatile static uint8_t IRLib::count = 0;
 volatile static uint8_t IRLib::receiving = 0;
 volatile static uint8_t IRLib::bit = 0;
-volatile static bool IRLib::_available = false;
+volatile static uint8_t IRLib::status = 0;
 
 
 ISR(INT0_vect){
-	if(!(PIND & 1 << 2)) {
+	if(PIND & 1 << 2) {
 			IRLib::time = 0;
 			TCNT2 = 0;
 	} else {
@@ -32,18 +32,27 @@ ISR(INT0_vect){
 			IRLib::bit = 0;
 			IRLib::receiving = 0;
 			IRLib::count = 0;
+		} else if (time > acknowledgeBit - negMargin && time < acknowledgeBit + posMargin) { //acknowledge
+			IRLib::status = sendSucces;
+		} else if (time > nonAcknowledgeBit - negMargin && time < nonAcknowledgeBit + posMargin) { //non-acknowledge
+			IRLib::status = error;
 		} else if (time > stopBit - negMargin && time < stopBit + posMargin) { //stop bit 800
-			IRLib::_available = true;
-			Communication::addParameter(IRLib::receiving);
-			IRLib::receiving == 0;
 			if(IRLib::bit != 9) {
 				Serial.println("length");
+				IRLib::sendAcknowledge(false);
+				return;
 			}
 			if(IRLib::count & 1) {
 				Serial.println("parity");
+				IRLib::sendAcknowledge(false);
+				return;
+			}
+			if(Communication::addParameter(IRLib::receiving)) {
+				IRLib::sendAcknowledge(true);
 			}
 		} else {
-			Serial.print("error ");
+			Serial.print(IRLib::bit);
+			Serial.print(" error ");
 			Serial.println(time);
 		}
 	}
@@ -76,49 +85,74 @@ void IRLib::begin(int frequency) {
 	DDRD = 1 << PORTB6;
 }
 
-static IRLib::read() {
-	IRLib::_available = false;
-	return IRLib::received;
-}
-
-bool IRLib::available() {
-	return IRLib::_available;
-}
-
-static void IRLib::send(uint16_t data) {
-	 TCCR0A |= 1 << COM0A0;
+static bool IRLib::send(uint16_t data) {
+	
+	 enableSignal;
 	 _delay_us(startBit);
-	 TCCR0A &= ~(1 << COM0A0);
+	 disableSignal;
 	 _delay_us(spacer);
 	 uint8_t count = 0;
 	 for(int i = 0; i < 8; i++){
 		 if(data & 1 << i){
-			 TCCR0A |= 1 << COM0A0;
+			 enableSignal;
 			 _delay_us(highBit);
-			 TCCR0A &= ~(1 << COM0A0);
+			 disableSignal;
 			 _delay_us(spacer);
 			 count++;
 			 }else{
-			 TCCR0A |= 1 << COM0A0;
+			 enableSignal;
 			 _delay_us(lowBit);
-			 TCCR0A &= ~(1 << COM0A0);
+			 disableSignal;
 			 _delay_us(spacer);
 		 }
 	 }
 	 if(count & 1){
-		 TCCR0A |= 1 << COM0A0;
+		 enableSignal;
 		 _delay_us(highBit);
-		 TCCR0A &= ~(1 << COM0A0);
+		 disableSignal;
 		 _delay_us(spacer);
 		 count++;
-		 }else{
-		 TCCR0A |= 1 << COM0A0;
+	}else{
+		enableSignal;
 		 _delay_us(lowBit);
-		 TCCR0A &= ~(1 << COM0A0);
+		 disableSignal;
 		 _delay_us(spacer);
 	 }
-	 TCCR0A |= 1 << COM0A0;
+	 enableSignal;
 	 _delay_us(stopBit);
-	 TCCR0A &= ~(1 << COM0A0);
+	 disableSignal;
 	 _delay_us(spacer);
+}
+
+static bool IRLib::sendWait(uint16_t data) {
+	for(int i = 0; i < 10000000; i++) {
+		IRLib::status = waitingForAcknowledge;
+		IRLib::send(data);
+		IRLib::waitAcknowledge();
+		if(IRLib::status == sendSucces) return true;
+		Serial.print("sending again ");
+		Serial.println(IRLib::status);
+	}
+	return false;
+}
+
+void IRLib::sendAcknowledge(bool succes) {
+	 _delay_us(spacer);
+	 enableSignal;
+	 if(succes) {
+		  _delay_us(acknowledgeBit);
+	 } else {
+		  _delay_us(nonAcknowledgeBit);
+	 }
+	 disableSignal;
+}
+
+void IRLib::waitAcknowledge() {
+	for(int i = 0; i < 100; i++) {
+		if(IRLib::status != waitingForAcknowledge) {
+			return;
+		}
+		_delay_ms(1);
+	}
+	Serial.println("timeout");
 }
