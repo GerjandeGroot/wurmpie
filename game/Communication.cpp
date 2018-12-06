@@ -38,6 +38,7 @@ bool Communication::send(uint16_t data) {
 		Serial.write(data);
 		return true;
 	} else {
+
 		return IRLib::sendWait(data);
 	}
 }

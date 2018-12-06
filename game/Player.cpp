@@ -38,4 +38,5 @@ void Player::sendLocation() {
 	Communication::send(this->x);
 	Communication::send(10);
 	Communication::endCommand();
+ 
 }

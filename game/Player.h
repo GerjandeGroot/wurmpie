@@ -35,6 +35,7 @@ public:
 	void draw(Adafruit_ILI9341 tft);
 	void clear(Adafruit_ILI9341 tft);
 	void moveTo(int x, int y);
+   
 	void sendLocation();
 protected:
 private:
