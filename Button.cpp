@@ -28,16 +28,17 @@ Button::Button(uint16_t x, uint16_t y, uint16_t xSize, uint16_t ySize, String te
 	this->ySize = ySize;
 	this->text = text;
 	this->color = color;
+	draw();
 } //Button
 
-void Button::draw(Adafruit_ILI9341 tft) {
-	tft.fillRect(this->x,this->y,this->xSize,this->ySize,this->color);
-	tft.setTextColor(0xFFFFFF);
-	tft.setTextSize(2);
+void Button::draw() {
+	Main::tft.fillRect(this->x,this->y,this->xSize,this->ySize,this->color);
+	Main::tft.setTextColor(0xFFFFFF);
+	Main::tft.setTextSize(2);
 	uint8_t textXSize = this->text.length()*2*6;
 	uint8_t textYSize =	2*7;
-	tft.setCursor(this->x+((this->xSize-textXSize)/2),this->y+((this->ySize-textYSize)/2));
-	tft.print(this->text);
+	Main::tft.setCursor(this->x+((this->xSize-textXSize)/2),this->y+((this->ySize-textYSize)/2));
+	Main::tft.print(this->text);
 }
 
 bool Button::clicked() {
@@ -49,7 +50,7 @@ bool Button::clicked() {
 		p.y = map(p.y, TS_MINX, TS_MAXX, 0, 320);
 		int y = 240 - p.x;
 		int x = p.y;
-		Serial.println(x);
+
 		if((x > this->x) && (x < (this->x + this->xSize))) {
 			if ((y > this->y) && (y <= (this->y + this->ySize))) {
 				return true;

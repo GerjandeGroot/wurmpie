@@ -35,20 +35,17 @@ private:
 	uint16_t ySize;
 	String text;
 
-	bool selected;
-
 //functions
 public:
 	Button(uint16_t, uint16_t, uint16_t, uint16_t, String, uint16_t);
 	~Button();
-	void draw(Adafruit_ILI9341 tft);
+	void draw();
 	bool clicked();
 	static begin();
 protected:
 private:
-	Button( const Button &c );
-	Button& operator=( const Button &c );
 
 }; //Button
 
+#include "Main.h"
 #endif //__BUTTON_H__
