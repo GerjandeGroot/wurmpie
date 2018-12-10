@@ -35,6 +35,9 @@ void Menu::setPanel(uint8_t panel) {
 			case 4:
 				panel = newGamePanel();
 				break;
+			case 5:
+				panel = mapSelectionPanel();
+				break;
 		}
 		Button::ts.writeRegister8(STMPE_INT_STA, 0xFF);
 	}
@@ -174,6 +177,28 @@ uint8_t Menu::newGamePanel() {
 			return 0;
 		}
 		if(existing_map.clicked()){
+			return 5;
+		}
+		if(back.clicked()){
+			return 0;
+		}
+	}
+}
+
+uint8_t Menu::mapSelectionPanel(){
+	Main::tft.fillScreen(ILI9341_BLACK);
+	drawTitle(40, 0xFFF, "Map selection");
+	
+	Button btnPrev(5, 115, 20, 20, "<", ILI9341_BLUE);
+	Button btnNext(315, 115, 20, 20, ">", ILI9341_BLUE);
+	Button back(210, 200, 70, 30, "Back", ILI9341_BLUE);
+	
+	while(1){
+		if(btnPrev.clicked()){
+			return 0;
+		}
+		if(btnNext.clicked()){
+			return 0;
 		}
 		if(back.clicked()){
 			return 0;
