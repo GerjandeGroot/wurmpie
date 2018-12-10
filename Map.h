@@ -33,15 +33,17 @@ public:
 	~Map();
 	void createRandomMap();
 	void drawMap();
+	void drawMapSmall(uint8_t x, uint8_t y, uint8_t size);
 	void clearMap();
 	void setBlock(uint8_t x,uint8_t y,uint8_t type);
 	uint8_t getBlock(uint8_t x,uint8_t y);
-	void drawBlock(uint8_t x,uint8_t y, uint8_t type);
+	void drawBlock(uint16_t x,uint16_t y, uint8_t type, uint8_t size);
 	void setDrawBlock(uint8_t x, uint8_t y, uint8_t type);
 	bool updateMap();
 	void setRadius(uint8_t x, uint8_t y, uint8_t radius, uint8_t type);
 	void explosion(uint8_t x, uint8_t y, uint8_t radius);
 	bool isEmpty(uint8_t x, uint8_t y, uint8_t size);
+	void drawPart(uint8_t x, uint8_t y, uint8_t size);
 protected:
 private:
 

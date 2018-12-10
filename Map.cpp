@@ -50,10 +50,9 @@ void Map::createRandomMap() {
 }
 
 void Map::drawMap() {
-	Main::tft.fillScreen(ILI9341_CYAN);
-	for(uint8_t y = verticalSize-1; y > 0; y--){
-		for(uint8_t x = 0; x < horizontalSize; x++) {
-			drawBlock(x,y,getBlock(x,y));
+	for(int y = verticalSize-1; y >= 0; y--){
+		for(int x = 0; x < horizontalSize; x++) {
+			drawBlock(x*blocksize,y*blocksize,getBlock(x,y),blocksize);
 		}
 	}
 }
@@ -85,11 +84,11 @@ uint8_t Map::getBlock(uint8_t x,uint8_t y) {
 	return (grid[gridX][gridY] & (0b11 << (bitX+bitY))) >> (bitX+bitY);
 }
 
-void Map::drawBlock(uint8_t x,uint8_t y, uint8_t type) {
+void Map::drawBlock(uint16_t x,uint16_t y, uint8_t type, uint8_t size) {
 	if(type == 1) {
-		Main::tft.fillRect(x*blocksize,y*blocksize,blocksize,blocksize,ILI9341_GREEN);
+		Main::tft.fillRect(x,y,size,size,ILI9341_GREEN);
 	} else if (type == 2) {
-		Main::tft.fillRect(x*blocksize,y*blocksize,blocksize,blocksize,0x6B6D);
+		Main::tft.fillRect(x,y,size,size,0x6B6D);
 	} else if (type == 10) {
 		uint8_t rgn = random(5);
 		uint16_t color;
@@ -115,15 +114,15 @@ void Map::drawBlock(uint8_t x,uint8_t y, uint8_t type) {
 				color = ILI9341_RED;
 				break;
 		}
-		Main::tft.fillRect(x*blocksize,y*blocksize,blocksize,blocksize,color);
+		Main::tft.fillRect(x,y,size,size,color);
 	}else {
-		Main::tft.fillRect(x*blocksize,y*blocksize,blocksize,blocksize,ILI9341_CYAN);
+		Main::tft.fillRect(x,y,size,size,ILI9341_CYAN);
 	}
 }
 
 void Map::setDrawBlock(uint8_t x, uint8_t y, uint8_t type) {
 	setBlock(x,y,type);
-	drawBlock(x,y,getBlock(x,y));
+	drawBlock(x*blocksize,y*blocksize,getBlock(x,y),blocksize);
 }
 
 bool Map::updateMap() {
@@ -132,12 +131,12 @@ bool Map::updateMap() {
 		bool falling = false;
 		for(int y = verticalSize-1; y > 0; y--) {
 			if(getBlock(x,y) == 0 && getBlock(x,y-1) == 1) {
-				setDrawBlock(x,y,1);
+				setDrawBlock(x*blocksize,y*blocksize,1);
 				falling = true;
 				updated = true;
 			} else if(getBlock(x,y) == 1 && getBlock(x,y-1) == 0 && falling) {
 				falling = false;
-				setDrawBlock(x,y,0);
+				setDrawBlock(x*blocksize,y*blocksize,0);
 			}
 		}
 	}
@@ -158,8 +157,8 @@ void Map::explosion(uint8_t x, uint8_t y, uint8_t radius) {
 		for(int r = 0; r < radius; r++) {
 			for(int dy = -radius; dy < radius; dy++) {
 				if(sqrt(r*r + dy*dy) < radius) {
-					drawBlock(x+r,dy+y,10);
-					drawBlock(x-r,dy+y,10);
+					drawBlock((x+r)*blocksize,(dy+y)*blocksize,10,blocksize);
+					drawBlock((x-r)*blocksize,(dy+y)*blocksize,10,blocksize);
 				}
 				
 			}
@@ -175,4 +174,20 @@ bool Map::isEmpty(uint8_t x, uint8_t y, uint8_t size) {
 		}
 	}
 	return true;
+}
+
+void Map::drawPart(uint8_t x, uint8_t y, uint8_t size) {
+	for(int dx = 0; dx < size; dx++) {
+		for(int dy = 0; dy < size; dy++) {
+			drawBlock((x+dx)*blocksize,(y+dy)*blocksize,getBlock(x+dx,y+dy),blocksize);
+		}
+	}
+}
+
+void Map::drawMapSmall(uint8_t x, uint8_t y, uint8_t size) {
+	for(int dy = verticalSize-1; dy >= 0; dy--){
+		for(int dx = 0; dx < horizontalSize; dx++) {
+			drawBlock(x+dx*size,y+dy*size,getBlock(dx,dy),size);
+		}
+	}
 }
