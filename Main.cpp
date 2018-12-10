@@ -36,9 +36,16 @@ Main::~Main()
 void Main::update() {
 	
  	Map card;
+	Player player1(ILI9341_BLUE);
+	Player player2(ILI9341_RED);
 	while(1){
 		card.createRandomMap();
 		card.drawMap();
+		player1.moveTo(10,0);
+		while(player1.moveToDirection(card,2)) {
+			//player1.moveToDirection(card,2);
+			_delay_ms(100);
+		}
 		card.explosion(random(40),random(30),5);
 		while(card.updateMap()){};
 	};

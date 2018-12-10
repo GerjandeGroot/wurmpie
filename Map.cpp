@@ -77,7 +77,7 @@ void Map::setBlock(uint8_t x,uint8_t y,uint8_t type) {
 }
 
 uint8_t Map::getBlock(uint8_t x,uint8_t y) {
-	if(x >= horizontalSize || x < 0 || y >= verticalSize || y < 0) return 0;
+	if(x >= horizontalSize || x < 0 || y >= verticalSize || y < 0) return 255;
 	uint8_t gridX =  x / 2;
 	uint8_t bitX = x % 2 * 4;
 	uint8_t gridY =  y / 2;
@@ -166,4 +166,13 @@ void Map::explosion(uint8_t x, uint8_t y, uint8_t radius) {
 		}
 	}
 	setRadius(x,y,radius,0);
+}
+
+bool Map::isEmpty(uint8_t x, uint8_t y, uint8_t size) {
+	for(int dx = 0; dx < size; dx++) {
+		for(int dy = 0; dy < size; dy++) {
+			if(getBlock(x+dx,y+dy)) return false;
+		}
+	}
+	return true;
 }

@@ -12,7 +12,6 @@
 #include "Arduino.h"
 #include <Adafruit_ILI9341.h>
 #include "EEPROM.h"
-#include "Main.h"
 
 #define blocksize 8
 #define verticalSize 30 //60
@@ -42,9 +41,12 @@ public:
 	bool updateMap();
 	void setRadius(uint8_t x, uint8_t y, uint8_t radius, uint8_t type);
 	void explosion(uint8_t x, uint8_t y, uint8_t radius);
+	bool isEmpty(uint8_t x, uint8_t y, uint8_t size);
 protected:
 private:
 
 }; //Map
+
+#include "Main.h"
 
 #endif //__MAP_H__
