@@ -16,6 +16,7 @@
 #include "Menu.h"
 #include "Map.h"
 #include "Player.h"
+#include "Nunchuck.h"
 
 #define verticalDifference 15
 #define averageDifference 30
