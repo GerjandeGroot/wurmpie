@@ -50,9 +50,11 @@ bool Button::clicked() {
 		p.y = map(p.y, TS_MINX, TS_MAXX, 0, 320);
 		int y = 240 - p.x;
 		int x = p.y;
-
 		if((x > this->x) && (x < (this->x + this->xSize))) {
 			if ((y > this->y) && (y <= (this->y + this->ySize))) {
+				while(ts.touched()) {
+					ts.getPoint();	
+				}
 				return true;
 			}
 		}
