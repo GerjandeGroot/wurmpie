@@ -27,6 +27,7 @@ uint16_t color;
 uint8_t weapon;
 uint8_t aimDirection;
 uint8_t aimStrength;
+uint8_t fuel;
 
 protected:
 private:

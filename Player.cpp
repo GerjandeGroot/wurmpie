@@ -15,6 +15,7 @@ Player::Player(uint16_t color)
 	y = 255;
 	aimDirection = 20;
 	aimStrength = 10;
+	fuel = 10;
 } //Player
 
 // default destructor
@@ -40,21 +41,35 @@ void Player::clear() {
 }
 
 bool Player::moveToDirection(Map map, uint8_t direction) {
+	uint8_t fuel = 100;
 	if(direction == 0) {
 		if(y > 0 && map.getBlock(x,y-2) == 0,map.getBlock(x+1,y-2) == 0) {
 			y--;
 			return true;
 		}
-	} else if (direction == 1) {
-		if(map.isEmpty(x+1,y,tankSize)) {
-			moveTo(x+1,y);
+	} else if (direction == 1) {			//boven
+		if(map.isEmpty(x,y-1,tankSize)) {
+			moveTo(x,y-1);
 			return true;
 		}
 		if(map.isEmpty(x+1,y-1,tankSize)) {
 			moveTo(x+1,y-1);
 			return true;
 		}
-	} else if (direction == 2) {
+		if(map.isEmpty(x-1,y-1,tankSize)) {
+			moveTo(x-1,y-1);
+			return true;
+		}
+	} else if (direction == 2) {			//rechts
+		if(map.isEmpty(x+1,y,tankSize)) {
+			moveTo(x+1,y);
+			return true;	
+		}
+		if(map.isEmpty(x+1,y-1,tankSize)) {
+			moveTo(x+1,y-1);
+			return true;
+		}
+	} else if (direction == 3) {			//beneden
 		if(map.isEmpty(x,y+1,tankSize)) {
 			moveTo(x,y+1);
 			return true;
@@ -67,6 +82,22 @@ bool Player::moveToDirection(Map map, uint8_t direction) {
 			moveTo(x-1,y+1);
 			return true;
 		}
+	} else if (direction == 4) {			//links
+			if(map.isEmpty(x-1,y,tankSize)) {
+				moveTo(x-1,y);
+				return true;
+			}
+			if(map.isEmpty(x-1,y-1,tankSize)) {
+					moveTo(x-1,y-1);
+					return true;
+			}
+
+	} else if (direction == 5) {			
+		if(map.isEmpty(x,y+1,tankSize)) {
+			moveTo(x,y+1);
+			return true;
+		}
+
 	} else {
 		
 	}
