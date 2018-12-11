@@ -88,7 +88,7 @@ uint8_t Menu::settingsPanel() {
 	Button optie2(130, 80, 90, 30, "56 KHz", ILI9341_BLUE);
 	Button optie3(30, 140, 90, 30, "Serial", ILI9341_BLUE);
 	Button optie4(130, 140, 90, 30, "IR", ILI9341_BLUE);
-	Button back(210, 200, 70, 30, "Back", ILI9341_BLUE);
+	Button back(260, 210, 60, 30, "Back", ILI9341_BLUE);
 	
 	
 	if(EEPROM.read(freqAdres) == 38){
@@ -169,39 +169,41 @@ uint8_t Menu::newGamePanel() {
 	drawTitle(40, 0xFFFF, "New game");
 	
 	Button random_map(75, 60, 170, 30, "Random map", ILI9341_BLUE);
-	Button existing_map(75, 100, 170, 30, "Existing map", 0x8410);
-	Button back(210, 200, 70, 30, "Back", ILI9341_BLUE);
+	Button existing_map(75, 100, 170, 30, "Existing map", ILI9341_BLUE);
+	Button back(260, 210, 60, 30, "Back", ILI9341_BLUE);
 	
 	while(1){
 		if(random_map.clicked()){
-			return 0;
+			//return 0;
 		}
 		if(existing_map.clicked()){
 			return 5;
 		}
 		if(back.clicked()){
-			return 0;
+			return 1;
 		}
 	}
 }
 
 uint8_t Menu::mapSelectionPanel(){
 	Main::tft.fillScreen(ILI9341_BLACK);
-	drawTitle(40, 0xFFF, "Map selection");
-	
-	Button btnPrev(5, 115, 20, 20, "<", ILI9341_BLUE);
-	Button btnNext(315, 115, 20, 20, ">", ILI9341_BLUE);
-	Button back(210, 200, 70, 30, "Back", ILI9341_BLUE);
+	drawTitle(20, 0xFFFF, "Select map");
+	Map map;
+	map.createRandomMap();
+	Button btnPrev(5, 115, 30, 30, "<", ILI9341_BLUE);
+	map.drawMapSmall(60, 55, 5);
+	Button btnNext(285, 115, 30, 30, ">", ILI9341_BLUE);
+	Button back(260, 210, 60, 30, "Back", ILI9341_BLUE);
 	
 	while(1){
 		if(btnPrev.clicked()){
-			return 0;
+			Serial.println("Previous");
 		}
 		if(btnNext.clicked()){
-			return 0;
+			Serial.println("Next");
 		}
 		if(back.clicked()){
-			return 0;
+			return 4;
 		}
 	}
 }
