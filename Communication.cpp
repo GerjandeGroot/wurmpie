@@ -15,12 +15,13 @@ volatile static bool Communication::_available = false;
 
 void Communication::begin() {
 	//Setup serial
-	Serial.begin(serialSpeed);
+	serial = !EEPROM.read(sendMethodAdres);
 	
-	//todo setup 9 bit
-	
-	
-	IRLib::begin(irFrequency);
+	if(serial) {
+		Serial.begin(serialSpeed);	
+	} else {
+		IRLib::begin(irFrequency);
+	}
 	_delay_ms(100);
 }
 
@@ -33,7 +34,6 @@ bool Communication::handshake() {
 }
 
 bool Communication::send(uint16_t data) {
-	acknowledge = false;
 	if(serial) {
 		Serial.write(data);
 		return true;
@@ -52,17 +52,11 @@ bool Communication::waitAcknowledge(uint16_t timeout) {
 }
 
 bool Communication::addParameter(uint16_t parameter) {
-	if(Communication::buffer[0] == 255) return false;
-// 	if (parameter == 255) {
-// 		Serial.print("new command");
-// 		Communication::_available = true;
-// 		return false;
-// 	}
 	for(int i = bufSize-1; i >= 0; i--) {
 		Communication::buffer[i+1] = Communication::buffer[i];
 	}
 	Communication::buffer[0] = parameter;
-	return Communication::buffer[0] != 255;
+	return	true;
 }
 
 void Communication::removeParameter() {
@@ -82,16 +76,30 @@ void Communication::clearBuffer(int amount) {
 }
 
 bool Communication::endCommand() {
+	acknowledge = false;
 	Communication::send(255);
+	
+	for(int i = 0; i < 99999999; i++) {
+		update();
+		if(buffer[0] == 254) {
+			removeParameter();
+			return true;
+		}
+		_delay_ms(1);
+	}
+	return false;
 }
 
 bool Communication::available() {
 	return Communication::_available;
 }
 void Communication::next() {
+	Communication::send(254);
 	Communication::_available = false;
-	IRLib::sendAcknowledge(true);
-	Serial.println("end command");
+}
+
+void Communication::update() {
+	while(Serial.available()) addParameter(Serial.read());
 }
 
 ISR(USART_RXC_vect)

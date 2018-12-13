@@ -25,13 +25,17 @@
 #define TFT_CS 10
 #define TFT_DC 9
 
+class Player;
+
 class Main
 {
 //variables
 public:
 	static Adafruit_ILI9341 tft;
 	static Map map;
-	uint8_t beurt;
+	static uint8_t beurt;
+	static Player player1;
+	static Player player2;
 protected:
 private:
 
@@ -42,6 +46,11 @@ public:
 	void update();
 	void menu();
 	static int freeRam();
+	void serialTest();
+	static bool waitForHandshake();
+	static bool sendHandshake();
+	static void beginMaster();
+	static void beginSlave();
 protected:
 private:
 

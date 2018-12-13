@@ -10,6 +10,9 @@
 
 static Adafruit_ILI9341 Main::tft = Adafruit_ILI9341(TFT_CS, TFT_DC);
 static Map Main::map = Map();
+static Player Main::player1 = Player(ILI9341_BLUE);
+static Player Main::player2 = Player(ILI9341_RED);
+static uint8_t Main::beurt = 0;
 
 // default constructor
 Main::Main()
@@ -19,9 +22,8 @@ Main::Main()
 	tft.begin();
 	tft.setRotation(1);
 	
-	Serial.begin(9600);
-	Serial.println("hello");
-	
+	Communication::begin();
+		
 	Button::begin();
 	
 	beurt = 0;
@@ -38,13 +40,7 @@ Main::~Main()
 
 void Main::update() {
 	Nunchuck nunchuck;
-	Player player1(ILI9341_BLUE);
-	Player player2(ILI9341_RED);
-	player1.moveTo(10,0);
-	player2.moveTo(30,0);
-	map.createRandomMap();
 	map.drawMap();
-	beurt = 1;
 	while(1){
 		
 		nunchuck.update();
@@ -109,4 +105,64 @@ int Main::freeRam () {
 	extern int __heap_start, *__brkval;
 	int v;
 	return (int) &v - (__brkval == 0 ? (int) &__heap_start : (int) __brkval);
+}
+
+bool Main::sendHandshake() {	
+	Communication::send(1);
+	return Communication::endCommand();
+}
+
+bool Main::waitForHandshake() {
+	Communication::update();
+	if(Communication::buffer[0] == 255 && Communication::buffer[1] == 1) {
+		Communication::clearBuffer(2);
+		Communication::next();
+		return true;
+	}
+	return false;
+}
+
+void Main::beginSlave() {
+	
+	while (1) {
+		Communication::update();
+		if(Communication::buffer[0] == 255 && Communication::buffer[1] == 3) {
+			map.createRandomMap(Communication::buffer[2]);
+			Communication::clearBuffer(3);
+			Communication::next();
+			break;
+		}
+	}
+	while (1) {
+		Communication::update();
+		if(Communication::buffer[0] == 255 && Communication::buffer[1] == 10) {
+			player1.moveTo(Communication::buffer[2], Communication::buffer[3]);
+			Communication::clearBuffer(4);
+			Communication::next();
+			break;
+		}
+	}
+	while (1) {
+		Communication::update();
+		if(Communication::buffer[0] == 255 && Communication::buffer[1] == 10) {
+			player2.moveTo(Communication::buffer[2], Communication::buffer[3]);
+			Communication::clearBuffer(4);
+			Communication::next();
+			return;
+		}
+	}
+	beurt = 6;	
+}
+void Main::beginMaster() {
+	Communication::send(map.seed);
+	Communication::send(3);
+	Communication::endCommand();
+	
+	player2.moveTo(30,0);
+	player2.sendLocation();
+	
+	player1.moveTo(10,0);
+	player1.sendLocation();
+	
+	beurt = 1;
 }

@@ -11,13 +11,11 @@
 // default constructor
 Menu::Menu()
 {
-	Serial.println("Menu created");
 } //Menu
 
 // default destructor
 Menu::~Menu()
 {
-	Serial.println("Menu destroyed");
 } //~Menu
 
 void Menu::setPanel(uint8_t panel) {
@@ -37,6 +35,9 @@ void Menu::setPanel(uint8_t panel) {
 				break;
 			case 5:
 				panel = mapSelectionPanel();
+				break;
+			case 6:
+				panel = newGameLobbyPanel();
 				break;
 		}
 		Button::ts.writeRegister8(STMPE_INT_STA, 0xFF);
@@ -158,6 +159,10 @@ uint8_t Menu::joinPanel() {
 	Button cancel(75, 200, 170, 30, "Cancel", ILI9341_BLUE);
 	
 	while(1){
+		if(Main::sendHandshake()) {
+			Main::beginSlave();
+			return 0;
+		}
 		if(cancel.clicked()){
 			return 1;
 		}
@@ -174,7 +179,11 @@ uint8_t Menu::newGamePanel() {
 	
 	while(1){
 		if(random_map.clicked()){
-			return 0;
+			uint8_t seed = EEPROM.read(3);
+			seed++;
+			EEPROM.write(3,seed);
+			Main::map.createRandomMap(seed);
+			return 6;
 		}
 		if(existing_map.clicked()){
 			return 5;
@@ -188,21 +197,35 @@ uint8_t Menu::newGamePanel() {
 uint8_t Menu::mapSelectionPanel(){
 	Main::tft.fillScreen(ILI9341_BLACK);
 	drawTitle(10, 0xFFFF, "Select map");	//10 voor midden (10 characters)
-	Map map;
-	map.createRandomMap();
 	Button btnPrev(5, 115, 30, 30, "<", ILI9341_BLUE);
-	map.drawMapSmall(60, 55, 5);
+	Main::map.drawMapSmall(60, 55, 5);
 	Button btnNext(285, 115, 30, 30, ">", ILI9341_BLUE);
 	Button back(260, 210, 60, 30, "Back", ILI9341_BLUE);
 	
 	while(1){
 		if(btnPrev.clicked()){
-			Serial.println("Previous");
 		}
 		if(btnNext.clicked()){
-			Serial.println("Next");
 		}
 		if(back.clicked()){
+			return 4;
+		}
+	}
+}
+
+uint8_t Menu::newGameLobbyPanel(){
+	Main::tft.fillScreen(ILI9341_BLACK);
+	drawTitle(40, 0xFFFF, "New Game"); //40 voor midden (8 characters)
+	drawLable(20, 100, 0xFFFF, "Searching for other player");
+
+	Button cancel(75, 200, 170, 30, "Cancel", ILI9341_BLUE);
+
+	while(1){
+		if(Main::waitForHandshake()) {
+			Main::beginMaster();
+			return 0;
+		}
+		if(cancel.clicked()){
 			return 4;
 		}
 	}

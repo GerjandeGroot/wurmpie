@@ -35,6 +35,7 @@ private:
 //functions
 public:
 	Player(uint16_t color);
+	Player();
 	~Player();
 	void draw();
 	void clear();
