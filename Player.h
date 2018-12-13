@@ -11,7 +11,6 @@
 
 #include <Adafruit_ILI9341.h>
 #include "Communication.h"
-#include "Map.h"
 
 #define tankSize 2
 
@@ -46,5 +45,7 @@ public:
 protected:
 private:
 }; //Player
+
+#include "Main.h"
 
 #endif //__PLAYER_H__

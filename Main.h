@@ -14,8 +14,8 @@
 #include <Adafruit_ILI9341.h>
 #include "Button.h"
 #include "Menu.h"
-#include "Map.h"
 #include "Player.h"
+#include "Map.h"
 #include "Nunchuck.h"
 #include "Weapon.h"
 
@@ -32,6 +32,9 @@ public:
 	static Adafruit_ILI9341 tft;
 	static Map map;
 	uint8_t beurt;
+	Player player1 = Player(ILI9341_BLUE);
+	Player player2 = Player(ILI9341_RED);
+	Button menuWeapon = Button(280, 0, 40, 20, "W", ILI9341_BLUE);
 protected:
 private:
 
@@ -42,6 +45,8 @@ public:
 	void update();
 	void menu();
 	static int freeRam();
+	void draw();
+	void drawTurn();
 protected:
 private:
 

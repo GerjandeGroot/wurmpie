@@ -24,6 +24,7 @@ Main::Main()
 	
 	Button::begin();
 	
+	
 	beurt = 0;
 	
 	menu();
@@ -38,18 +39,18 @@ Main::~Main()
 
 void Main::update() {
 	Nunchuck nunchuck;
-	Player player1(ILI9341_BLUE);
-	Player player2(ILI9341_RED);
 	player1.moveTo(10,0);
 	player2.moveTo(30,0);
 	map.createRandomMap();
-	map.drawMap();
+	draw();
 	beurt = 1;
 	while(1){
-		
+		if(menuWeapon.clicked()){
+			Menu().weaponSelectionPanel();
+			draw();
+		}
 		nunchuck.update();
 		if(beurt == 1){
-			player2.draw();
 			if(nunchuck.c || !(player1.fuel > 0)){
 					beurt = 2;			
 			} else if(nunchuck.x > 100 && nunchuck.x < 200 && nunchuck.y > 100 && nunchuck.y < 200){
@@ -87,10 +88,15 @@ void Main::update() {
 			}
 		} else if (beurt == 4) {
 			if(!player1.moveToDirection(3) && !map.updateMap()) {
-				beurt = 1;
+				
+				beurt = 5;
+				draw();
 				player1.fuel = 10;
 			}
 			
+			
+		} else if(beurt = 5){
+			beurt = 1;
 		}
 		if(beurt == 3) {
 			_delay_ms(10);
@@ -110,3 +116,24 @@ int Main::freeRam () {
 	int v;
 	return (int) &v - (__brkval == 0 ? (int) &__heap_start : (int) __brkval);
 }
+
+void Main::draw(){
+	drawTurn();
+	map.drawMap();
+	player1.draw();
+	player2.draw();
+	menuWeapon.draw();
+	beurt = 1;
+}
+
+void Main::drawTurn(){
+	tft.fillScreen(ILI9341_BLACK);
+	tft.setCursor(25, 100);
+	tft.setTextSize(5);
+	tft.setTextColor(ILI9341_WHITE);
+	if(beurt = 1){
+		tft.println("Your turn");
+	}
+	_delay_ms(1000);
+}
+

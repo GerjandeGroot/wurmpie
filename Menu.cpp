@@ -207,3 +207,20 @@ uint8_t Menu::mapSelectionPanel(){
 		}
 	}
 }
+
+uint8_t Menu::weaponSelectionPanel(){
+	Main::tft.fillScreen(ILI9341_BLACK);
+	drawTitle(60, 0xFFFF, F("Weapons"));
+	Button defaultWeapon(5, 70, 100, 50, F("Default"), ILI9341_BLUE);
+	// 	Button tripleShot();
+	// 	Button grenade();
+	// 	Button nuke();
+	// 	Button airstrike();
+	// 	Button emp();
+	// 	Button laser();
+	while(1){
+		if(defaultWeapon.clicked()){
+			 return;
+		}
+	}
+}
