@@ -43,7 +43,7 @@ public:
 	void setRadius(uint8_t x, uint8_t y, uint8_t radius, uint8_t type);
 	void explosion(uint8_t x, uint8_t y, uint8_t radius);
 	bool isEmpty(uint8_t x, uint8_t y, uint8_t size);
-	void drawPart(uint8_t x, uint8_t y, uint8_t size);
+	void drawPart(int8_t x, int8_t y, uint8_t size);
 protected:
 private:
 

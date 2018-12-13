@@ -85,6 +85,7 @@ uint8_t Map::getBlock(uint8_t x,uint8_t y) {
 }
 
 void Map::drawBlock(uint16_t x,uint16_t y, uint8_t type, uint8_t size) {
+	if(x > 320 || x < 0 || y > 240 || y < 0) return;
 	if(type == 1) {
 		Main::tft.fillRect(x,y,size,size,ILI9341_GREEN);
 	} else if (type == 2) {
@@ -131,12 +132,12 @@ bool Map::updateMap() {
 		bool falling = false;
 		for(int y = verticalSize-1; y > 0; y--) {
 			if(getBlock(x,y) == 0 && getBlock(x,y-1) == 1) {
-				setDrawBlock(x*blocksize,y*blocksize,1);
+				setDrawBlock(x,y,1);
 				falling = true;
 				updated = true;
 			} else if(getBlock(x,y) == 1 && getBlock(x,y-1) == 0 && falling) {
 				falling = false;
-				setDrawBlock(x*blocksize,y*blocksize,0);
+				setDrawBlock(x,y,0);
 			}
 		}
 	}
@@ -176,7 +177,7 @@ bool Map::isEmpty(uint8_t x, uint8_t y, uint8_t size) {
 	return true;
 }
 
-void Map::drawPart(uint8_t x, uint8_t y, uint8_t size) {
+void Map::drawPart(int8_t x, int8_t y, uint8_t size) {
 	for(int dx = 0; dx < size; dx++) {
 		for(int dy = 0; dy < size; dy++) {
 			drawBlock((x+dx)*blocksize,(y+dy)*blocksize,getBlock(x+dx,y+dy),blocksize);

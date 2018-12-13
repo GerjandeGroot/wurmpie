@@ -17,6 +17,7 @@
 #include "Map.h"
 #include "Player.h"
 #include "Nunchuck.h"
+#include "Weapon.h"
 
 #define verticalDifference 15
 #define averageDifference 30
@@ -29,6 +30,8 @@ class Main
 //variables
 public:
 	static Adafruit_ILI9341 tft;
+	static Map map;
+	uint8_t beurt;
 protected:
 private:
 

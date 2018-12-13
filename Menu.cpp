@@ -152,7 +152,7 @@ uint8_t Menu::settingsPanel() {
 
 uint8_t Menu::joinPanel() {
 	Main::tft.fillScreen(ILI9341_BLACK);
-	drawTitle(40, 0xFFFF, "Join game");
+	drawTitle(25, 0xFFFF, "Join game"); //25 voor midden (9 characters)
 	drawLable(20, 100, 0xFFFF, "Searching for master");
 	
 	Button cancel(75, 200, 170, 30, "Cancel", ILI9341_BLUE);
@@ -166,7 +166,7 @@ uint8_t Menu::joinPanel() {
 
 uint8_t Menu::newGamePanel() {
 	Main::tft.fillScreen(ILI9341_BLACK);
-	drawTitle(40, 0xFFFF, "New game");
+	drawTitle(40, 0xFFFF, "New game"); //40 voor midden (8 characters)
 	
 	Button random_map(75, 60, 170, 30, "Random map", ILI9341_BLUE);
 	Button existing_map(75, 100, 170, 30, "Existing map", ILI9341_BLUE);
@@ -174,7 +174,7 @@ uint8_t Menu::newGamePanel() {
 	
 	while(1){
 		if(random_map.clicked()){
-			//return 0;
+			return 0;
 		}
 		if(existing_map.clicked()){
 			return 5;
@@ -187,7 +187,7 @@ uint8_t Menu::newGamePanel() {
 
 uint8_t Menu::mapSelectionPanel(){
 	Main::tft.fillScreen(ILI9341_BLACK);
-	drawTitle(20, 0xFFFF, "Select map");
+	drawTitle(10, 0xFFFF, "Select map");	//10 voor midden (10 characters)
 	Map map;
 	map.createRandomMap();
 	Button btnPrev(5, 115, 30, 30, "<", ILI9341_BLUE);

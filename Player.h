@@ -25,8 +25,8 @@ uint8_t y;
 uint8_t health;
 uint16_t color;
 uint8_t weapon;
-uint8_t aimDirection;
-uint8_t aimStrength;
+int8_t aimDx;
+int8_t aimDy;
 uint8_t fuel;
 
 protected:
@@ -40,7 +40,9 @@ public:
 	void clear();
 	void moveTo(int x, int y);
 	void sendLocation();
-	bool moveToDirection(Map map, uint8_t direction);
+	bool moveToDirection(uint8_t direction);
+	void shoot();
+
 protected:
 private:
 }; //Player
