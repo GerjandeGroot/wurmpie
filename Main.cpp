@@ -10,9 +10,7 @@
 
 static Adafruit_ILI9341 Main::tft = Adafruit_ILI9341(TFT_CS, TFT_DC);
 static Map Main::map = Map();
-static Player Main::player1 = Player(ILI9341_BLUE);
-static Player Main::player2 = Player(ILI9341_RED);
-static uint8_t Main::beurt = 0;
+static Button Main::menuWeapon = Button(220, 0, 100, 20, "Default", ILI9341_BLUE);
 
 // default constructor
 Main::Main()
@@ -22,9 +20,11 @@ Main::Main()
 	tft.begin();
 	tft.setRotation(1);
 	
-	Communication::begin();
-		
+	Serial.begin(9600);
+	Serial.println("hello");
+	
 	Button::begin();
+	
 	
 	beurt = 0;
 	
@@ -40,12 +40,18 @@ Main::~Main()
 
 void Main::update() {
 	Nunchuck nunchuck;
-	map.drawMap();
+	player1.moveTo(10,0);
+	player2.moveTo(30,0);
+	map.createRandomMap();
+	draw();
+	beurt = 1;
 	while(1){
-		
+		if(menuWeapon.clicked()){
+			Menu().weaponSelectionPanel(player1);
+			draw();
+		}
 		nunchuck.update();
 		if(beurt == 1){
-			player2.draw();
 			if(nunchuck.c || !(player1.fuel > 0)){
 					beurt = 2;			
 			} else if(nunchuck.x > 100 && nunchuck.x < 200 && nunchuck.y > 100 && nunchuck.y < 200){
@@ -83,10 +89,15 @@ void Main::update() {
 			}
 		} else if (beurt == 4) {
 			if(!player1.moveToDirection(3) && !map.updateMap()) {
-				beurt = 1;
+				
+				beurt = 5;
+				draw();
 				player1.fuel = 10;
 			}
 			
+			
+		} else if(beurt = 5){
+			beurt = 1;
 		}
 		if(beurt == 3) {
 			_delay_ms(10);
@@ -107,62 +118,23 @@ int Main::freeRam () {
 	return (int) &v - (__brkval == 0 ? (int) &__heap_start : (int) __brkval);
 }
 
-bool Main::sendHandshake() {	
-	Communication::send(1);
-	return Communication::endCommand();
-}
-
-bool Main::waitForHandshake() {
-	Communication::update();
-	if(Communication::buffer[0] == 255 && Communication::buffer[1] == 1) {
-		Communication::clearBuffer(2);
-		Communication::next();
-		return true;
-	}
-	return false;
-}
-
-void Main::beginSlave() {
-	
-	while (1) {
-		Communication::update();
-		if(Communication::buffer[0] == 255 && Communication::buffer[1] == 3) {
-			map.createRandomMap(Communication::buffer[2]);
-			Communication::clearBuffer(3);
-			Communication::next();
-			break;
-		}
-	}
-	while (1) {
-		Communication::update();
-		if(Communication::buffer[0] == 255 && Communication::buffer[1] == 10) {
-			player1.moveTo(Communication::buffer[2], Communication::buffer[3]);
-			Communication::clearBuffer(4);
-			Communication::next();
-			break;
-		}
-	}
-	while (1) {
-		Communication::update();
-		if(Communication::buffer[0] == 255 && Communication::buffer[1] == 10) {
-			player2.moveTo(Communication::buffer[2], Communication::buffer[3]);
-			Communication::clearBuffer(4);
-			Communication::next();
-			return;
-		}
-	}
-	beurt = 6;	
-}
-void Main::beginMaster() {
-	Communication::send(map.seed);
-	Communication::send(3);
-	Communication::endCommand();
-	
-	player2.moveTo(30,0);
-	player2.sendLocation();
-	
-	player1.moveTo(10,0);
-	player1.sendLocation();
-	
+void Main::draw(){
+	drawTurn();
+	map.drawMap();
+	player1.draw();
+	player2.draw();
+	menuWeapon.draw();
 	beurt = 1;
 }
+
+void Main::drawTurn(){
+	tft.fillScreen(ILI9341_BLACK);
+	tft.setCursor(25, 100);
+	tft.setTextSize(5);
+	tft.setTextColor(ILI9341_WHITE);
+	if(beurt = 1){
+		tft.println("Your turn");
+	}
+	_delay_ms(1000);
+}
+

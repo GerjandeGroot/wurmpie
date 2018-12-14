@@ -14,8 +14,8 @@
 #include <Adafruit_ILI9341.h>
 #include "Button.h"
 #include "Menu.h"
-#include "Map.h"
 #include "Player.h"
+#include "Map.h"
 #include "Nunchuck.h"
 #include "Weapon.h"
 
@@ -25,17 +25,16 @@
 #define TFT_CS 10
 #define TFT_DC 9
 
-class Player;
-
 class Main
 {
 //variables
 public:
 	static Adafruit_ILI9341 tft;
 	static Map map;
-	static uint8_t beurt;
-	static Player player1;
-	static Player player2;
+	uint8_t beurt;
+	Player player1 = Player(ILI9341_BLUE);
+	Player player2 = Player(ILI9341_RED);
+	static Button menuWeapon;
 protected:
 private:
 
@@ -46,11 +45,8 @@ public:
 	void update();
 	void menu();
 	static int freeRam();
-	void serialTest();
-	static bool waitForHandshake();
-	static bool sendHandshake();
-	static void beginMaster();
-	static void beginSlave();
+	void draw();
+	void drawTurn();
 protected:
 private:
 

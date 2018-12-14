@@ -14,6 +14,9 @@ Button::begin() {
 	if (!ts.begin()) {
 		Serial.println("Unable to start touchscreen.");
 	}
+	else {
+		Serial.println("Touchscreen started.");
+	}
 }
 
 // default constructor

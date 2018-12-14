@@ -19,10 +19,6 @@ Player::Player(uint16_t color)
 	fuel = 11;
 	health = 100;
 } //Player
-Player::Player()
-{
-	
-}
 
 // default destructor
 Player::~Player()
