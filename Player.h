@@ -11,6 +11,7 @@
 
 #include <Adafruit_ILI9341.h>
 #include "Communication.h"
+#include "Map.h"
 
 #define tankSize 2
 
@@ -23,8 +24,7 @@ uint8_t x;
 uint8_t y;
 uint8_t health;
 uint16_t color;
-uint8_t weapon[9] = {1,9,4,0,0,0,0,0,0};
-uint8_t selectedWeapon;
+uint8_t weapon;
 int8_t aimDx;
 int8_t aimDy;
 uint8_t fuel;
@@ -35,6 +35,7 @@ private:
 //functions
 public:
 	Player(uint16_t color);
+	Player();
 	~Player();
 	void draw();
 	void clear();
@@ -47,7 +48,5 @@ public:
 protected:
 private:
 }; //Player
-
-#include "Main.h"
 
 #endif //__PLAYER_H__

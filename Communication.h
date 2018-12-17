@@ -11,6 +11,7 @@
 
 #include "Arduino.h"
 #include "IRLib.h"
+#include "Menu.h"
 
 #define serialSpeed 9600
 #define bufSize 4
@@ -39,6 +40,7 @@ public:
 	static void removeParameter();
 	static bool available();
 	static void next();
+	static void update();
 protected:
 private:
 }; //Communication

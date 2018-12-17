@@ -29,7 +29,6 @@ private:
 public:
 	Weapon(float x, float y, uint8_t type, int8_t dx, int8_t dy);
 	~Weapon();
-	static String getName(uint8_t type);
 protected:
 private:
 	void update();

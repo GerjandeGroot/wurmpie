@@ -27,14 +27,13 @@ class Button
 public:
 	static Adafruit_STMPE610 ts;
 	uint16_t color;
-	String text;
 protected:
 private:
 	uint16_t x;
 	uint16_t y;
 	uint16_t xSize;
 	uint16_t ySize;
-	
+	String text;
 
 //functions
 public:

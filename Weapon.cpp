@@ -53,30 +53,3 @@ void Weapon::moveTo(float x, float y) {
 	this->y = y;
 	draw();
 }
-
-String Weapon::getName(uint8_t type){
-	String name;
-	switch(type){
-		default:
-			return F("ERROR");
-		case 1:
-			return F("Default");
-		case 2:
-			return F("Grenade");
-		case 3:
-			return F("Nuke");		
-		case 4:
-			return F("Strike");		
-		case 5:
-			return F("EMP");		
-		case 6:
-			return F("Laser");
-		case 7:
-			return name = F("Triple");
-		case 8:
-			return F("number8");
-		case 9:
-			return F("number9");
-		
-	}
-}
