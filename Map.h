@@ -24,7 +24,6 @@ class Map
 //variables
 public:
 	uint8_t grid[horizontalSize/2][verticalSize/2];
-	uint8_t seed;
 protected:
 private:
 
@@ -32,7 +31,7 @@ private:
 public:
 	Map();
 	~Map();
-	void createRandomMap(uint16_t seed);
+	void createRandomMap();
 	void drawMap();
 	void drawMapSmall(uint8_t x, uint8_t y, uint8_t size);
 	void clearMap();

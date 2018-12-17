@@ -18,8 +18,10 @@ Map::~Map()
 {
 } //~Map
 
-void Map::createRandomMap(uint16_t seed) {
-	this->seed = seed;
+void Map::createRandomMap() {
+	uint8_t seed = EEPROM.read(3);
+	//seed++;
+	//EEPROM.write(3,seed);
 	clearMap();
 	randomSeed(seed);
 	float hoogte = random(verticalSize/2,verticalSize);
