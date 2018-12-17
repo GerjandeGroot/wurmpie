@@ -36,6 +36,7 @@ public:
 	static uint8_t beurt;
 	static Player player1;
 	static Player player2;
+	Button menuWeapon = Button(280, 0, 40, 20, "W", ILI9341_BLUE);
 protected:
 private:
 
@@ -51,6 +52,8 @@ public:
 	static bool sendHandshake();
 	static void beginMaster();
 	static void beginSlave();
+	void draw();
+	void drawTurn(String tekst);
 protected:
 private:
 

@@ -22,7 +22,7 @@
 #define acknowledgeBit 1000 //10000
 #define nonAcknowledgeBit 1200 //12000
 #define posMargin 100	//100
-#define negMargin 70	//50
+#define negMargin 75	//50
 
 #define ready 0
 #define waitingForAcknowledge 1
@@ -33,12 +33,12 @@ class IRLib
 {
 //variables
 public:
-volatile static uint8_t received;
-volatile static long time;
+volatile static uint32_t timer;
 volatile static uint8_t count;
 volatile static uint8_t receiving;
 volatile static uint8_t bit;
 volatile static uint8_t status;
+volatile static uint32_t beginTime; 
 protected:
 private:
 
@@ -46,10 +46,12 @@ private:
 public:
 	static void begin(int frequency);
 	static bool send(uint16_t data);
-	static long custom_micros();
+	static uint32_t custom_micros();
 	static void sendAcknowledge(bool succes);
 	static void waitAcknowledge();
 	static bool sendWait(uint16_t data);
+	static void sendPulse(uint16_t time);
+	static void custom_delay(uint32_t time);
 protected:
 private:
 }; //IRLib

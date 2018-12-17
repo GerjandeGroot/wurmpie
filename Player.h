@@ -41,6 +41,7 @@ public:
 	void clear();
 	void moveTo(int x, int y);
 	void sendLocation();
+	void sendAim();
 	bool moveToDirection(uint8_t direction);
 	void shoot();
 

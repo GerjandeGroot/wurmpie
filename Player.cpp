@@ -110,6 +110,10 @@ bool Player::moveToDirection(uint8_t direction) {
 }
 
 void Player::moveTo(int x, int y) {
+	Communication::send(y);
+	Communication::send(x);
+	Communication::send(10);
+	Communication::endCommand();
 	clear();
 	this->x = x;
 	this->y = y;
@@ -120,6 +124,13 @@ void Player::sendLocation() {
 	Communication::send(this->y);
 	Communication::send(this->x);
 	Communication::send(10);
+	Communication::endCommand();
+}
+
+void Player::sendAim() {
+	Communication::send(this->aimDy);
+	Communication::send(this->aimDx);
+	Communication::send(11);
 	Communication::endCommand();
 }
 

@@ -17,16 +17,15 @@ static uint8_t Main::beurt = 0;
 // default constructor
 Main::Main()
 {
-	init();
-	
-	tft.begin();
-	tft.setRotation(1);
+	sei();
 	
 	Communication::begin();
+	
+	tft.begin();
+	tft.setRotation(3);
+	
 		
 	Button::begin();
-	
-	beurt = 0;
 	
 	menu();
 	update();
@@ -40,9 +39,8 @@ Main::~Main()
 
 void Main::update() {
 	Nunchuck nunchuck;
-	map.drawMap();
+	draw();
 	while(1){
-		
 		nunchuck.update();
 		if(beurt == 1){
 			player2.draw();
@@ -68,7 +66,6 @@ void Main::update() {
 				}
 				player1.fuel--;
 			}
-			
 		} else if (beurt == 2) {
 			if(!player1.moveToDirection(3))
 				beurt = 3;
@@ -77,21 +74,53 @@ void Main::update() {
 			player1.aimDy = (nunchuck.y-137)/4;
 			player1.clear();
 			player1.draw();
+			player1.sendAim();
 			if(nunchuck.z) {
+				Communication::send(12);
+				Communication::endCommand();
 				player1.shoot();
 				beurt = 4;
 			}
 		} else if (beurt == 4) {
 			if(!player1.moveToDirection(3) && !map.updateMap()) {
-				beurt = 1;
+				beurt = 5;
 				player1.fuel = 10;
+				Communication::send(4);
+				Communication::endCommand();
+				drawTurn("enemy turn");
 			}
-			
-		}
-		if(beurt == 3) {
-			_delay_ms(10);
-		} else {
-			_delay_ms(100);	
+		} else if (beurt == 5) {
+ 			Communication::update();
+			if(Communication::buffer[0] == 255) {
+				Communication::removeParameter();
+				if(Communication::buffer[0] == 10) {
+					player2.clear();
+					player2.x = Communication::buffer[1];
+					player2.y = Communication::buffer[2];
+					player2.draw();
+					Communication::clearBuffer(3);
+					Communication::next();
+				}
+				if(Communication::buffer[0] == 11) {
+					player2.clear();
+					player2.aimDx = Communication::buffer[1];
+					player2.aimDy = Communication::buffer[2];
+					player2.draw();
+					Communication::clearBuffer(3);
+					Communication::next();
+				}
+				if(Communication::buffer[0] == 12) {
+					Communication::next();
+					player2.shoot();
+					Communication::clearBuffer(1);
+				}
+				if(Communication::buffer[0] == 4) {
+					beurt = 1;
+					Communication::clearBuffer(1);
+					Communication::next();
+					drawTurn("your turn");
+				}
+			}
 		}
 	}
 }
@@ -136,7 +165,8 @@ void Main::beginSlave() {
 	while (1) {
 		Communication::update();
 		if(Communication::buffer[0] == 255 && Communication::buffer[1] == 10) {
-			player1.moveTo(Communication::buffer[2], Communication::buffer[3]);
+			player1.x = Communication::buffer[2];
+			player1.y = Communication::buffer[3];
 			Communication::clearBuffer(4);
 			Communication::next();
 			break;
@@ -145,13 +175,14 @@ void Main::beginSlave() {
 	while (1) {
 		Communication::update();
 		if(Communication::buffer[0] == 255 && Communication::buffer[1] == 10) {
-			player2.moveTo(Communication::buffer[2], Communication::buffer[3]);
+			player2.x = Communication::buffer[2];
+			player2.y = Communication::buffer[3];
 			Communication::clearBuffer(4);
 			Communication::next();
-			return;
+			break;
 		}
 	}
-	beurt = 6;	
+	beurt = 5;	
 }
 void Main::beginMaster() {
 	Communication::send(map.seed);
@@ -165,4 +196,21 @@ void Main::beginMaster() {
 	player1.sendLocation();
 	
 	beurt = 1;
+}
+
+void Main::draw(){
+	map.drawMap();
+	player1.draw();
+	player2.draw();
+	menuWeapon.draw();
+}
+
+void Main::drawTurn(String tekst){
+	tft.fillScreen(ILI9341_BLACK);
+	tft.setCursor(25, 100);
+	tft.setTextSize(4);
+	tft.setTextColor(ILI9341_WHITE);
+	tft.println(tekst);
+	_delay_ms(1000);
+	draw();
 }

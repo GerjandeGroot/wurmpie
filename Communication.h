@@ -15,7 +15,6 @@
 
 #define serialSpeed 9600
 #define bufSize 4
-#define irFrequency 56
 
 class Communication
 {

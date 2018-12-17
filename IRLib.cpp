@@ -8,21 +8,31 @@
 
 #include "IRLib.h"
 
-volatile static uint8_t IRLib::received = 0;
-volatile static long IRLib::time = 0;
+volatile static uint32_t IRLib::timer = 0;
 volatile static uint8_t IRLib::count = 0;
 volatile static uint8_t IRLib::receiving = 0;
 volatile static uint8_t IRLib::bit = 0;
 volatile static uint8_t IRLib::status = 0;
 
+volatile static uint32_t IRLib::beginTime = 0;
 
 ISR(INT0_vect){
 	if(PIND & 1 << 2) {
-			IRLib::time = 0;
-			TCNT2 = 0;
+			IRLib::beginTime = IRLib::custom_micros();
+			digitalWrite(4, HIGH);
 	} else {
-		long time = IRLib::custom_micros();
+		uint32_t endTime = IRLib::custom_micros();
+		uint32_t time = endTime - IRLib::beginTime;
+		
+		if(time>5000) {
+			Serial.println(IRLib::beginTime);
+			Serial.println(endTime);
+			Serial.println("eeeeeeeeeeeeerrrrrrrrrrrrrrrroooooooooooooooooooooorrrrrrr");
+		}
+		
+		digitalWrite(4, LOW);
 		if(time > highBit - negMargin && time < highBit + posMargin) { //1 voor 400 milli
+    
 			IRLib::receiving |= 1 << IRLib::bit;
 			IRLib::bit++;
 			IRLib::count++;
@@ -54,20 +64,31 @@ ISR(INT0_vect){
 			Serial.print(IRLib::bit);
 			Serial.print(" error ");
 			Serial.println(time);
+
 		}
 	}
 }
 
 ISR(TIMER2_OVF_vect) {
-	IRLib::time ++;
+	IRLib::timer++;
 }
 
-long IRLib::custom_micros() {
-	return ((IRLib::time << 8) + TCNT2)*(64/16);
+uint32_t IRLib::custom_micros() {
+	uint32_t m;
+	uint8_t t;
+	cli();
+	m = IRLib::timer;
+	t = TCNT2;
+	if ((TIFR2 & _BV(TOV2)) && (t < 255))
+		m++;
+	sei();
+	return ((m << 8) + t) * (64 / 16);
 }
 
 void IRLib::begin(int frequency) {
 	//setup interrupt on pin 2
+  pinMode(4, OUTPUT);
+   digitalWrite(4, HIGH);
 	EICRA |= 1 << ISC00; //interrupt on change
 	EIMSK |= 1 << INT0; //enable interrupt
 	
@@ -83,46 +104,43 @@ void IRLib::begin(int frequency) {
 	TCCR0B |= 1 << CS01;
 	OCR0A = 2000.0 / frequency / 2.0;
 	DDRD = 1 << PORTB6;
+	disableSignal;
+}
+
+static void IRLib::custom_delay(uint32_t time) {
+	uint32_t start = custom_micros();
+	while(custom_micros() - start < time) {
+	}
+}
+
+static void IRLib::sendPulse(uint16_t time) {
+	enableSignal;
+	custom_delay(time);
+	disableSignal;
+	custom_delay(spacer);
 }
 
 static bool IRLib::send(uint16_t data) {
-	
-	 enableSignal;
-	 _delay_us(startBit);
-	 disableSignal;
-	 _delay_us(spacer);
-	 uint8_t count = 0;
-	 for(int i = 0; i < 8; i++){
-		 if(data & 1 << i){
-			 enableSignal;
-			 _delay_us(highBit);
-			 disableSignal;
-			 _delay_us(spacer);
-			 count++;
-			 }else{
-			 enableSignal;
-			 _delay_us(lowBit);
-			 disableSignal;
-			 _delay_us(spacer);
-		 }
-	 }
-	 if(count & 1){
-		 enableSignal;
-		 _delay_us(highBit);
-		 disableSignal;
-		 _delay_us(spacer);
-		 count++;
-	}else{
-		enableSignal;
-		 _delay_us(lowBit);
-		 disableSignal;
-		 _delay_us(spacer);
-	 }
-	 enableSignal;
-	 _delay_us(stopBit);
-	 disableSignal;
-	 _delay_us(spacer);
+	cli();
+	uint8_t count = 0;
+	sendPulse(startBit);
+	for(int i = 0; i < 8; i++){
+		if(data & 1 << i){
+			sendPulse(highBit);
+			count++;
+		}else{
+			sendPulse(lowBit);
+		}
+	}
+	if(count & 1){
+		sendPulse(highBit);
+		}else{
+		sendPulse(lowBit);
+	}
+	sendPulse(stopBit);
+	sei();
 }
+
 
 static bool IRLib::sendWait(uint16_t data) {
 	for(int i = 0; i < 10000000; i++) {
@@ -137,18 +155,15 @@ static bool IRLib::sendWait(uint16_t data) {
 }
 
 void IRLib::sendAcknowledge(bool succes) {
-	 _delay_us(spacer);
-	 enableSignal;
 	 if(succes) {
-		  _delay_us(acknowledgeBit);
+		 sendPulse(acknowledgeBit);
 	 } else {
-		  _delay_us(nonAcknowledgeBit);
+		 sendPulse(nonAcknowledgeBit);
 	 }
-	 disableSignal;
 }
 
 void IRLib::waitAcknowledge() {
-	for(int i = 0; i < 100; i++) {
+	for(int i = 0; i < 1000; i++) {
 		if(IRLib::status != waitingForAcknowledge) {
 			return;
 		}
