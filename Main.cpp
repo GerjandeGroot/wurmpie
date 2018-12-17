@@ -14,6 +14,8 @@ static Player Main::player1 = Player(ILI9341_BLUE);
 static Player Main::player2 = Player(ILI9341_RED);
 static uint8_t Main::beurt = 0;
 
+static Button Main::menuWeapon = Button(220, 0, 100, 20, "Default", ILI9341_BLUE);
+
 // default constructor
 Main::Main()
 {
@@ -70,6 +72,10 @@ void Main::update() {
 			if(!player1.moveToDirection(3))
 				beurt = 3;
 		} else if (beurt == 3) {
+			if(menuWeapon.clicked()) {
+				Menu().weaponSelectionPanel(player1);
+				draw();
+			}
 			player1.aimDx = (nunchuck.x-133)/-4;
 			player1.aimDy = (nunchuck.y-137)/4;
 			player1.clear();

@@ -43,8 +43,8 @@ bool Button::clicked() {
 		TS_Point p = ts.getPoint();
 		// Scale using the calibration #'s
 		// and rotate coordinate system
-		p.x = map(p.x, TS_MINY, TS_MAXY, 0, 240);
-		p.y = map(p.y, TS_MINX, TS_MAXX, 0, 320);
+		p.x = map(p.x, TS_MINY, TS_MAXY, 240, 0);
+		p.y = map(p.y, TS_MINX, TS_MAXX, 320, 0);
 		int y = 240 - p.x;
 		int x = p.y;
 		if((x > this->x) && (x < (this->x + this->xSize))) {

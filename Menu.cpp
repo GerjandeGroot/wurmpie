@@ -230,3 +230,70 @@ uint8_t Menu::newGameLobbyPanel(){
 		}
 	}
 }
+
+uint8_t Menu::weaponSelectionPanel(Player player){
+	Main::tft.fillScreen(ILI9341_BLACK);
+	drawTitle(60, 0xFFFF, F("Weapons"));
+	Button* buttons[9];
+	uint8_t aantalButtons = 0;
+	for(int i = 0; i < 9; i++){
+		uint16_t x,y;
+		
+		switch(i){
+			case 0:
+			x = 5;
+			y = 70;
+			break;
+			case 1:
+			x = 110;
+			y = 70;
+			break;
+			case 2:
+			x = 215;
+			y = 70;
+			break;
+			case 3:
+			x = 5;
+			y = 130;
+			break;
+			case 4:
+			x = 110;
+			y = 130;
+			break;
+			case 5:
+			x = 215;
+			y = 130;
+			break;
+			case 6:
+			x = 5;
+			y = 190;
+			break;
+			case 7:
+			x = 110;
+			y = 190;
+			break;
+			case 8:
+			x = 215;
+			y = 190;
+			break;
+		}
+		uint8_t weaponName = player.weapon[i];
+		if(weaponName == 0){
+			break;
+		}
+		buttons[i] = new Button(x, y, 100, 50, Weapon::getName(weaponName), ILI9341_BLUE);
+		aantalButtons++;
+	}
+	while(1){
+		for(int i = 0; i < aantalButtons; i++){
+			if(buttons[i]->clicked()){
+				player.selectedWeapon = player.weapon[i];
+				Main::menuWeapon.text = Weapon::getName(player.selectedWeapon);
+				for(int i = 0; i < aantalButtons; i++){
+					delete buttons[i];
+				}
+				return;
+			}
+		}
+	}
+}

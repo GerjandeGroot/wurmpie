@@ -36,7 +36,7 @@ public:
 	static uint8_t beurt;
 	static Player player1;
 	static Player player2;
-	Button menuWeapon = Button(280, 0, 40, 20, "W", ILI9341_BLUE);
+	static Button menuWeapon;
 protected:
 private:
 

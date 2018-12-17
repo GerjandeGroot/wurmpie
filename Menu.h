@@ -12,6 +12,7 @@
 #include "Arduino.h"
 #include "Button.h"
 #include "EEPROM.h"
+#include "Player.h"
 #include <Adafruit_ILI9341.h>
 
 #define freqAdres 0x0
@@ -37,6 +38,7 @@ public:
 	uint8_t newGameLobbyPanel();
 	void drawTitle(uint16_t x, uint16_t color, String naam);
 	void drawLable(uint16_t x, uint16_t y,uint16_t color, String naam);
+	uint8_t weaponSelectionPanel(Player player);
 protected:
 private:
 
