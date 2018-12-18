@@ -10,8 +10,8 @@
 #define __MAIN_H__
 
 #include "Arduino.h"
-#include <Adafruit_GFX.h>
-#include <Adafruit_ILI9341.h>
+#include "Adafruit_GFX.h"
+#include "Custom_ILI9341.h"
 #include "Button.h"
 #include "Menu.h"
 #include "Map.h"
@@ -52,6 +52,7 @@ public:
 	static bool sendHandshake();
 	static void beginMaster();
 	static void beginSlave();
+	void parseData();
 	void draw();
 	void drawTurn(String tekst);
 protected:

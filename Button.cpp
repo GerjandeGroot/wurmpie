@@ -25,17 +25,17 @@ Button::Button(uint16_t x, uint16_t y, uint16_t xSize, uint16_t ySize, String te
 	this->ySize = ySize;
 	this->text = text;
 	this->color = color;
-	draw();
+ 	draw();
 } //Button
 
 void Button::draw() {
 	Main::tft.fillRect(this->x,this->y,this->xSize,this->ySize,this->color);
-	Main::tft.setTextColor(0xFFFFFF);
-	Main::tft.setTextSize(2);
-	uint8_t textXSize = this->text.length()*2*6;
-	uint8_t textYSize =	2*7;
-	Main::tft.setCursor(this->x+((this->xSize-textXSize)/2),this->y+((this->ySize-textYSize)/2));
-	Main::tft.print(this->text);
+ 	Main::tft.setTextColor(0xFFFFFF);
+ 	Main::tft.setTextSize(2);
+ 	uint8_t textXSize = this->text.length()*2*6;
+ 	uint8_t textYSize =	2*7;
+ 	Main::tft.setCursor(this->x+((this->xSize-textXSize)/2),this->y+((this->ySize-textYSize)/2));
+ 	Main::tft.print(this->text);
 }
 
 bool Button::clicked() {

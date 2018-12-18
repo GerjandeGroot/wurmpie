@@ -13,7 +13,7 @@
 #include "Button.h"
 #include "EEPROM.h"
 #include "Player.h"
-#include <Adafruit_ILI9341.h>
+#include "Custom_ILI9341.h"
 
 #define freqAdres 0x0
 #define sendMethodAdres 0x1
