@@ -16,7 +16,7 @@ Player::Player(uint16_t color)
 	y = 255;
 	aimDx = 10;
 	aimDy = 10;
-	fuel = 11;
+	fuel = 10;
 	health = 100;
 } //Player
 Player::Player()
