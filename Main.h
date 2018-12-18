@@ -55,6 +55,7 @@ public:
 	void parseData();
 	void draw();
 	void drawTurn(String tekst);
+	void selectDrop();
 protected:
 private:
 

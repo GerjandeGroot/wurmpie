@@ -46,7 +46,7 @@ void Player::clear() {
 	Main::map.drawPart(x-3,y-3,8);
 }
 
-bool Player::moveToDirection(uint8_t direction) {
+bool Player::moveToDirection(uint8_t direction, bool send) {
 	if(direction == 0) {
 		if(y > 0 && Main::map.getBlock(x,y-2) == 0,Main::map.getBlock(x+1,y-2) == 0) {
 			y--;
@@ -54,52 +54,52 @@ bool Player::moveToDirection(uint8_t direction) {
 		}
 	} else if (direction == 1) {			//boven
 		if(Main::map.isEmpty(x,y-1,tankSize)) {
-			moveTo(x,y-1);
+			moveTo(x,y-1,send);
 			return true;
 		}
 		if(Main::map.isEmpty(x+1,y-1,tankSize)) {
-			moveTo(x+1,y-1);
+			moveTo(x+1,y-1,send);
 			return true;
 		}
 		if(Main::map.isEmpty(x-1,y-1,tankSize)) {
-			moveTo(x-1,y-1);
+			moveTo(x-1,y-1,send);
 			return true;
 		}
 	} else if (direction == 2) {			//rechts
 		if(Main::map.isEmpty(x+1,y,tankSize)) {
-			moveTo(x+1,y);
+			moveTo(x+1,y,send);
 			return true;	
 		}
 		if(Main::map.isEmpty(x+1,y-1,tankSize)) {
-			moveTo(x+1,y-1);
+			moveTo(x+1,y-1,send);
 			return true;
 		}
 	} else if (direction == 3) {			//beneden
 		if(Main::map.isEmpty(x,y+1,tankSize)) {
-			moveTo(x,y+1);
+			moveTo(x,y+1,send);
 			return true;
 		}
 		if(Main::map.isEmpty(x+1,y+1,tankSize)) {
-			moveTo(x+1,y+1);
+			moveTo(x+1,y+1,send);
 			return true;
 		}
 		if(Main::map.isEmpty(x-1,y+1,tankSize)) {
-			moveTo(x-1,y+1);
+			moveTo(x-1,y+1,send);
 			return true;
 		}
 	} else if (direction == 4) {			//links
 			if(Main::map.isEmpty(x-1,y,tankSize)) {
-				moveTo(x-1,y);
+				moveTo(x-1,y,send);
 				return true;
 			}
 			if(Main::map.isEmpty(x-1,y-1,tankSize)) {
-					moveTo(x-1,y-1);
+					moveTo(x-1,y-1,send);
 					return true;
 			}
 
 	} else if (direction == 5) {			
 		if(Main::map.isEmpty(x,y+1,tankSize)) {
-			moveTo(x,y+1);
+			moveTo(x,y+1,send);
 			return true;
 		}
 
@@ -111,10 +111,7 @@ bool Player::moveToDirection(uint8_t direction) {
 
 void Player::moveTo(int x, int y, bool send) {
 	if(send) {
-		Communication::send(y);
-		Communication::send(x);
-		Communication::send(10);
-		Communication::endCommand();
+		sendLocation(x,y);
 	}
 	clear();
 	this->x = x;
@@ -131,6 +128,13 @@ void Player::sendAim() {
 
 void Player::shoot() {
 	Weapon(this->x*blocksize+blocksize-aimDx, this->y*blocksize+blocksize-aimDy,1,aimDx,aimDy);
+}
+
+bool Player::sendLocation(uint8_t x, uint8_t y) {
+	Communication::send(y);
+	Communication::send(x);
+	Communication::send(10);
+	Communication::endCommand();
 }
 
 

@@ -20,19 +20,17 @@ static Button Main::menuWeapon = Button(220, 0, 100, 20, "Default", ILI9341_BLUE
 Main::Main()
 {
 	sei();
-	Serial.begin(9600);
-	Serial.println(1);
+	//Serial.begin(9600);
+	//Serial.println(1);
 	
 	tft.begin();
 	tft.setRotation(3);
 	Communication::begin();
 	
-	
-	
-	Button::begin();
+	//Button::begin();
 	
 	menu();
-	update();
+	//update();
 	
 } //Main
 
@@ -207,7 +205,19 @@ void Main::beginMaster() {
 	
 	player1.moveTo(10,0);
 	
+	while(true) {
+		
+	}	
+	
 	beurt = 1;
+}
+
+void Main::selectDrop() {
+	map.drawMap();
+	player1.moveTo(20,0);
+	while(true) {
+		
+	}
 }
 
 void Main::draw(){
