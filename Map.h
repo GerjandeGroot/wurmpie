@@ -10,7 +10,7 @@
 #define __MAP_H__
 
 #include "Arduino.h"
-#include <Adafruit_ILI9341.h>
+#include "Custom_ILI9341.h"
 #include "EEPROM.h"
 
 #define blocksize 8

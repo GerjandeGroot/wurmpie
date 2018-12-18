@@ -25,6 +25,7 @@
 #define negMargin 75	//50
 
 #define ready 0
+#define sending 4
 #define waitingForAcknowledge 1
 #define sendSucces 2
 #define error 3

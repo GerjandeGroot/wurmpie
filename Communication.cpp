@@ -17,14 +17,14 @@ void Communication::begin() {
 	//Setup serial
 	serial = !EEPROM.read(sendMethodAdres);
 	
-	if(false) {
-		Serial.begin(serialSpeed);	
+	if(serial) {
+		Serial.println("serial");
+		//Serial.begin(serialSpeed);	
 	} else {
-		Serial.begin(9600);
+		Serial.println("ir");
 		uint8_t frequency = EEPROM.read(freqAdres);
 		IRLib::begin(frequency);
 	}
-	_delay_ms(100);
 } 
 
 bool Communication::handshake() {

@@ -23,14 +23,14 @@ ISR(INT0_vect){
 	} else {
 		uint32_t endTime = IRLib::custom_micros();
 		uint32_t time = endTime - IRLib::beginTime;
-		
+		sei();
 		if(time>5000) {
 			Serial.println(IRLib::beginTime);
 			Serial.println(endTime);
 			Serial.println("eeeeeeeeeeeeerrrrrrrrrrrrrrrroooooooooooooooooooooorrrrrrr");
 		}
 		
-		digitalWrite(4, LOW);
+		//digitalWrite(4, LOW);
 		if(time > highBit - negMargin && time < highBit + posMargin) { //1 voor 400 milli
     
 			IRLib::receiving |= 1 << IRLib::bit;
@@ -86,24 +86,23 @@ uint32_t IRLib::custom_micros() {
 }
 
 void IRLib::begin(int frequency) {
-	//setup interrupt on pin 2
-  pinMode(4, OUTPUT);
-   digitalWrite(4, HIGH);
-	EICRA |= 1 << ISC00; //interrupt on change
-	EIMSK |= 1 << INT0; //enable interrupt
-	
 	//setup timer
 	TCCR2A = 0;
 	TCCR2B = 0;
 	TCCR2B |= 1 << CS22;
 	TIMSK2 |= 1 << TOIE2;
 	
+	//setup interrupt on pin 2
+	//pinMode(4, OUTPUT);
+	//digitalWrite(4, HIGH);
+	EICRA |= 1 << ISC00; //interrupt on change
+	EIMSK |= 1 << INT0; //enable interrupt	
 	
 	//setup signal
+	DDRD = 1 << PORTB6;
 	TCCR0A |= 1 << WGM01;
 	TCCR0B |= 1 << CS01;
 	OCR0A = 2000.0 / frequency / 2.0;
-	DDRD = 1 << PORTB6;
 	disableSignal;
 }
 
@@ -144,8 +143,9 @@ static bool IRLib::send(uint16_t data) {
 
 static bool IRLib::sendWait(uint16_t data) {
 	for(int i = 0; i < 10000000; i++) {
-		IRLib::status = waitingForAcknowledge;
+		IRLib::status = sending;
 		IRLib::send(data);
+		status = waitingForAcknowledge;
 		IRLib::waitAcknowledge();
 		if(IRLib::status == sendSucces) return true;
 		Serial.print("sending again ");

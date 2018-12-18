@@ -1,5 +1,5 @@
 #include "Main.h"
 
 main() {
-	new Main();
+	Main();
 }
