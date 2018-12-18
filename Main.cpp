@@ -16,16 +16,23 @@ static uint8_t Main::beurt = 0;
 
 static Button Main::menuWeapon = Button(220, 0, 100, 20, "Default", ILI9341_BLUE);
 
-// default constructor
+//default constructor
 Main::Main()
 {
 	sei();
-	
-	Communication::begin();
+	Serial.begin(9600);
+	Serial.println(1);
 	
 	tft.begin();
 	tft.setRotation(3);
+<<<<<<< HEAD
 		
+=======
+	Communication::begin();
+	
+	
+	
+>>>>>>> Develop
 	Button::begin();
 	
 	menu();
@@ -33,7 +40,7 @@ Main::Main()
 	
 } //Main
 
-// default destructor
+//default destructor
 Main::~Main()
 {
 } //~Main
@@ -46,10 +53,10 @@ void Main::update() {
 		if(beurt == 1){
 			player2.draw();
 			if(nunchuck.c || !(player1.fuel > 0)){
-					beurt = 2;			
-			} else if(nunchuck.x > 100 && nunchuck.x < 200 && nunchuck.y > 100 && nunchuck.y < 200){
+				beurt = 2;
+				} else if(nunchuck.x > 100 && nunchuck.x < 200 && nunchuck.y > 100 && nunchuck.y < 200){
 					player1.moveToDirection(3);
-			} else {
+				} else {
 				if(nunchuck.x > 150){					//rechts
 					player1.moveToDirection(2);
 				}
@@ -62,14 +69,14 @@ void Main::update() {
 				if(nunchuck.y > 170){					//jetpack
 					player1.moveToDirection(1);
 
-				}else{
+					}else{
 					player1.moveToDirection(5);
 				}
 				player1.fuel--;
 			}
 		} else if (beurt == 2) {
 			if(!player1.moveToDirection(3))
-				beurt = 3;
+			beurt = 3;
 		} else if (beurt == 3) {
 			if(menuWeapon.clicked()) {
 				Menu().weaponSelectionPanel(player1);
@@ -95,37 +102,43 @@ void Main::update() {
 				drawTurn("enemy turn");
 			}
 		} else if (beurt == 5) {
- 			Communication::update();
-			if(Communication::buffer[0] == 255) {
-				Communication::removeParameter();
-				if(Communication::buffer[0] == 10) {
-					player2.clear();
-					player2.x = Communication::buffer[1];
-					player2.y = Communication::buffer[2];
-					player2.draw();
-					Communication::clearBuffer(3);
-					Communication::next();
-				}
-				if(Communication::buffer[0] == 11) {
-					player2.clear();
-					player2.aimDx = Communication::buffer[1];
-					player2.aimDy = Communication::buffer[2];
-					player2.draw();
-					Communication::clearBuffer(3);
-					Communication::next();
-				}
-				if(Communication::buffer[0] == 12) {
-					Communication::next();
-					player2.shoot();
-					Communication::clearBuffer(1);
-				}
-				if(Communication::buffer[0] == 4) {
-					beurt = 1;
-					Communication::clearBuffer(1);
-					Communication::next();
-					drawTurn("your turn");
-				}
-			}
+			map.updateMap();
+		}
+		map.updateMap();
+		parseData();
+	}
+}
+
+void Main::parseData() {
+	Communication::update();
+	if(Communication::buffer[0] == 255) {
+		Communication::removeParameter();
+		if(Communication::buffer[0] == 10) {
+			player2.clear();
+			player2.x = Communication::buffer[1];
+			player2.y = Communication::buffer[2];
+			player2.draw();
+			Communication::clearBuffer(3);
+			Communication::next();
+		}
+		if(Communication::buffer[0] == 11) {
+			player2.clear();
+			player2.aimDx = Communication::buffer[1];
+			player2.aimDy = Communication::buffer[2];
+			player2.draw();
+			Communication::clearBuffer(3);
+			Communication::next();
+		}
+		if(Communication::buffer[0] == 12) {
+			Communication::next();
+			player2.shoot();
+			Communication::clearBuffer(1);
+		}
+		if(Communication::buffer[0] == 4) {
+			beurt = 1;
+			Communication::clearBuffer(1);
+			Communication::next();
+			drawTurn("your turn");
 		}
 	}
 }
@@ -141,7 +154,7 @@ int Main::freeRam () {
 	return (int) &v - (__brkval == 0 ? (int) &__heap_start : (int) __brkval);
 }
 
-bool Main::sendHandshake() {	
+bool Main::sendHandshake() {
 	Communication::send(1);
 	return Communication::endCommand();
 }
@@ -187,7 +200,7 @@ void Main::beginSlave() {
 			break;
 		}
 	}
-	beurt = 5;	
+	beurt = 5;
 }
 void Main::beginMaster() {
 	Communication::send(map.seed);
@@ -195,10 +208,8 @@ void Main::beginMaster() {
 	Communication::endCommand();
 	
 	player2.moveTo(30,0);
-	player2.sendLocation();
 	
 	player1.moveTo(10,0);
-	player1.sendLocation();
 	
 	beurt = 1;
 }
