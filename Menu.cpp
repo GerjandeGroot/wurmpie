@@ -40,7 +40,6 @@ void Menu::setPanel(uint8_t panel) {
 				panel = newGameLobbyPanel();
 				break;
 		}
-		Button::ts.writeRegister8(STMPE_INT_STA, 0xFF);
 	}
 }
 
@@ -119,14 +118,14 @@ uint8_t Menu::settingsPanel() {
 		}
 		
 		if(optie1.clicked()){
-			EEPROM.write(freqAdres, 38);
+			EEPROM.update(freqAdres, 38);
 			optie1.color = ILI9341_GREEN;
 			optie2.color = ILI9341_RED;
 			optie1.draw();
 			optie2.draw();
 		}
 		if(optie2.clicked()){
-			EEPROM.write(freqAdres, 56);
+			EEPROM.update(freqAdres, 56);
 			optie2.color = ILI9341_GREEN;
 			optie1.color = ILI9341_RED;
 			optie1.draw();
@@ -134,7 +133,7 @@ uint8_t Menu::settingsPanel() {
 		}
 		if(optie3.clicked()){
 			
-			EEPROM.write(sendMethodAdres, 0);
+			EEPROM.update(sendMethodAdres, 0);
 			optie3.color = ILI9341_GREEN;
 			optie4.color = ILI9341_RED;
 			optie3.draw();
@@ -142,7 +141,7 @@ uint8_t Menu::settingsPanel() {
 		}
 		if(optie4.clicked()){
 			
-			EEPROM.write(sendMethodAdres, 1);
+			EEPROM.update(sendMethodAdres, 1);
 			optie4.color = ILI9341_GREEN;
 			optie3.color = ILI9341_RED;
 			optie3.draw();

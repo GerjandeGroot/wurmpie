@@ -9,7 +9,7 @@
 #ifndef __PLAYER_H__
 #define __PLAYER_H__
 
-#include <Adafruit_ILI9341.h>
+#include "Custom_ILI9341.h"
 #include "Communication.h"
 #include "Map.h"
 
@@ -40,8 +40,7 @@ public:
 	~Player();
 	void draw();
 	void clear();
-	void moveTo(int x, int y);
-	void sendLocation();
+	void moveTo(int x, int y, bool send=true);
 	void sendAim();
 	bool moveToDirection(uint8_t direction);
 	void shoot();

@@ -109,22 +109,17 @@ bool Player::moveToDirection(uint8_t direction) {
 	return false;
 }
 
-void Player::moveTo(int x, int y) {
-	Communication::send(y);
-	Communication::send(x);
-	Communication::send(10);
-	Communication::endCommand();
+void Player::moveTo(int x, int y, bool send) {
+	if(send) {
+		Communication::send(y);
+		Communication::send(x);
+		Communication::send(10);
+		Communication::endCommand();
+	}
 	clear();
 	this->x = x;
 	this->y = y;
 	draw();
-}
-
-void Player::sendLocation() {
-	Communication::send(this->y);
-	Communication::send(this->x);
-	Communication::send(10);
-	Communication::endCommand();
 }
 
 void Player::sendAim() {

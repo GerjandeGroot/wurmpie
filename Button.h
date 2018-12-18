@@ -10,8 +10,8 @@
 #define __BUTTON_H__
 
 #include "Arduino.h"
-#include "Adafruit_ILI9341.h"
-#include <Adafruit_STMPE610.h>
+#include "Custom_ILI9341.h"
+#include "Custom_STMPE610.h"
 
 // This is calibration data for the raw touch data to the screen coordinates
 #define TS_MINX 150
