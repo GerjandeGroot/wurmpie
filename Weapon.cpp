@@ -18,7 +18,7 @@ Weapon::Weapon(float x, float y, uint8_t type, int8_t dx, int8_t dy)
 	//calculate dx dy
 	this->dx = (float)dx/(float)10;
 	this->dy = (float)dy/(float)10;
-	update();
+	parabolicShot();
 	Main::map.explosion(this->x/blocksize,this->y/blocksize,4);
 } //Weapon
 
@@ -27,8 +27,8 @@ Weapon::~Weapon()
 {
 } //~Weapon
 
-void Weapon::update() {
-	for(uint8_t i = 0; i < 200; i++) {
+void Weapon::parabolicShot() {
+	while(true){
 		Serial.print(dx);
 		Serial.print("\t");
 		Serial.println(dy);
@@ -72,7 +72,7 @@ String Weapon::getName(uint8_t type){
 		case 6:
 		return F("Laser");
 		case 7:
-		return name = F("Triple");
+		return F("Triple");
 		case 8:
 		return F("number8");
 		case 9:

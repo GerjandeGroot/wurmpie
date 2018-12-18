@@ -32,7 +32,7 @@ public:
 	static String getName(uint8_t type);
 protected:
 private:
-	void update();
+	void parabolicShot();
 	void draw();
 	void clear();
 	void moveTo(float x, float y);

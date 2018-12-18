@@ -25,7 +25,6 @@ Main::Main()
 	
 	tft.begin();
 	tft.setRotation(3);
-	
 		
 	Button::begin();
 	
