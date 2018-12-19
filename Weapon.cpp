@@ -35,6 +35,9 @@ void Weapon::fireShot(uint8_t type){
 			case 2:
 				grenade();
 				break;
+			case 6:
+				laser();
+				break;
 			case 7:
 				tripleShot();
 				break;
@@ -76,15 +79,36 @@ void Weapon::tripleShot() {
 	for(uint8_t count = 0; count < 3; count++){
 		Weapon(x, y, 1, dx*10, dy*10);
 	}
-	
+}
+
+void Weapon::laser(){
+	while(1){
+		Main::map.setRadius((x - dx*2)/8, (y - dy*2)/8, 2, 0, false);
+		moveTo(x - dx*2, y - dy*2);	
+		if(x > 320 || y > 240){
+			break;
+		}
+	}
+	_delay_ms(500);
+	Main::draw();
 }
 
 void Weapon::clear() {
-	Main::tft.fillCircle(this->x,this->y,blocksize/2,ILI9341_CYAN);
+	if(type == 6){
+		
+	}
+	else{
+		Main::tft.fillCircle(this->x,this->y,blocksize/2,ILI9341_CYAN);
+	}
 }
 
 void Weapon::draw() {
-	Main::tft.fillCircle(this->x,this->y,blocksize/2,ILI9341_BLACK);
+	if(type == 6){
+		Main::tft.fillCircle(this->x,this->y,blocksize/2,ILI9341_YELLOW);
+	}
+	else{
+		Main::tft.fillCircle(this->x,this->y,blocksize/2,ILI9341_BLACK);
+	}
 }
 
 void Weapon::moveTo(float x, float y) {

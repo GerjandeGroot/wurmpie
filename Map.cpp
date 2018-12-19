@@ -142,11 +142,16 @@ bool Map::updateMap() {
 	return updated;
 }
 
-void Map::setRadius(uint8_t x, uint8_t y, uint8_t radius, uint8_t type) {
+void Map::setRadius(uint8_t x, uint8_t y, uint8_t radius, uint8_t type, bool draw) {
 	for(int dx = -radius; dx < radius; dx++) {
 		for(int dy = -radius; dy < radius; dy++) {
 			if(sqrt(dx*dx + dy*dy) < radius)
-			setDrawBlock(dx+x,dy+y,type);
+				if(draw){
+					setDrawBlock(dx+x,dy+y,type);
+				}
+				else{
+					setBlock(dx+x,dy+y,type);
+				}
 		}
 	}
 }

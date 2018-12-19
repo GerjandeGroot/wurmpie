@@ -36,6 +36,7 @@ private:
 	void defaultShot();
 	void grenade();
 	void tripleShot();
+	void laser();
 	void draw();
 	void clear();
 	void moveTo(float x, float y);
