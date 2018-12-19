@@ -16,7 +16,7 @@ Player::Player(uint16_t color)
 	y = 255;
 	aimDx = 10;
 	aimDy = 10;
-	fuel = 11;
+	fuel = 10;
 	health = 100;
 } //Player
 Player::Player()
@@ -130,7 +130,7 @@ void Player::sendAim() {
 }
 
 void Player::shoot() {
-	Weapon(this->x*blocksize+blocksize-aimDx, this->y*blocksize+blocksize-aimDy,1,aimDx,aimDy);
+	Weapon(this->x*blocksize+blocksize-aimDx, this->y*blocksize+blocksize-aimDy,weapon[selectedWeapon],aimDx,aimDy);
 }
 
 

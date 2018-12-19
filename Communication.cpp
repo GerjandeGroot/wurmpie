@@ -41,7 +41,6 @@ bool Communication::send(uint16_t data) {
 		return true;
 	} else {
 		return IRLib::sendWait(data);
-
 	}
 }
 

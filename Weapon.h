@@ -32,7 +32,10 @@ public:
 	static String getName(uint8_t type);
 protected:
 private:
-	void parabolicShot();
+	void fireShot(uint8_t type);
+	void defaultShot();
+	void grenade();
+	void tripleShot();
 	void draw();
 	void clear();
 	void moveTo(float x, float y);
