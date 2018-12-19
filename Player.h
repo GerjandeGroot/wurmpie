@@ -24,7 +24,7 @@ uint8_t x;
 uint8_t y;
 uint8_t health;
 uint16_t color;
-uint8_t weapon[9] = {1,9,4,0,0,0,0,0,0};
+uint8_t weapon[9] = {1,2,3,4,5,6,7,8,9};
 uint8_t selectedWeapon;
 int8_t aimDx;
 int8_t aimDy;

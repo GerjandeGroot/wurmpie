@@ -75,7 +75,7 @@ void Main::update() {
 			beurt = 3;
 		} else if (beurt == 3) {
 			if(menuWeapon.clicked()) {
-				Menu().weaponSelectionPanel(player1);
+				Menu().weaponSelectionPanel(&player1);
 				draw();
 			}
 			player1.aimDx = (nunchuck.x-133)/-4;

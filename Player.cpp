@@ -130,7 +130,7 @@ void Player::sendAim() {
 }
 
 void Player::shoot() {
-	Weapon(this->x*blocksize+blocksize-aimDx, this->y*blocksize+blocksize-aimDy,1,aimDx,aimDy);
+	Weapon(this->x*blocksize+blocksize-aimDx, this->y*blocksize+blocksize-aimDy,weapon[selectedWeapon],aimDx,aimDy);
 }
 
 
