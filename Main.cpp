@@ -20,17 +20,17 @@ static Button Main::menuWeapon = Button(220, 0, 100, 20, "Default", ILI9341_BLUE
 Main::Main()
 {
 	sei();
-	//Serial.begin(9600);
-	//Serial.println(1);
+	Serial.begin(9600);
+	
 	
 	tft.begin();
 	tft.setRotation(3);
 	Communication::begin();
 	
-	//Button::begin();
+	Button::begin();
 	
 	menu();
-	//update();
+	update();
 	
 } //Main
 
@@ -174,16 +174,9 @@ void Main::beginSlave() {
 			break;
 		}
 	}
-	while (1) {
-		Communication::update();
-		if(Communication::buffer[0] == 255 && Communication::buffer[1] == 10) {
-			player1.x = Communication::buffer[2];
-			player1.y = Communication::buffer[3];
-			Communication::clearBuffer(4);
-			Communication::next();
-			break;
-		}
-	}
+	
+	selectDrop();
+	
 	while (1) {
 		Communication::update();
 		if(Communication::buffer[0] == 255 && Communication::buffer[1] == 10) {
@@ -194,6 +187,9 @@ void Main::beginSlave() {
 			break;
 		}
 	}
+	
+	player1.sendLocation(player1.x,player1.y);
+	
 	beurt = 5;
 }
 void Main::beginMaster() {
@@ -201,22 +197,45 @@ void Main::beginMaster() {
 	Communication::send(3);
 	Communication::endCommand();
 	
-	player2.moveTo(30,0);
+	selectDrop();
 	
-	player1.moveTo(10,0);
+	player1.sendLocation(player1.x,player1.y);
 	
-	while(true) {
-		
-	}	
+	while (1) {
+		Communication::update();
+		if(Communication::buffer[0] == 255 && Communication::buffer[1] == 10) {
+			player2.x = Communication::buffer[2];
+			player2.y = Communication::buffer[3];
+			Communication::clearBuffer(4);
+			Communication::next();
+			break;
+		}
+	}
 	
 	beurt = 1;
 }
 
 void Main::selectDrop() {
+	Nunchuck nunchuck;
 	map.drawMap();
-	player1.moveTo(20,0);
+	player1.moveTo(20,0,false);
 	while(true) {
-		
+		nunchuck.update();
+		Serial.println(nunchuck.x);
+		if(nunchuck.x > 150){					//rechts
+			player1.moveToDirection(2,false);
+		}
+		if(nunchuck.x < 110){					//links
+			player1.moveToDirection(4,false);
+		}
+		if(nunchuck.z) {
+			tft.fillScreen(ILI9341_BLACK);
+			tft.setCursor(0, 100);
+			tft.setTextSize(4);
+			tft.setTextColor(ILI9341_WHITE);
+			tft.println(F("Waiting for enemy"));
+			return;
+		}
 	}
 }
 

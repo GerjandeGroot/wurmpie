@@ -53,9 +53,9 @@ public:
 	static void beginMaster();
 	static void beginSlave();
 	void parseData();
-	void draw();
-	void drawTurn(String tekst);
-	void selectDrop();
+	static void draw();
+	static void drawTurn(String tekst);
+	static void selectDrop();
 protected:
 private:
 
