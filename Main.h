@@ -53,7 +53,7 @@ public:
 	static void beginMaster();
 	static void beginSlave();
 	void parseData();
-	void draw();
+	static void draw();
 	void drawTurn(String tekst);
 protected:
 private:
