@@ -32,6 +32,7 @@ public:
 	static String getName(uint8_t type);
 protected:
 private:
+  uint8_t hitDectectie(uint16_t explosionX,uint16_t explosionY, uint16_t middleX,uint16_t middleY, uint8_t radius);
 	void fireShot(uint8_t type);
 	void defaultShot();
 	void grenade();
@@ -42,6 +43,7 @@ private:
 	void moveTo(float x, float y);
 	bool collisionDetect();
 	void explode();
+	void damageToPlayers(double damageMultiplier, uint8_t range);
 }; //Weapon
 
 #endif //__WEAPON_H__

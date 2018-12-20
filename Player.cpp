@@ -29,6 +29,21 @@ Player::~Player()
 {
 } //~Player
 
+
+//void fuelBar(){
+//    
+// tft.fillRect(2,2, 98, 18, GREEN);
+//    for(int i = 96; i >= 0; i--){
+//      if(i == 65){
+//        tft.fillRect(2,2, i, 18, ORANGE);
+//      } else if(i == 34){
+//        tft.fillRect(2,2, i, 18, RED);
+//      } else{
+//      tft.fillRect(2 + i, 2, 2, 18, CYAN);
+//      }
+//    _delay_ms(10);
+//   }
+//}
 void Player::draw() {
 	Main::tft.fillRoundRect(this->x*blocksize, this->y*blocksize+blocksize, blocksize*2,blocksize, blocksize/4,this->color);
 	Main::tft.fillCircle(this->x*blocksize+blocksize, this->y*blocksize+blocksize, blocksize/2, this->color);
