@@ -1,4 +1,4 @@
-/* 
+/*
 * Weapon.cpp
 *
 * Created: 12-12-2018 11:50:00
@@ -21,22 +21,6 @@ Weapon::Weapon(float x, float y, uint8_t type, int8_t dx, int8_t dy)
 	this->dx = (float)dx/(float)10;
 	this->dy = (float)dy/(float)10;
 	fireShot(type);
-  uint8_t damage = hitDectectie(x, y, Main::player1.x, Main::player1.y, 10);
-  int8_t health = Main::player1.health - damage;
-  if(health < 1){
-    Serial.println("PLAYER 1 DIEEEE");
-  }
-  Main::player1.health = health;
-  Serial.print("PLAYER 1 lost healt :");
-  Serial.println(health);
-  damage = hitDectectie(x, y, Main::player2.x, Main::player2.y, 10);
-  health = Main::player2.health - damage;
-  if(health < 1){
-    Serial.println("PLAYER 2 DIEEEE");
-  }
-  Main::player2.health = health;
-  Serial.print("PLAYER 2 lost healt :");
-  Serial.println(health);
 } //Weapon
 
 // default destructor
@@ -44,65 +28,76 @@ Weapon::~Weapon()
 {
 } //~Weapon
 void Weapon::fireShot(uint8_t type){
-		switch(type){
-			case 1:
-				defaultShot();
-				break;
-			case 2:
-				grenade();
-				break;
-			case 6:
-				laser();
-				break;
-			case 7:
-				tripleShot();
-				break;
-		}
+	switch(type){
+		case 1:
+		defaultShot();
+		break;
+		case 2:
+		grenade();
+		break;
+		case 6:
+		laser();
+		break;
+		case 7:
+		tripleShot();
+		break;
+	}
+}
+
+void Weapon::damageToPlayers(double damageMultiplier, uint8_t range) {
+	uint8_t damage = hitDectectie(x/blocksize, y/blocksize, Main::player1.x+blocksize, Main::player1.y+blocksize, range);
+	int8_t health = Main::player1.health - damage*damageMultiplier;
+	if(health < 1)	{
+		Main::player1.health = 0;
+		} else {
+		Main::player1.health = health;
+	}
+	
+	damage = hitDectectie(x/blocksize, y/blocksize, Main::player2.x+blocksize, Main::player2.y+blocksize, range);
+	health = Main::player2.health - damage*damageMultiplier;
+	if(health < 1)	{
+		Main::player2.health = 0;
+		} else {
+		Main::player2.health = health;
+	}
 }
 
 uint8_t Weapon::hitDectectie(uint16_t explosionX,uint16_t explosionY, uint16_t middleX,uint16_t middleY, uint8_t radius){
-  int dmg = radius; 
-   for(int i = 0; i <= radius +1 ; i++){
-    if(explosionX != middleX){
-     explosionX++;
-    } if (explosionY != middleY){
-       explosionY++;
-    }
-       dmg--;
-      if(explosionX == middleX && explosionY == middleY){
-        dmg * 0,5;
-//        Serial.print("Damage done = ");
-//        Serial.println(dmg);
-        i = radius;
-          return dmg;
-      }
-   }
-return 0;
+	int dmg = radius;
+	for(int i = 0; i <= radius +1 ; i++){
+		if(explosionX != middleX){
+			explosionX++;
+			} if (explosionY != middleY){
+			explosionY++;
+		}
+		dmg--;
+		if(explosionX == middleX && explosionY == middleY){
+			dmg * 0,5;
+			i = radius;
+			return dmg;
+		}
+	}
+	return 0;
 
 }
 
 void Weapon::defaultShot() {
 	for(uint8_t i = 0; i < 200; i++) {
-		Serial.print(dx);
-		Serial.print("\t");
-		Serial.println(dy);
 		moveTo(x - dx, y - dy);
 		this->dy -= 0.025;
 		if(Main::map.getBlock(x/blocksize, y/blocksize)) break;
 		_delay_ms(10);
 	}
 	Main::map.explosion(this->x/blocksize,this->y/blocksize,2);
+	damageToPlayers(5,2*blocksize);
 }
 
 void Weapon::grenade() {
 	for(uint8_t i = 0; i < 200; i++) {
-		Serial.print(dx);
-		Serial.print("\t");
-		Serial.println(dy);
 		moveTo(x - dx, y - dy);
 		this->dy -= 0.025;
 		if(Main::map.getBlock((x-dx)/blocksize, y/blocksize)){
-			dx = dx*-0.65;			
+			dx = dx*-0.65;
 		}
 		if(Main::map.getBlock(x/blocksize, (y-dy)/blocksize)){
 			dy = dy*-0.65;
@@ -110,6 +105,7 @@ void Weapon::grenade() {
 		_delay_ms(10);
 	}
 	Main::map.explosion(this->x/blocksize,this->y/blocksize,4);
+	damageToPlayers(1.5,4*blocksize);
 }
 
 void Weapon::tripleShot() {
@@ -121,8 +117,9 @@ void Weapon::tripleShot() {
 void Weapon::laser(){
 	while(1){
 		Main::map.setRadius((x - dx*2)/8, (y - dy*2)/8, 2, 0, false);
-		moveTo(x - dx*2, y - dy*2);	
-		if(x > 320 || y > 240){
+		damageToPlayers(0.5,2*blocksize);
+		moveTo(x - dx*2, y - dy*2);
+		if(x > 320 || x < 0 || y > 240 || y < 0){
 			break;
 		}
 	}

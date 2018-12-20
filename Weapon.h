@@ -43,6 +43,7 @@ private:
 	void moveTo(float x, float y);
 	bool collisionDetect();
 	void explode();
+	void damageToPlayers(double damageMultiplier, uint8_t range);
 }; //Weapon
 
 #endif //__WEAPON_H__
