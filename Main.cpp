@@ -43,6 +43,7 @@ void Main::update() {
 	Nunchuck nunchuck;
 	draw();
 	while(1){
+		
 		nunchuck.update();
 		if(beurt == 1){
 			player2.draw();
@@ -81,10 +82,13 @@ void Main::update() {
 			player1.clear();
 			player1.draw();
 			player1.sendAim();
+			
 			if(nunchuck.z) {
 				Communication::send(12);
 				Communication::endCommand();
 				player1.shoot();
+				
+				master();
 				beurt = 4;
 			}
 		} else if (beurt == 4) {
@@ -126,6 +130,13 @@ void Main::parseData() {
 		if(Communication::buffer[0] == 12) {
 			Communication::next();
 			player2.shoot();
+			Communication::clearBuffer(1);
+		}
+		if(Communication::buffer[0] == 14){
+			uint8_t xpos = Communication::buffer[1];
+			Communication::next();
+			Powerup* powerup = new Powerup(xpos);
+			powerup->drop();
 			Communication::clearBuffer(1);
 		}
 		if(Communication::buffer[0] == 4) {
@@ -244,6 +255,10 @@ void Main::draw(){
 	player1.draw();
 	player2.draw();
 	menuWeapon.draw();
+	for(int i = 0; i < Powerup::powerupAmount; i++){
+		Serial.println(Powerup::powerupAmount);
+		Powerup::powerups[i]->draw();
+	}
 }
 
 void Main::drawTurn(String tekst){
@@ -255,3 +270,15 @@ void Main::drawTurn(String tekst){
 	_delay_ms(1000);
 	draw();
 }
+
+void Main::master(){
+	uint8_t chance = random(100);
+	if(chance < 90){
+		uint8_t xpos = (random(1, horizontalSize)* blocksize);
+		Powerup* powerup = new Powerup(xpos);
+		powerup->send();
+		powerup->drop();
+	}
+}
+
+
