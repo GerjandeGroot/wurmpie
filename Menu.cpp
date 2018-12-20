@@ -230,6 +230,19 @@ uint8_t Menu::newGameLobbyPanel(){
 	}
 }
 
+uint8_t Menu::endPanel(String msg) {
+	Main::tft.fillScreen(ILI9341_BLACK);
+	drawTitle(40, 0xFFFF, msg); //40 voor midden (8 characters)
+	
+	Button menu(260, 210, 60, 30, "Menu", ILI9341_BLUE);
+	
+	while(1){
+		if(menu.clicked()){
+			return 1;
+		}
+	}
+}
+
 uint8_t Menu::weaponSelectionPanel(Player player){
 	Main::tft.fillScreen(ILI9341_BLACK);
 	drawTitle(60, 0xFFFF, F("Weapons"));

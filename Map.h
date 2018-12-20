@@ -25,6 +25,9 @@ class Map
 public:
 	uint8_t grid[horizontalSize/2][verticalSize/2];
 	uint8_t seed;
+	uint16_t backgroundColor = ILI9341_CYAN;
+	uint16_t groundColor = ILI9341_GREEN;
+	uint16_t underGroundColor = ILI9341_LIGHTGREY;
 protected:
 private:
 

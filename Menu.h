@@ -39,6 +39,7 @@ public:
 	void drawTitle(uint16_t x, uint16_t color, String naam);
 	void drawLable(uint16_t x, uint16_t y,uint16_t color, String naam);
 	uint8_t weaponSelectionPanel(Player player);
+	uint8_t endPanel(String msg);
 protected:
 private:
 
