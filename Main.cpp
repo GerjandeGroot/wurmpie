@@ -22,15 +22,14 @@ Main::Main()
 	sei();
 	Serial.begin(9600);
 	
-	
-	tft.begin();
-	tft.setRotation(3);
 	Communication::begin();
 	
 	Button::begin();
 	
-	menu();
-	update();
+	while(true) {
+		menu();
+		update();
+	}
 	
 } //Main
 
@@ -87,12 +86,11 @@ void Main::update() {
 				Communication::send(12);
 				Communication::endCommand();
 				player1.shoot();
-				
-				master();
 				beurt = 4;
 			}
 		} else if (beurt == 4) {
 			if(!player1.moveToDirection(3) && !map.updateMap()) {
+				master();
 				beurt = 5;
 				player1.fuel = 10;
 				Communication::send(4);
@@ -102,6 +100,17 @@ void Main::update() {
 		} else if (beurt == 5) {
 			map.updateMap();
 		}
+		
+		if(player1.health == 0) {
+			Menu().endPanel("YOU LOSE");
+			return;
+		}
+		if(player2.health == 0) {
+			Menu().endPanel("YOU WIN");
+			return;
+		}
+		
+		
 		map.updateMap();
 		parseData();
 	}
@@ -145,6 +154,11 @@ void Main::parseData() {
 			Communication::next();
 			drawTurn("your turn");
 		}
+		if(Communication::buffer[0] == 13) {
+			player2.selectedWeapon = Communication::buffer[1];
+			Communication::clearBuffer(2);
+			Communication::next();
+		}
 	}
 }
 
@@ -175,6 +189,8 @@ bool Main::waitForHandshake() {
 }
 
 void Main::beginSlave() {
+	player1 = Player(ILI9341_BLUE);
+	player2 = Player(ILI9341_RED);	
 	
 	while (1) {
 		Communication::update();
@@ -204,6 +220,9 @@ void Main::beginSlave() {
 	beurt = 5;
 }
 void Main::beginMaster() {
+	player1 = Player(ILI9341_BLUE);
+	player2 = Player(ILI9341_RED);
+	
 	Communication::send(map.seed);
 	Communication::send(3);
 	Communication::endCommand();

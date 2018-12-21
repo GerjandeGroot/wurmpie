@@ -18,11 +18,9 @@ Player::Player(uint16_t color)
 	aimDy = 10;
 	fuel = 10;
 	health = 100;
+	weapon[0] = 1;
+	selectedWeapon = 0;
 } //Player
-Player::Player()
-{
-	
-}
 
 // default destructor
 Player::~Player()
@@ -56,6 +54,7 @@ void Player::draw() {
 	Main::tft.setTextColor(ILI9341_BLUE);
 	Main::tft.println(fuel);
 }
+	
 
 void Player::clear() {
 	Main::map.drawPart(x-3,y-3,8);

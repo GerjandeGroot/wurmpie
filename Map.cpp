@@ -11,6 +11,8 @@
 // default constructor
 Map::Map()
 {
+	Main::tft.begin();
+	Main::tft.setRotation(3);
 } //Map
 
 // default destructor

@@ -238,7 +238,7 @@ uint8_t Menu::endPanel(String msg) {
 	
 	while(1){
 		if(menu.clicked()){
-			return 1;
+			return 0;
 		}
 	}
 }
@@ -300,6 +300,9 @@ uint8_t Menu::weaponSelectionPanel(Player *player){
 		for(int i = 0; i < aantalButtons; i++){
 			if(buttons[i]->clicked()){
 				player->selectedWeapon = i;
+				Communication::send(i);
+				Communication::send(13);
+				Communication::endCommand();
 				Main::menuWeapon.text = Weapon::getName(player->weapon[player->selectedWeapon]);
 				for(int i = 0; i < aantalButtons; i++){
 					delete buttons[i];
