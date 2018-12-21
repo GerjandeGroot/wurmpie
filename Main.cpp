@@ -44,7 +44,9 @@ void Main::update() {
 	if(beurt == 1)
 		player1.fuelBar();
 		
-	while(!player1.moveToDirection(3) || player2.moveToDirection(3)){}
+	while(player1.moveToDirection(3, false) | player2.moveToDirection(3, false)){
+		_delay_ms(80);
+	}
 	while(1){
 		
 		nunchuck.update();
@@ -76,7 +78,7 @@ void Main::update() {
 		} else if (beurt == 2) {
 			if(!player1.moveToDirection(3))
 			beurt = 3;
-			//menuWeapon.draw();
+			menuWeapon.draw();
 		} else if (beurt == 3) {
 			if(menuWeapon.clicked()) {
 				Menu().weaponSelectionPanel(&player1);
