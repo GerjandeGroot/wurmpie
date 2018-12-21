@@ -33,13 +33,10 @@ void Player::draw() {
 	Main::tft.fillRoundRect(this->x*blocksize, this->y*blocksize+blocksize, blocksize*2,blocksize, blocksize/4,this->color);
 	Main::tft.fillCircle(this->x*blocksize+blocksize, this->y*blocksize+blocksize, blocksize/2, this->color);
  	Main::tft.drawLine(this->x*blocksize+blocksize, this->y*blocksize+blocksize, this->x*blocksize+blocksize-aimDx, this->y*blocksize+blocksize-aimDy, this->color);
-	Main::tft.setCursor(x*blocksize-10, y*blocksize-10);
+	Main::tft.setCursor(x*blocksize, y*blocksize-10);
 	Main::tft.setTextColor(ILI9341_RED);
 	Main::tft.setTextSize(1);
 	Main::tft.println(health);
-	Main::tft.setCursor(x*blocksize+10, y*blocksize-10);
-	Main::tft.setTextColor(ILI9341_BLUE);
-	Main::tft.println(fuel);
 }
 
 void Player::clear() {
@@ -134,4 +131,19 @@ void Player::shoot() {
 }
 
 
+
+void Player::fuelBar(){
+	Main::tft.fillRect(2,2, 100, 18, ILI9341_GREEN);
+	Main::tft.drawRect(1, 1, 102, 20, ILI9341_BLACK);	
+}
+
+void Player::updateFuelBar(){
+	if(fuel == 7){
+		Main::tft.fillRect(2,2, fuel*10, 18, ILI9341_ORANGE);
+	} else if(fuel == 3){
+		Main::tft.fillRect(2,2, fuel*10, 18, ILI9341_RED);
+	}
+	Main::tft.fillRect(2 + fuel*10, 2, 10, 18, ILI9341_CYAN);
+	
+}
 //tan(o/a) = o/a

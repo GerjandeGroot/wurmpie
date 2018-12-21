@@ -44,7 +44,8 @@ public:
 	void sendAim();
 	bool moveToDirection(uint8_t direction);
 	void shoot();
-
+	void fuelBar();
+	void updateFuelBar();
 protected:
 private:
 }; //Player

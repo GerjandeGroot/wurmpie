@@ -44,6 +44,10 @@ Main::~Main()
 void Main::update() {
 	Nunchuck nunchuck;
 	draw();
+	if(beurt == 1)
+		player1.fuelBar();
+		
+	while(!player1.moveToDirection(3) || player2.moveToDirection(3)){}
 	while(1){
 		
 		nunchuck.update();
@@ -70,10 +74,12 @@ void Main::update() {
 					player1.moveToDirection(5);
 				}
 				player1.fuel--;
+				player1.updateFuelBar();
 			}
 		} else if (beurt == 2) {
 			if(!player1.moveToDirection(3))
 			beurt = 3;
+			//menuWeapon.draw();
 		} else if (beurt == 3) {
 			if(menuWeapon.clicked()) {
 				Menu().weaponSelectionPanel(player1);
@@ -225,11 +231,11 @@ void Main::draw(){
 	map.drawMap();
 	player1.draw();
 	player2.draw();
-	menuWeapon.draw();
 	for(int i = 0; i < Powerup::powerupAmount; i++){
 		Serial.println(Powerup::powerupAmount);
 		Powerup::powerups[i]->draw();
 	}
+	
 }
 
 void Main::drawTurn(String tekst){
