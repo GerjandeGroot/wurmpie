@@ -18,6 +18,7 @@
 #include "Player.h"
 #include "Nunchuck.h"
 #include "Weapon.h"
+#include "Powerup.h"
 
 #define verticalDifference 15
 #define averageDifference 30
@@ -54,7 +55,10 @@ public:
 	static void beginSlave();
 	void parseData();
 	static void draw();
-	void drawTurn(String tekst);
+	static void drawTurn(String tekst);
+	static void selectDrop();
+	void master();
+	void dropWeapon(uint8_t type);
 protected:
 private:
 

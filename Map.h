@@ -25,6 +25,9 @@ class Map
 public:
 	uint8_t grid[horizontalSize/2][verticalSize/2];
 	uint8_t seed;
+	uint16_t backgroundColor = ILI9341_CYAN;
+	uint16_t groundColor = ILI9341_GREEN;
+	uint16_t underGroundColor = ILI9341_LIGHTGREY;
 protected:
 private:
 
@@ -40,6 +43,7 @@ public:
 	uint8_t getBlock(uint8_t x,uint8_t y);
 	void drawBlock(uint16_t x,uint16_t y, uint8_t type, uint8_t size);
 	void setDrawBlock(uint8_t x, uint8_t y, uint8_t type);
+	void drawRadius(uint8_t x, uint8_t y, uint8_t radius, uint8_t type);
 	bool updateMap();
 	void setRadius(uint8_t x, uint8_t y, uint8_t radius, uint8_t type, bool draw = true);
 	void explosion(uint8_t x, uint8_t y, uint8_t radius);

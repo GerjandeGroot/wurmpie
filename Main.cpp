@@ -21,18 +21,15 @@ Main::Main()
 {
 	sei();
 	Serial.begin(9600);
-	Serial.println(1);
 	
-	tft.begin();
-	tft.setRotation(3);
 	Communication::begin();
-	
-	
 	
 	Button::begin();
 	
-	menu();
-	update();
+	while(true) {
+		menu();
+		update();
+	}
 	
 } //Main
 
@@ -45,6 +42,7 @@ void Main::update() {
 	Nunchuck nunchuck;
 	draw();
 	while(1){
+		
 		nunchuck.update();
 		if(beurt == 1){
 			player2.draw();
@@ -83,6 +81,7 @@ void Main::update() {
 			player1.clear();
 			player1.draw();
 			player1.sendAim();
+			
 			if(nunchuck.z) {
 				Communication::send(12);
 				Communication::endCommand();
@@ -91,6 +90,7 @@ void Main::update() {
 			}
 		} else if (beurt == 4) {
 			if(!player1.moveToDirection(3) && !map.updateMap()) {
+				master();
 				beurt = 5;
 				player1.fuel = 10;
 				Communication::send(4);
@@ -100,6 +100,17 @@ void Main::update() {
 		} else if (beurt == 5) {
 			map.updateMap();
 		}
+		
+		if(player1.health == 0) {
+			Menu().endPanel("YOU LOSE");
+			return;
+		}
+		if(player2.health == 0) {
+			Menu().endPanel("YOU WIN");
+			return;
+		}
+		
+		
 		map.updateMap();
 		parseData();
 	}
@@ -130,11 +141,23 @@ void Main::parseData() {
 			player2.shoot();
 			Communication::clearBuffer(1);
 		}
+		if(Communication::buffer[0] == 14){
+			uint8_t xpos = Communication::buffer[1];
+			Communication::next();
+			Powerup* powerup = new Powerup(xpos);
+			powerup->drop();
+			Communication::clearBuffer(1);
+		}
 		if(Communication::buffer[0] == 4) {
 			beurt = 1;
 			Communication::clearBuffer(1);
 			Communication::next();
 			drawTurn("your turn");
+		}
+		if(Communication::buffer[0] == 13) {
+			player2.selectedWeapon = Communication::buffer[1];
+			Communication::clearBuffer(2);
+			Communication::next();
 		}
 	}
 }
@@ -166,6 +189,8 @@ bool Main::waitForHandshake() {
 }
 
 void Main::beginSlave() {
+	player1 = Player(ILI9341_BLUE);
+	player2 = Player(ILI9341_RED);	
 	
 	while (1) {
 		Communication::update();
@@ -176,16 +201,9 @@ void Main::beginSlave() {
 			break;
 		}
 	}
-	while (1) {
-		Communication::update();
-		if(Communication::buffer[0] == 255 && Communication::buffer[1] == 10) {
-			player1.x = Communication::buffer[2];
-			player1.y = Communication::buffer[3];
-			Communication::clearBuffer(4);
-			Communication::next();
-			break;
-		}
-	}
+	
+	selectDrop();
+	
 	while (1) {
 		Communication::update();
 		if(Communication::buffer[0] == 255 && Communication::buffer[1] == 10) {
@@ -196,18 +214,59 @@ void Main::beginSlave() {
 			break;
 		}
 	}
+	
+	player1.sendLocation(player1.x,player1.y);
+	
 	beurt = 5;
 }
 void Main::beginMaster() {
+	player1 = Player(ILI9341_BLUE);
+	player2 = Player(ILI9341_RED);
+	
 	Communication::send(map.seed);
 	Communication::send(3);
 	Communication::endCommand();
 	
-	player2.moveTo(30,0);
+	selectDrop();
 	
-	player1.moveTo(10,0);
+	player1.sendLocation(player1.x,player1.y);
+	
+	while (1) {
+		Communication::update();
+		if(Communication::buffer[0] == 255 && Communication::buffer[1] == 10) {
+			player2.x = Communication::buffer[2];
+			player2.y = Communication::buffer[3];
+			Communication::clearBuffer(4);
+			Communication::next();
+			break;
+		}
+	}
 	
 	beurt = 1;
+}
+
+void Main::selectDrop() {
+	Nunchuck nunchuck;
+	map.drawMap();
+	player1.moveTo(20,0,false);
+	while(true) {
+		nunchuck.update();
+		Serial.println(nunchuck.x);
+		if(nunchuck.x > 150){					//rechts
+			player1.moveToDirection(2,false);
+		}
+		if(nunchuck.x < 110){					//links
+			player1.moveToDirection(4,false);
+		}
+		if(nunchuck.z) {
+			tft.fillScreen(ILI9341_BLACK);
+			tft.setCursor(0, 100);
+			tft.setTextSize(4);
+			tft.setTextColor(ILI9341_WHITE);
+			tft.println(F("Waiting for enemy"));
+			return;
+		}
+	}
 }
 
 void Main::draw(){
@@ -215,6 +274,10 @@ void Main::draw(){
 	player1.draw();
 	player2.draw();
 	menuWeapon.draw();
+	for(int i = 0; i < Powerup::powerupAmount; i++){
+		Serial.println(Powerup::powerupAmount);
+		Powerup::powerups[i]->draw();
+	}
 }
 
 void Main::drawTurn(String tekst){
@@ -226,3 +289,15 @@ void Main::drawTurn(String tekst){
 	_delay_ms(1000);
 	draw();
 }
+
+void Main::master(){
+	uint8_t chance = random(100);
+	if(chance < 90){
+		uint8_t xpos = (random(1, horizontalSize)* blocksize);
+		Powerup* powerup = new Powerup(xpos);
+		powerup->send();
+		powerup->drop();
+	}
+}
+
+

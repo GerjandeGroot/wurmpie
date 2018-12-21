@@ -42,9 +42,10 @@ public:
 	void clear();
 	void moveTo(int x, int y, bool send=true);
 	void sendAim();
-	bool moveToDirection(uint8_t direction);
+	bool moveToDirection(uint8_t direction,bool send=true);
+	bool sendLocation(uint8_t x, uint8_t y);
 	void shoot();
-
+	void reset();
 protected:
 private:
 }; //Player
