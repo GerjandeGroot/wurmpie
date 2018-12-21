@@ -45,7 +45,10 @@ public:
 	bool moveToDirection(uint8_t direction,bool send=true);
 	bool sendLocation(uint8_t x, uint8_t y);
 	void shoot();
-	void reset();
+
+	void fuelBar();
+	void updateFuelBar();
+
 protected:
 private:
 }; //Player
