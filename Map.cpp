@@ -106,14 +106,30 @@ void Map::drawBlock(uint16_t x,uint16_t y, uint8_t type, uint8_t size) {
 			case 3:
 			color = 0xF520;
 			break;
-			
 			case 4:
 			color=0x5B4C;
 			break;
-			
-			default:
-				color = ILI9341_RED;
-				break;
+		}
+		Main::tft.fillRect(x,y,size,size,color);
+	}else if (type == 11) {
+		uint8_t rgn = random(5);
+		uint16_t color;
+		switch(rgn) {
+			case 0:
+			color = 0x041F;
+			break;
+			case 1:
+			color = 0x87FF;
+			break;
+			case 2:
+			color = 0xFFFF;
+			break;
+			case 3:
+			color = 0x001F;
+			break;
+			case 4:
+			color = 0x9CDF;
+			break;
 		}
 		Main::tft.fillRect(x,y,size,size,color);
 	}else {
@@ -154,6 +170,15 @@ void Map::setRadius(uint8_t x, uint8_t y, uint8_t radius, uint8_t type, bool dra
 				else{
 					setBlock(dx+x,dy+y,type);
 				}
+		}
+	}
+}
+
+void Map::drawRadius(uint8_t x, uint8_t y, uint8_t radius, uint8_t type) {
+	for(int dx = -radius; dx < radius; dx++) {
+		for(int dy = -radius; dy < radius; dy++) {
+			if(sqrt(dx*dx + dy*dy) < radius)
+			drawBlock((dx+x)*blocksize,(dy+y)*blocksize,type, blocksize);
 		}
 	}
 }

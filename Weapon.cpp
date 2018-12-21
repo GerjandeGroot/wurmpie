@@ -35,15 +35,18 @@ void Weapon::fireShot(uint8_t type){
 		case 2:
 		grenade();
 		break;
+		case 3:
+		nukeShot();
+		break;
+		case 5:
+		emp();
+		break;
 		case 6:
 		laser();
 		break;
 		case 7:
 		tripleShot();
-		break;
-		case 3:
-		nukeShot();
-		break;
+		break;		
 	}
 }
 
@@ -103,11 +106,25 @@ void Weapon::defaultShot() {
 	for(uint8_t i = 0; i < 200; i++) {
 		moveTo(x - dx, y - dy);
 		this->dy -= 0.025;
-		if(Main::map.getBlock(x/blocksize, y/blocksize)) break;
+		if(Main::map.getBlock((x+dx)/blocksize, (y+dy)/blocksize)) break;
 		_delay_ms(10);
 	}
 	Main::map.explosion(this->x/blocksize,this->y/blocksize,2);
-	damageToPlayers(10,2);
+	damageToPlayers(25,2);
+}
+
+void Weapon::emp() {
+	for(uint8_t i = 0; i < 200; i++) {
+		moveTo(x - dx, y - dy);
+		this->dy -= 0.025;
+		if(Main::map.getBlock((x+dx)/blocksize, (y+dy)/blocksize)) break;
+		_delay_ms(10);
+	}
+	for(int i = 0; i<20; i++){
+		Main::map.drawRadius(this->x/blocksize,this->y/blocksize,4,11);
+		
+	}
+	Main::map.setRadius(this->x/blocksize,this->y/blocksize,4,11);
 }
 
 void Weapon::nukeShot() {
@@ -118,7 +135,7 @@ void Weapon::nukeShot() {
 		_delay_ms(10);
 	}
 	Main::map.explosion(this->x/blocksize,this->y/blocksize,10);
-	damageToPlayers(500,10);
+	damageToPlayers(200,10);
 }
 
 
@@ -135,7 +152,7 @@ void Weapon::grenade() {
 		_delay_ms(10);
 	}
 	Main::map.explosion(this->x/blocksize,this->y/blocksize,4);
-	damageToPlayers(15,4);
+	damageToPlayers(150,4);
 }
 
 void Weapon::tripleShot() {
