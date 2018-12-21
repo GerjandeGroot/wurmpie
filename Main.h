@@ -54,8 +54,9 @@ public:
 	static void beginMaster();
 	static void beginSlave();
 	void parseData();
-	void draw();
-	void drawTurn(String tekst);
+	static void draw();
+	static void drawTurn(String tekst);
+	static void selectDrop();
 	void master();
 	void dropWeapon(uint8_t type);
 protected:

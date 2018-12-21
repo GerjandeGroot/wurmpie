@@ -1,5 +1,5 @@
 #include "Main.h"
 
-main() {
+int main(void) {
 	Main();
 }

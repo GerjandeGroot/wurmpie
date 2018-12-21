@@ -238,12 +238,12 @@ uint8_t Menu::endPanel(String msg) {
 	
 	while(1){
 		if(menu.clicked()){
-			return 1;
+			return 0;
 		}
 	}
 }
 
-uint8_t Menu::weaponSelectionPanel(Player player){
+uint8_t Menu::weaponSelectionPanel(Player *player){
 	Main::tft.fillScreen(ILI9341_BLACK);
 	drawTitle(60, 0xFFFF, F("Weapons"));
 	Button* buttons[9];
@@ -289,7 +289,7 @@ uint8_t Menu::weaponSelectionPanel(Player player){
 			y = 190;
 			break;
 		}
-		uint8_t weaponName = player.weapon[i];
+		uint8_t weaponName = player->weapon[i];
 		if(weaponName == 0){
 			break;
 		}
@@ -299,8 +299,11 @@ uint8_t Menu::weaponSelectionPanel(Player player){
 	while(1){
 		for(int i = 0; i < aantalButtons; i++){
 			if(buttons[i]->clicked()){
-				player.selectedWeapon = player.weapon[i];
-				Main::menuWeapon.text = Weapon::getName(player.selectedWeapon);
+				player->selectedWeapon = i;
+				Communication::send(i);
+				Communication::send(13);
+				Communication::endCommand();
+				Main::menuWeapon.text = Weapon::getName(player->weapon[player->selectedWeapon]);
 				for(int i = 0; i < aantalButtons; i++){
 					delete buttons[i];
 				}

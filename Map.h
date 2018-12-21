@@ -44,7 +44,7 @@ public:
 	void drawBlock(uint16_t x,uint16_t y, uint8_t type, uint8_t size);
 	void setDrawBlock(uint8_t x, uint8_t y, uint8_t type);
 	bool updateMap();
-	void setRadius(uint8_t x, uint8_t y, uint8_t radius, uint8_t type);
+	void setRadius(uint8_t x, uint8_t y, uint8_t radius, uint8_t type, bool draw = true);
 	void explosion(uint8_t x, uint8_t y, uint8_t radius);
 	bool isEmpty(uint8_t x, uint8_t y, uint8_t size);
 	void drawPart(int8_t x, int8_t y, uint8_t size);
