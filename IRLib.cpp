@@ -19,7 +19,6 @@ volatile static uint32_t IRLib::beginTime = 0;
 ISR(INT0_vect){
 	if(PIND & 1 << 2) {
 			IRLib::beginTime = IRLib::custom_micros();
-			digitalWrite(4, HIGH);
 	} else {
 		uint32_t endTime = IRLib::custom_micros();
 		uint32_t time = endTime - IRLib::beginTime;
@@ -30,7 +29,6 @@ ISR(INT0_vect){
 			Serial.println("eeeeeeeeeeeeerrrrrrrrrrrrrrrroooooooooooooooooooooorrrrrrr");
 		}
 		
-		//digitalWrite(4, LOW);
 		if(time > highBit - negMargin && time < highBit + posMargin) { //1 voor 400 milli
     
 			IRLib::receiving |= 1 << IRLib::bit;
@@ -86,15 +84,7 @@ uint32_t IRLib::custom_micros() {
 }
 
 void IRLib::begin(int frequency) {
-	//setup timer
-	TCCR2A = 0;
-	TCCR2B = 0;
-	TCCR2B |= 1 << CS22;
-	TIMSK2 |= 1 << TOIE2;
-	
 	//setup interrupt on pin 2
-	//pinMode(4, OUTPUT);
-	//digitalWrite(4, HIGH);
 	EICRA |= 1 << ISC00; //interrupt on change
 	EIMSK |= 1 << INT0; //enable interrupt	
 	
