@@ -18,7 +18,6 @@ void Communication::begin() {
 	serial = !EEPROM.read(sendMethodAdres);
 	
 	if(serial) {
-		Serial.println("serial");
 		//Serial.begin(serialSpeed);	
 	} else {
 		Serial.println("ir");
@@ -62,7 +61,7 @@ bool Communication::addParameter(uint16_t parameter) {
 }
 
 void Communication::removeParameter() {
-	if(Communication::buffer[0] == 255) {
+	if(Communication::buffer[0] == 255 && !serial) {
 		IRLib::sendAcknowledge(true);
 	}
 	for(int i = 0; i < bufSize-1; i++) {
@@ -80,7 +79,6 @@ void Communication::clearBuffer(int amount) {
 bool Communication::endCommand() {
 	acknowledge = false;
 	Communication::send(255);
-	
 	for(int i = 0; i < 99999999; i++) {
 		update();
 		if(buffer[0] == 254) {
@@ -104,9 +102,9 @@ void Communication::update() {
 	while(Serial.available()) addParameter(Serial.read());
 }
 
-ISR(USART_RXC_vect)
-{
-	//ReceivedByte;
-	//ReceivedByte = UDR0; // Fetch the received byte value into the variable "ByteReceived"
-	//UDR0 = ReceivedByte; // Echo back the received byte back to the computer
-}
+// ISR(USART_RXC_vect)
+// {
+// 	uint8_t ReceivedByte;
+// 	ReceivedByte = UDR0; // Fetch the received byte value into the variable "ByteReceived"
+// 	UDR0 = ReceivedByte; // Echo back the received byte back to the computer
+// }

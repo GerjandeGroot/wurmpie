@@ -14,13 +14,34 @@ static Player Main::player1 = Player(ILI9341_BLUE);
 static Player Main::player2 = Player(ILI9341_RED);
 static uint8_t Main::beurt = 0;
 
-static Button Main::menuWeapon = Button(220, 0, 100, 20, "Default", ILI9341_BLUE);
+static Button Main::menuWeapon = Button(220, 0, 100, 16, "Default", ILI9341_BLUE);
 
 //default constructor
 Main::Main()
 {
 	sei();
 	Serial.begin(9600);
+	
+	DDRD |= 1 << PIND3;		//set pin 3 as output (brightness)
+	
+	//setup adc
+	ADMUX |= 1 << ADLAR;	//high low position selection
+	ADMUX |= 1 << REFS0;	//reference voltage selection
+	ADCSRA |= 0b111;		//prescaler on 128
+	ADCSRA |= (1<<ADEN);	//enable adc
+	
+	//setup timer 1
+	//update brightness & multiplexing
+	TCCR1B |= 1 << CS11;
+	TIMSK1 |= 1 << TOIE1;
+	
+	//setup timer 2
+	//brightness pwm & micros
+	TCCR2A |= 1 << COM2A1;	//set non inverting 
+	TCCR2A |= 1 << WGM20;	//set mode fast pwm
+	TCCR2A |= 1 << WGM21;	//set mode fast pwm
+	TCCR2B |= 1 << CS22;	//prescaler on 64
+	TIMSK2 |= 1 << TOIE2;	//enable overflow interrupt
 	
 	Communication::begin();
 	
@@ -42,31 +63,34 @@ void Main::update() {
 	Nunchuck nunchuck;
 	draw();
 	while(1){
-		
 		nunchuck.update();
 		if(beurt == 1){
 			player2.draw();
 			if(nunchuck.c || !(player1.fuel > 0)){
 				beurt = 2;
-				} else if(nunchuck.x > 100 && nunchuck.x < 200 && nunchuck.y > 100 && nunchuck.y < 200){
-					player1.moveToDirection(3);
-				} else {
+			} else if(nunchuck.x > 100 && nunchuck.x < 200 && nunchuck.y > 100 && nunchuck.y < 200){
+				player1.moveToDirection(3);
+			} else {
+				bool moved = false;
 				if(nunchuck.x > 150){					//rechts
-					player1.moveToDirection(2);
+					moved = player1.moveToDirection(2);
 				}
 				if(nunchuck.x < 110){					//links
-					player1.moveToDirection(4);
+					moved = player1.moveToDirection(4);
 				}
 				if(nunchuck.y < 110){					//beneden
-					player1.moveToDirection(3);
+					moved = player1.moveToDirection(3);
 				}
 				if(nunchuck.y > 170){					//jetpack
-					player1.moveToDirection(1);
-
-					}else{
-					player1.moveToDirection(5);
+					moved = player1.moveToDirection(1);
+				}else{
+					moved = player1.moveToDirection(5);
+				}
+				if(moved) {
+					player2.draw();					
 				}
 				player1.fuel--;
+				player2.draw();
 			}
 		} else if (beurt == 2) {
 			if(!player1.moveToDirection(3))
@@ -181,14 +205,15 @@ bool Main::sendHandshake() {
 bool Main::waitForHandshake() {
 	Communication::update();
 	if(Communication::buffer[0] == 255 && Communication::buffer[1] == 1) {
-		Communication::clearBuffer(2);
 		Communication::next();
+		Communication::clearBuffer(2);
 		return true;
 	}
 	return false;
 }
 
 void Main::beginSlave() {
+	tft.fillScreen(ILI9341_BLUE);
 	player1 = Player(ILI9341_BLUE);
 	player2 = Player(ILI9341_RED);	
 	
@@ -220,6 +245,7 @@ void Main::beginSlave() {
 	beurt = 5;
 }
 void Main::beginMaster() {
+	tft.fillScreen(ILI9341_BLUE);
 	player1 = Player(ILI9341_BLUE);
 	player2 = Player(ILI9341_RED);
 	
@@ -248,7 +274,7 @@ void Main::beginMaster() {
 void Main::selectDrop() {
 	Nunchuck nunchuck;
 	map.drawMap();
-	player1.moveTo(20,0,false);
+	player1.moveTo(20,1,false);
 	while(true) {
 		nunchuck.update();
 		Serial.println(nunchuck.x);
@@ -298,6 +324,12 @@ void Main::master(){
 		powerup->send();
 		powerup->drop();
 	}
+}
+
+ISR(TIMER1_OVF_vect) {
+	sei();
+	analogWrite(3,ADCH);
+	ADCSRA |= (1<<ADSC);  
 }
 
 
