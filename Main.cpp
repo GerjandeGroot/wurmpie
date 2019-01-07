@@ -127,7 +127,7 @@ void Main::update() {
 				player1.fuel = 10;
 				Communication::send(4);
 				Communication::endCommand();
-				drawTurn("enemy turn");
+				drawTurn(F("enemy turn"));
 			}
 		} else if (beurt == 5) {
 			map.updateMap();
@@ -184,7 +184,7 @@ void Main::parseData() {
 			beurt = 1;
 			Communication::clearBuffer(1);
 			Communication::next();
-			drawTurn("your turn");
+			drawTurn(F("your turn"));
 		}
 		if(Communication::buffer[0] == 13) {
 			player2.selectedWeapon = Communication::buffer[1];
