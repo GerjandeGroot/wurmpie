@@ -137,17 +137,16 @@ bool Player::sendLocation(uint8_t x, uint8_t y) {
 
 
 void Player::fuelBar(){
-	Main::tft.fillRect(2,2, 100, 18, ILI9341_GREEN);
-	Main::tft.drawRect(1, 1, 102, 20, ILI9341_BLACK);	
+	Main::tft.fillRect(0,0, 100, 16, ILI9341_GREEN);	
 }
 
 void Player::updateFuelBar(){
 	if(fuel == 7){
-		Main::tft.fillRect(2,2, fuel*10, 18, ILI9341_ORANGE);
+		Main::tft.fillRect(0,0, fuel*10, 16, ILI9341_ORANGE);
 	} else if(fuel == 3){
-		Main::tft.fillRect(2,2, fuel*10, 18, ILI9341_RED);
+		Main::tft.fillRect(0,0, fuel*10, 16, ILI9341_RED);
 	}
-	Main::tft.fillRect(2 + fuel*10, 2, 10, 18, ILI9341_CYAN);
+	Main::tft.fillRect(0 + fuel*10, 0, 10, 16, ILI9341_BLACK);
 	
 }
 

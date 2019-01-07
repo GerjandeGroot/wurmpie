@@ -185,6 +185,7 @@ void Main::parseData() {
 			Communication::clearBuffer(1);
 			Communication::next();
 			drawTurn("your turn");
+			player1.fuelBar();
 		}
 		if(Communication::buffer[0] == 13) {
 			player2.selectedWeapon = Communication::buffer[1];
@@ -299,6 +300,7 @@ void Main::selectDrop() {
 			tft.println(F("Waiting for enemy"));
 			return;
 		}
+		_delay_ms(50);
 	}
 }
 
