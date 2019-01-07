@@ -127,11 +127,14 @@ void Main::update() {
 				player1.fuel = 10;
 				Communication::send(4);
 				Communication::endCommand();
-				drawTurn("enemy turn");
+				drawTurn(F("enemy turn"));
 			}
 		} else if (beurt == 5) {
 			map.updateMap();
-		}
+		}	
+		
+		map.updateMap();
+		parseData();
 		
 		if(player1.health == 0) {
 			Menu().endPanel("YOU LOSE");
@@ -141,10 +144,6 @@ void Main::update() {
 			Menu().endPanel("YOU WIN");
 			return;
 		}
-		
-		
-		map.updateMap();
-		parseData();
 	}
 }
 
@@ -153,10 +152,7 @@ void Main::parseData() {
 	if(Communication::buffer[0] == 255) {
 		Communication::removeParameter();
 		if(Communication::buffer[0] == 10) {
-			player2.clear();
-			player2.x = Communication::buffer[1];
-			player2.y = Communication::buffer[2];
-			player2.draw();
+			player2.moveTo(Communication::buffer[1], Communication::buffer[2], false);
 			Communication::clearBuffer(3);
 			Communication::next();
 		}
@@ -184,7 +180,7 @@ void Main::parseData() {
 			beurt = 1;
 			Communication::clearBuffer(1);
 			Communication::next();
-			drawTurn("your turn");
+			drawTurn(F("your turn");
 			player1.fuelBar();
 		}
 		if(Communication::buffer[0] == 13) {
@@ -286,7 +282,7 @@ void Main::selectDrop() {
 	player1.moveTo(20,1,false);
 	while(true) {
 		nunchuck.update();
-		if(nunchuck.x > 150){					//rechts
+		if(nunchuck.x > 170){					//rechts
 			player1.moveToDirection(2,false);
 		}
 		if(nunchuck.x < 110){					//links
