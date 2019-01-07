@@ -107,6 +107,9 @@ void Weapon::defaultShot() {
 		moveTo(x - dx, y - dy);
 		this->dy -= 0.025;
 		if(Main::map.getBlock((x+dx)/blocksize, (y+dy)/blocksize)) break;
+		if(x > 320 || x < 0 || y > 240){
+			break;
+		}
 		_delay_ms(10);
 	}
 	Main::map.explosion(this->x/blocksize,this->y/blocksize,2);
@@ -118,6 +121,9 @@ void Weapon::emp() {
 		moveTo(x - dx, y - dy);
 		this->dy -= 0.025;
 		if(Main::map.getBlock((x+dx)/blocksize, (y+dy)/blocksize)) break;
+		if(x > 320 || x < 0 || y > 240){
+			break;
+		}
 		_delay_ms(10);
 	}
 	for(int i = 0; i<20; i++){
@@ -132,6 +138,9 @@ void Weapon::nukeShot() {
 		moveTo(x - dx, y - dy);
 		this->dy -= 0.025;
 		if(Main::map.getBlock(x/blocksize, y/blocksize)) break;
+		if(x > 320 || x < 0 || y > 240){
+			break;
+		}
 		_delay_ms(10);
 	}
 	Main::map.explosion(this->x/blocksize,this->y/blocksize,10);
@@ -143,11 +152,14 @@ void Weapon::grenade() {
 	for(uint8_t i = 0; i < 200; i++) {
 		moveTo(x - dx, y - dy);
 		this->dy -= 0.025;
-		if(Main::map.getBlock((x-dx)/blocksize, y/blocksize)){
+		if(Main::map.getBlock((x-dx)/blocksize, y/blocksize || x > 320 || x < 0)){
 			dx = dx*-0.65;
 		}
 		if(Main::map.getBlock(x/blocksize, (y-dy)/blocksize)){
 			dy = dy*-0.65;
+		}
+		if(y > 240){
+			break;
 		}
 		_delay_ms(10);
 	}
