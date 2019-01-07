@@ -60,7 +60,7 @@ bool Player::moveToDirection(uint8_t direction, bool send) {
 			moveTo(x-1,y-1,send);
 			return true;
 		}
-	} else if (direction == 2) {			//rechts
+	} else if (direction == 2 && x < horizontalSize-2) {			//rechts
 		if(Main::map.isEmpty(x+1,y,tankSize)) {
 			moveTo(x+1,y,send);
 			return true;	
@@ -82,7 +82,7 @@ bool Player::moveToDirection(uint8_t direction, bool send) {
 			moveTo(x-1,y+1,send);
 			return true;
 		}
-	} else if (direction == 4) {			//links
+	} else if (direction == 4 && x > 1) {			//links
 			if(Main::map.isEmpty(x-1,y,tankSize)) {
 				moveTo(x-1,y,send);
 				return true;
@@ -105,9 +105,13 @@ bool Player::moveToDirection(uint8_t direction, bool send) {
 }
 
 void Player::moveTo(int x, int y, bool send) {
+	if(y > verticalSize){
+		health = 0;
+	}
 	if(send) {
 		sendLocation(x,y);
 	}
+	
 	clear();
 	this->x = x;
 	this->y = y;

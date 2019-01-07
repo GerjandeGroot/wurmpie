@@ -131,7 +131,10 @@ void Main::update() {
 			}
 		} else if (beurt == 5) {
 			map.updateMap();
-		}
+		}	
+		
+		map.updateMap();
+		parseData();
 		
 		if(player1.health == 0) {
 			Menu().endPanel("YOU LOSE");
@@ -141,10 +144,6 @@ void Main::update() {
 			Menu().endPanel("YOU WIN");
 			return;
 		}
-		
-		
-		map.updateMap();
-		parseData();
 	}
 }
 
@@ -153,10 +152,7 @@ void Main::parseData() {
 	if(Communication::buffer[0] == 255) {
 		Communication::removeParameter();
 		if(Communication::buffer[0] == 10) {
-			player2.clear();
-			player2.x = Communication::buffer[1];
-			player2.y = Communication::buffer[2];
-			player2.draw();
+			player2.moveTo(Communication::buffer[1], Communication::buffer[2], false);
 			Communication::clearBuffer(3);
 			Communication::next();
 		}
@@ -285,7 +281,7 @@ void Main::selectDrop() {
 	player1.moveTo(20,1,false);
 	while(true) {
 		nunchuck.update();
-		if(nunchuck.x > 150){					//rechts
+		if(nunchuck.x > 170){					//rechts
 			player1.moveToDirection(2,false);
 		}
 		if(nunchuck.x < 110){					//links
@@ -299,6 +295,7 @@ void Main::selectDrop() {
 			tft.println(F("Waiting for enemy"));
 			return;
 		}
+		_delay_ms(50);
 	}
 }
 
