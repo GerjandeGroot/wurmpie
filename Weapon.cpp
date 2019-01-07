@@ -11,8 +11,8 @@
 // default constructor
 Weapon::Weapon(float x, float y, uint8_t type, int8_t dx, int8_t dy)
 {
-	Serial.print("type = ");
-	Serial.println(type);
+	//Serial.print("type = ");
+	//Serial.println(type);
 	this->x = x;
 	this->y = y;
 	this->type = type;
@@ -74,13 +74,13 @@ float Weapon::hitDectectie(uint8_t explosionX,uint8_t explosionY, uint8_t middle
 	uint8_t dy = abs(explosionY - middleY);
 	float distance = sqrt(dx*dx + dy*dy);
 	
-	Serial.println(distance/radius);
+	//Serial.println(distance/radius);
 	
 	if(distance > radius) {
-		Serial.println("not hit");
+		//Serial.println("not hit");
 		return 0;
 	} else {
-		Serial.println("hit");
+		//Serial.println("hit");
 		return 1-distance/radius;
 	}
 	

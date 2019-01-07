@@ -295,8 +295,8 @@ void Main::selectDrop() {
 		}
 		if(nunchuck.z) {
 			tft.fillScreen(ILI9341_BLACK);
-			tft.setCursor(0, 100);
-			tft.setTextSize(4);
+			tft.setCursor(6, 100);
+			tft.setTextSize(3);
 			tft.setTextColor(ILI9341_WHITE);
 			tft.println(F("Waiting for enemy"));
 			return;
@@ -316,8 +316,9 @@ void Main::draw(){
 }
 
 void Main::drawTurn(String tekst){
+	uint8_t beginPixel = (320 - (tekst.length()*24))/2;
 	tft.fillScreen(ILI9341_BLACK);
-	tft.setCursor(25, 100);
+	tft.setCursor(beginPixel, 100);
 	tft.setTextSize(4);
 	tft.setTextColor(ILI9341_WHITE);
 	tft.println(tekst);

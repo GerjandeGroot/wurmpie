@@ -153,7 +153,7 @@ uint8_t Menu::settingsPanel() {
 uint8_t Menu::joinPanel() {
 	Main::tft.fillScreen(ILI9341_BLACK);
 	drawTitle(25, 0xFFFF, "Join game"); //25 voor midden (9 characters)
-	drawLable(20, 100, 0xFFFF, "Searching for master");
+	drawLable(20, 100, 0xFFFF, "Searching for host");
 	
 	Button cancel(75, 200, 170, 30, "Cancel", ILI9341_BLUE);
 	
@@ -215,7 +215,7 @@ uint8_t Menu::mapSelectionPanel(){
 uint8_t Menu::newGameLobbyPanel(){
 	Main::tft.fillScreen(ILI9341_BLACK);
 	drawTitle(40, 0xFFFF, "New Game"); //40 voor midden (8 characters)
-	drawLable(20, 100, 0xFFFF, "Searching for other player");
+	drawLable(20, 100, 0xFFFF, "Searching for opponent");
 
 	Button cancel(75, 200, 170, 30, "Cancel", ILI9341_BLUE);
 
