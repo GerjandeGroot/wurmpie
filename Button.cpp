@@ -12,7 +12,6 @@ static Adafruit_STMPE610 Button::ts = Adafruit_STMPE610(STMPE_CS);
 
 Button::begin() {
 	if (!ts.begin()) {
-		Serial.println("Unable to start touchscreen.");
 	}
 }
 

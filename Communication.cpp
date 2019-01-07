@@ -17,26 +17,21 @@ void Communication::begin() {
 	//Setup serial
 	serial = !EEPROM.read(sendMethodAdres);
 	
-	if(serial) {
-		//Serial.begin(serialSpeed);	
+	if(serial) {	
 	} else {
-		Serial.println("ir");
 		uint8_t frequency = EEPROM.read(freqAdres);
 		IRLib::begin(frequency);
 	}
 } 
 
 bool Communication::handshake() {
-	//Send handshake on serial
-	
-	//handshake on ir
-	Serial.println("sending handshake");
 	return Communication::send(1);
 }
 
 bool Communication::send(uint16_t data) {
 	if(serial) {
-		Serial.write(data);
+		UDR0 = data;
+		while(!(UCSR0A &= 1 << TXC0));
 		return true;
 	} else {
 		return IRLib::sendWait(data);
@@ -99,12 +94,25 @@ void Communication::next() {
 }
 
 void Communication::update() {
-	while(Serial.available()) addParameter(Serial.read());
+	
 }
 
-// ISR(USART_RXC_vect)
-// {
-// 	uint8_t ReceivedByte;
-// 	ReceivedByte = UDR0; // Fetch the received byte value into the variable "ByteReceived"
-// 	UDR0 = ReceivedByte; // Echo back the received byte back to the computer
-// }
+void Communication::USART_Init()
+{
+	cli();
+	//setting baud rate
+	UBRR0H = (uint8_t) (serialSpeed >> 8);
+	UBRR0L = (uint8_t) serialSpeed;
+	
+	//Enable receiver and transmitter
+	UCSR0B = (1<<RXEN0)|(1<<TXEN0)|(1<<RXCIE0);
+	
+	//1 stop bit 8 data bit
+	UCSR0C = (3<<UCSZ00);
+	sei();
+}
+
+ISR(USART_RX_vect)
+{
+	Communication::addParameter(UDR0);
+}
