@@ -23,14 +23,8 @@ ISR(INT0_vect){
 		uint32_t endTime = IRLib::custom_micros();
 		uint32_t time = endTime - IRLib::beginTime;
 		sei();
-		if(time>5000) {
-			Serial.println(IRLib::beginTime);
-			Serial.println(endTime);
-			Serial.println("eeeeeeeeeeeeerrrrrrrrrrrrrrrroooooooooooooooooooooorrrrrrr");
-		}
-		
+				
 		if(time > highBit - negMargin && time < highBit + posMargin) { //1 voor 400 milli
-    
 			IRLib::receiving |= 1 << IRLib::bit;
 			IRLib::bit++;
 			IRLib::count++;
@@ -46,23 +40,16 @@ ISR(INT0_vect){
 			IRLib::status = error;
 		} else if (time > stopBit - negMargin && time < stopBit + posMargin) { //stop bit 800
 			if(IRLib::bit != 9) {
-				Serial.println("length");
 				IRLib::sendAcknowledge(false);
 				return;
 			}
 			if(IRLib::count & 1) {
-				Serial.println("parity");
 				IRLib::sendAcknowledge(false);
 				return;
 			}
 			if(Communication::addParameter(IRLib::receiving)) {
 				IRLib::sendAcknowledge(true);
 			}
-		} else {
-			Serial.print(IRLib::bit);
-			Serial.print(" error ");
-			Serial.println(time);
-
 		}
 	}
 }
@@ -138,8 +125,6 @@ static bool IRLib::sendWait(uint16_t data) {
 		status = waitingForAcknowledge;
 		IRLib::waitAcknowledge();
 		if(IRLib::status == sendSucces) return true;
-		Serial.print("sending again ");
-		Serial.println(IRLib::status);
 	}
 	return false;
 }
@@ -159,5 +144,4 @@ void IRLib::waitAcknowledge() {
 		}
 		_delay_ms(1);
 	}
-	Serial.println("timeout");
 }

@@ -13,7 +13,7 @@
 #include "IRLib.h"
 #include "Menu.h"
 
-#define serialSpeed 9600
+#define serialSpeed 103
 #define bufSize 4
 
 class Communication
@@ -29,6 +29,7 @@ private:
 
 //functions
 public:
+	static void USART_Init();
 	static void clearBuffer(int amount);
 	static bool waitAcknowledge(uint16_t timeout);
 	static void begin();

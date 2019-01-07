@@ -20,8 +20,7 @@ static Button Main::menuWeapon = Button(220, 0, 100, 16, "Default", ILI9341_BLUE
 Main::Main()
 {
 	sei();
-	Serial.begin(9600);
-	
+	Communication::USART_Init();
 	DDRD |= 1 << PIND3;		//set pin 3 as output (brightness)
 	
 	//setup adc
@@ -277,7 +276,6 @@ void Main::selectDrop() {
 	player1.moveTo(20,1,false);
 	while(true) {
 		nunchuck.update();
-		Serial.println(nunchuck.x);
 		if(nunchuck.x > 150){					//rechts
 			player1.moveToDirection(2,false);
 		}
@@ -301,7 +299,6 @@ void Main::draw(){
 	player2.draw();
 	menuWeapon.draw();
 	for(int i = 0; i < Powerup::powerupAmount; i++){
-		Serial.println(Powerup::powerupAmount);
 		Powerup::powerups[i]->draw();
 	}
 }

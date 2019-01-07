@@ -11,8 +11,6 @@
 // default constructor
 Weapon::Weapon(float x, float y, uint8_t type, int8_t dx, int8_t dy)
 {
-	Serial.print("type = ");
-	Serial.println(type);
 	this->x = x;
 	this->y = y;
 	this->type = type;
@@ -66,7 +64,6 @@ void Weapon::damageToPlayers(double damageMultiplier, uint8_t range) {
 	} else {
 		Main::player2.health = health;
 	}
-	//Serial.println(damage);
 }
 
 float Weapon::hitDectectie(uint8_t explosionX,uint8_t explosionY, uint8_t middleX,uint8_t middleY, uint8_t radius){
@@ -74,13 +71,9 @@ float Weapon::hitDectectie(uint8_t explosionX,uint8_t explosionY, uint8_t middle
 	uint8_t dy = abs(explosionY - middleY);
 	float distance = sqrt(dx*dx + dy*dy);
 	
-	Serial.println(distance/radius);
-	
 	if(distance > radius) {
-		Serial.println("not hit");
 		return 0;
 	} else {
-		Serial.println("hit");
 		return 1-distance/radius;
 	}
 	
