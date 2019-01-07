@@ -25,28 +25,12 @@ Player::Player(uint16_t color)
 // default destructor
 Player::~Player()
 {
-} //~Player
-
-
-//void fuelBar(){
-//    
-// tft.fillRect(2,2, 98, 18, GREEN);
-//    for(int i = 96; i >= 0; i--){
-//      if(i == 65){
-//        tft.fillRect(2,2, i, 18, ORANGE);
-//      } else if(i == 34){
-//        tft.fillRect(2,2, i, 18, RED);
-//      } else{
-//      tft.fillRect(2 + i, 2, 2, 18, CYAN);
-//      }
-//    _delay_ms(10);
-//   }
-//}
+} //~Player*
 void Player::draw() {
-	Main::tft.fillRoundRect(this->x*blocksize, this->y*blocksize+blocksize, blocksize*2,blocksize, blocksize/4,this->color);
-	Main::tft.fillCircle(this->x*blocksize+blocksize, this->y*blocksize+blocksize, blocksize/2, this->color);
- 	Main::tft.drawLine(this->x*blocksize+blocksize, this->y*blocksize+blocksize, this->x*blocksize+blocksize-aimDx, this->y*blocksize+blocksize-aimDy, this->color);
-	Main::tft.setCursor(x*blocksize, y*blocksize-10);
+	Main::tft.fillRoundRect(this->x*blocksize, this->y*blocksize+blocksize+verticalOffset, blocksize*2,blocksize, blocksize/4,this->color);
+	Main::tft.fillCircle(this->x*blocksize+blocksize, this->y*blocksize+blocksize+verticalOffset, blocksize/2, this->color);
+ 	Main::tft.drawLine(this->x*blocksize+blocksize, this->y*blocksize+blocksize+verticalOffset, this->x*blocksize+blocksize-aimDx, this->y*blocksize+blocksize+verticalOffset-aimDy, this->color);
+	Main::tft.setCursor(x*blocksize, y*blocksize+verticalOffset-8);
 	Main::tft.setTextColor(ILI9341_RED);
 	Main::tft.setTextSize(1);
 	Main::tft.println(health);
@@ -151,6 +135,7 @@ bool Player::sendLocation(uint8_t x, uint8_t y) {
 
 
 
+
 void Player::fuelBar(){
 	Main::tft.fillRect(2,2, 100, 18, ILI9341_GREEN);
 	Main::tft.drawRect(1, 1, 102, 20, ILI9341_BLACK);	
@@ -165,4 +150,5 @@ void Player::updateFuelBar(){
 	Main::tft.fillRect(2 + fuel*10, 2, 10, 18, ILI9341_CYAN);
 	
 }
+
 

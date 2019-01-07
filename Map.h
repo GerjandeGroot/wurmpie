@@ -14,8 +14,9 @@
 #include "EEPROM.h"
 
 #define blocksize 8
-#define verticalSize 30 //60
+#define verticalSize 28 //60
 #define horizontalSize 40 //80
+#define verticalOffset 16
 #define verticalDifference 10
 #define horizontalDifference 10
 
@@ -43,6 +44,7 @@ public:
 	uint8_t getBlock(uint8_t x,uint8_t y);
 	void drawBlock(uint16_t x,uint16_t y, uint8_t type, uint8_t size);
 	void setDrawBlock(uint8_t x, uint8_t y, uint8_t type);
+	void drawRadius(uint8_t x, uint8_t y, uint8_t radius, uint8_t type);
 	bool updateMap();
 	void setRadius(uint8_t x, uint8_t y, uint8_t radius, uint8_t type, bool draw = true);
 	void explosion(uint8_t x, uint8_t y, uint8_t radius);
