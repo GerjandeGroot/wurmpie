@@ -66,6 +66,7 @@ void Main::update() {
 					}else{
 					player1.moveToDirection(5);
 				}
+				Powerup::collision(&player1);
 				player1.fuel--;
 			}
 		} else if (beurt == 2) {

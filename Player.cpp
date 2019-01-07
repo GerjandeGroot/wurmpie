@@ -18,8 +18,9 @@ Player::Player(uint16_t color)
 	aimDy = 10;
 	fuel = 10;
 	health = 100;
-	weapon[0] = 1;
+	weapon[9] = 1;
 	selectedWeapon = 0;
+	stunned = false;
 } //Player
 
 // default destructor
@@ -151,5 +152,20 @@ bool Player::sendLocation(uint8_t x, uint8_t y) {
 	Communication::endCommand();
 }
 
+void Player::addWeapon(uint8_t x){
+	for(int i = 0; i<9; i++){
+		if(weapon[i] == 0){
+			Player::weapon[i] = x;
+			return;
+		}	
+	}	
+}
 
+void Player::removeWeapon(uint8_t x){
+	for (int i = x; i < 8; i++)	{
+		weapon[i] = weapon[i+1];
+	}
+	weapon[9] = 0;
+	selectedWeapon = 0;
+}
 //tan(o/a) = o/a
