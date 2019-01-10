@@ -33,7 +33,6 @@ public:
 	uint8_t mainPanel();
 	uint8_t settingsPanel();
 	uint8_t joinPanel();
-	uint8_t newGamePanel();
 	uint8_t mapSelectionPanel();
 	uint8_t newGameLobbyPanel();
 	void drawTitle(uint16_t x, uint16_t color, String naam);

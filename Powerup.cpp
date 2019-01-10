@@ -52,10 +52,6 @@ bool Powerup::send(){
 	return Communication::endCommand();
 }
 
-/*bool Powerup::updateAll()*/
-	
-}
-
 void Powerup::collision(Player *player){
 	uint8_t leftCoor = abs(player->x /* - blocksize*/);
 	uint8_t rightCoor = abs(player->x /* + blocksize*/);

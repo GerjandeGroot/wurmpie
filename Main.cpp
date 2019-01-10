@@ -19,7 +19,7 @@ static Button Main::menuWeapon = Button(220, 0, 100, 16, "Default", ILI9341_BLUE
 //default constructor
 Main::Main()
 {
-	sei();
+	sei();					//enable interrupts
 	Communication::USART_Init();
 	DDRD |= 1 << PIND3;		//set pin 3 as output (brightness)
 	
@@ -31,8 +31,8 @@ Main::Main()
 	
 	//setup timer 1
 	//update brightness & multiplexing
-	TCCR1B |= 1 << CS11;
-	TIMSK1 |= 1 << TOIE1;
+	TCCR1B |= 1 << CS11;	//prescaler on 8
+	TIMSK1 |= 1 << TOIE1;	//enable overflow interrupt
 	
 	//setup timer 2
 	//brightness pwm & micros
@@ -57,7 +57,7 @@ Main::Main()
 Main::~Main()
 {
 } //~Main
-
+//function of the game (is explained in technisch ontwerp)
 void Main::update() {
 	Nunchuck nunchuck;
 	draw();
@@ -148,9 +148,8 @@ void Main::update() {
 		}
 	}
 }
-
+//function which reads incoming commands and linked parameters
 void Main::parseData() {
-	Communication::update();
 	if(Communication::buffer[0] == 255) {
 		Communication::removeParameter();
 		if(Communication::buffer[0] == 10) {
@@ -194,25 +193,19 @@ void Main::parseData() {
 		}
 	}
 }
-
+//starts menu
 void Main::menu() {
 	Menu menu = Menu();
 	menu.setPanel(1);
 }
 
-int Main::freeRam () {
-	extern int __heap_start, *__brkval;
-	int v;
-	return (int) &v - (__brkval == 0 ? (int) &__heap_start : (int) __brkval);
-}
-
+//function to start the game in slave mode
 void Main::beginSlave() {
 	tft.fillScreen(ILI9341_BLUE);
 	player1 = Player(ILI9341_BLUE);
 	player2 = Player(ILI9341_RED);	
 	
 	while (1) {
-		Communication::update();
 		if(Communication::buffer[0] == 255 && Communication::buffer[1] == 3) {
 			map.createRandomMap(Communication::buffer[2]);
 			Communication::clearBuffer(3);
@@ -224,7 +217,6 @@ void Main::beginSlave() {
 	selectDrop();
 	
 	while (1) {
-		Communication::update();
 		if(Communication::buffer[0] == 255 && Communication::buffer[1] == 10) {
 			player2.x = Communication::buffer[2];
 			player2.y = Communication::buffer[3];
@@ -238,6 +230,7 @@ void Main::beginSlave() {
 	
 	beurt = 5;
 }
+//function to start the game in master mode
 void Main::beginMaster() {
 	player1 = Player(ILI9341_BLUE);
 	player2 = Player(ILI9341_RED);
@@ -251,7 +244,6 @@ void Main::beginMaster() {
 	player1.sendLocation(player1.x,player1.y);
 	
 	while (1) {
-		Communication::update();
 		if(Communication::buffer[0] == 255 && Communication::buffer[1] == 10) {
 			player2.x = Communication::buffer[2];
 			player2.y = Communication::buffer[3];
@@ -263,7 +255,7 @@ void Main::beginMaster() {
 	
 	beurt = 1;
 }
-
+//function to select a spot on the map where the player wants to drop
 void Main::selectDrop() {
 	tft.fillScreen(ILI9341_BLACK);
 	
@@ -274,7 +266,7 @@ void Main::selectDrop() {
 	tft.println(F("Select your drop location"));
 	
 	
-	Nunchuck nunchuck;
+	Nunchuck nunchuck;							//read nunchuck data
 	player1.moveTo(20,1,false);
 	while(true) {
 		nunchuck.update();
@@ -295,7 +287,7 @@ void Main::selectDrop() {
 		_delay_ms(50);
 	}
 }
-
+//function to draw all objects which stay on the map
 void Main::draw(){
 	map.drawMap();
 	player1.draw();
@@ -305,7 +297,7 @@ void Main::draw(){
 	}
 	
 }
-
+//draw a screen which tells who's turn it is
 void Main::drawTurn(String tekst){
 	uint8_t beginPixel = (320 - (tekst.length()*24))/2;
 	tft.fillScreen(ILI9341_BLACK);
@@ -316,7 +308,7 @@ void Main::drawTurn(String tekst){
 	_delay_ms(1000);
 	draw();
 }
-
+//function to drop a powerup on a random position
 void Main::master(){
 	uint8_t chance = random(100);
 	if(chance < 90){
@@ -326,7 +318,7 @@ void Main::master(){
 		powerup->drop();
 	}
 }
-
+//interrupt for changing brightness of screen with potentio meter
 ISR(TIMER1_OVF_vect) {
 	sei();
 	analogWrite(3,ADCH);

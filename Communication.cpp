@@ -35,7 +35,7 @@ bool Communication::sendHandshake() {
 
 //waits for a handshake
 bool Communication::waitForHandshake() {
-	Communication::update();
+	//Communication::update();
 	if(Communication::buffer[0] == 255 && Communication::buffer[1] == 1) {
 		Communication::next();
 		Communication::clearBuffer(2);
@@ -84,10 +84,10 @@ void Communication::clearBuffer(int amount) {
 
 //send a end command byte (255) and wait for a acknowledgment byte (254)
 bool Communication::endCommand() {
-	acknowledge = false;
+//	acknowledge = false;
 	Communication::send(255);
 	for(int i = 0; i < 99999999; i++) {
-		update();
+//		update();
 		if(buffer[0] == 254) {
 			removeParameter();
 			return true;

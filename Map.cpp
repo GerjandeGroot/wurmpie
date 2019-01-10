@@ -19,7 +19,7 @@ Map::Map()
 Map::~Map()
 {
 } //~Map
-
+//function to create a random map in the game
 void Map::createRandomMap(uint16_t seed) {
 	this->seed = seed;
 	clearMap();
@@ -48,7 +48,7 @@ void Map::createRandomMap(uint16_t seed) {
 		}
 	}
 }
-
+//function to draw the map
 void Map::drawMap() {
 	for(int y = verticalSize-1; y >= 0; y--){
 		for(int x = 0; x < horizontalSize; x++) {
@@ -56,7 +56,7 @@ void Map::drawMap() {
 		}
 	}
 }
-
+//function the clear the map
 void Map::clearMap() {
 	for(int x = 0; x < horizontalSize; x++){
 		for(int y = 0; y < verticalSize; y ++) {
@@ -64,7 +64,7 @@ void Map::clearMap() {
 		}
 	}
 }
-
+//function to set a block in the map
 void Map::setBlock(uint8_t x,uint8_t y,uint8_t type) {
 	if(x >= horizontalSize || x < 0 || y >= verticalSize || y < 0) return;
 	uint8_t gridX =  x / 2;
@@ -74,7 +74,7 @@ void Map::setBlock(uint8_t x,uint8_t y,uint8_t type) {
 	grid[gridX][gridY] &= ~(0b11 << (bitX+bitY));
 	grid[gridX][gridY] |= type << (bitX+bitY);
 }
-
+//function to get a block in the map
 uint8_t Map::getBlock(uint8_t x,uint8_t y) {
 	if(x >= horizontalSize || y >= verticalSize) return 0;
 	uint8_t gridX =  x / 2;
@@ -83,7 +83,7 @@ uint8_t Map::getBlock(uint8_t x,uint8_t y) {
 	uint8_t bitY = y % 2 * 2;
 	return (grid[gridX][gridY] & (0b11 << (bitX+bitY))) >> (bitX+bitY);
 }
-
+//function to draw all bloks in the map
 void Map::drawBlock(uint16_t x,uint16_t y, uint8_t type, uint8_t size) {
 	y += verticalOffset;
 	if(x > 320 || x < 0 || y > 240 || y < verticalOffset) return;
@@ -137,12 +137,12 @@ void Map::drawBlock(uint16_t x,uint16_t y, uint8_t type, uint8_t size) {
 		Main::tft.fillRect(x,y,size,size,ILI9341_CYAN);
 	}
 }
-
+//function to set the drawn block 
 void Map::setDrawBlock(uint8_t x, uint8_t y, uint8_t type) {
 	setBlock(x,y,type);
 	drawBlock(x*blocksize,y*blocksize,getBlock(x,y),blocksize);
 }
-
+//updating the map with specific blocks
 bool Map::updateMap() {
 	bool updated = false;
 	for(int x = 0; x < horizontalSize; x++){
@@ -160,7 +160,7 @@ bool Map::updateMap() {
 	}
 	return updated;
 }
-
+//function to create a circle for explosion
 void Map::setRadius(uint8_t x, uint8_t y, uint8_t radius, uint8_t type, bool draw) {
 	for(int dx = -radius; dx < radius; dx++) {
 		for(int dy = -radius; dy < radius; dy++) {
@@ -174,7 +174,7 @@ void Map::setRadius(uint8_t x, uint8_t y, uint8_t radius, uint8_t type, bool dra
 		}
 	}
 }
-
+//function to draw the radius
 void Map::drawRadius(uint8_t x, uint8_t y, uint8_t radius, uint8_t type) {
 	for(int dx = -radius; dx < radius; dx++) {
 		for(int dy = -radius; dy < radius; dy++) {
@@ -183,7 +183,7 @@ void Map::drawRadius(uint8_t x, uint8_t y, uint8_t radius, uint8_t type) {
 		}
 	}
 }
-
+//function to create an explosion
 void Map::explosion(uint8_t x, uint8_t y, uint8_t radius) {
 	for(int i = 0; i < 10; i++) {
 		for(int r = 0; r < radius; r++) {
@@ -198,7 +198,7 @@ void Map::explosion(uint8_t x, uint8_t y, uint8_t radius) {
 	}
 	setRadius(x,y,radius,0);
 }
-
+//checking if block disappeared
 bool Map::isEmpty(uint8_t x, uint8_t y, uint8_t size) {
 	for(int dx = 0; dx < size; dx++) {
 		for(int dy = 0; dy < size; dy++) {
@@ -207,7 +207,7 @@ bool Map::isEmpty(uint8_t x, uint8_t y, uint8_t size) {
 	}
 	return true;
 }
-
+//function to draw a part of a block
 void Map::drawPart(int8_t x, int8_t y, uint8_t size) {
 	for(int dx = 0; dx < size; dx++) {
 		for(int dy = 0; dy < size; dy++) {
@@ -216,7 +216,7 @@ void Map::drawPart(int8_t x, int8_t y, uint8_t size) {
 		}
 	}
 }
-
+//function to draw a small preview of a map in the map menu
 void Map::drawMapSmall(uint8_t x, uint8_t y, uint8_t size) {
 	for(int dy = verticalSize-1; dy >= 0; dy--){
 		for(int dx = 0; dx < horizontalSize; dx++) {

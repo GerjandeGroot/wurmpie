@@ -36,7 +36,6 @@ class Weapon
 	void fireShot(uint8_t type);
 	void defaultShot();
 	void grenade();
-	void emp();
 	void tripleShot();
 	void laser();
 	void draw();

@@ -25,29 +25,27 @@ Weapon::Weapon(float x, float y, uint8_t type, int8_t dx, int8_t dy)
 Weapon::~Weapon()
 {
 } //~Weapon
+//function for firing different types of weapons
 void Weapon::fireShot(uint8_t type){
 	switch(type){
 		case 1:
-		defaultShot();
-		break;
+			defaultShot();
+			break;
 		case 2:
-		grenade();
-		break;
+			grenade();
+			break;
 		case 3:
-		nukeShot();
-		break;
+			nukeShot();
+			break;
+		case 4:
+			laser();
+			break;
 		case 5:
-		emp();
-		break;
-		case 6:
-		laser();
-		break;
-		case 7:
-		tripleShot();
-		break;		
+			tripleShot();
+			break;		
 	}
 }
-
+//function for damage calculates damage with pythagoras 
 void Weapon::damageToPlayers(double damageMultiplier, uint8_t range) {
 	float damage = hitDectectie(x/blocksize, (y)/blocksize, Main::player1.x+1, Main::player1.y+1, range);
 	int8_t health = Main::player1.health - damage*damageMultiplier;
@@ -65,12 +63,7 @@ void Weapon::damageToPlayers(double damageMultiplier, uint8_t range) {
 		Main::player2.health = health;
 	}
 }
-
-/*void Weapon::stunnedPlayers(){
-	
-}*/
-
-
+//function for hit detection calculates damage with pythagoras 
 float Weapon::hitDectectie(uint8_t explosionX,uint8_t explosionY, uint8_t middleX,uint8_t middleY, uint8_t radius){
 	uint8_t dx = abs(explosionX - middleX);
 	uint8_t dy = abs(explosionY - middleY);
@@ -82,25 +75,8 @@ float Weapon::hitDectectie(uint8_t explosionX,uint8_t explosionY, uint8_t middle
 	} else {
 		return 1-distance/radius;
 	}
-	
-// 	int dmg = radius;
-// 	for(int i = 0; i <= radius +1 ; i++){
-// 		if(explosionX != middleX){
-// 			explosionX++;
-// 			} if (explosionY != middleY){
-// 			explosionY++;
-// 		}
-// 		dmg--;
-// 		if(explosionX == middleX && explosionY == middleY){
-// 			dmg * 0,5;
-// 			i = radius;
-// 			return dmg;
-// 		}
-// 	}
-// 	return 0;
-
 }
-
+//function for standard weapon shoots one small projectile
 void Weapon::defaultShot() {
 	for(uint8_t i = 0; i < 200; i++) {
 		moveTo(x - dx, y - dy);
@@ -114,24 +90,7 @@ void Weapon::defaultShot() {
 	Main::map.explosion(this->x/blocksize,this->y/blocksize,2);
 	damageToPlayers(25,2);
 }
-
-void Weapon::emp() {
-	for(uint8_t i = 0; i < 200; i++) {
-		moveTo(x - dx, y - dy);
-		this->dy -= 0.025;
-		if(Main::map.getBlock((x+dx)/blocksize, (y+dy)/blocksize)) break;
-		if(x > 320 || x < 0 || y > 240){
-			break;
-		}
-		_delay_ms(10);
-	}
-	for(int i = 0; i<20; i++){
-		Main::map.drawRadius(this->x/blocksize,this->y/blocksize,4,11);
-		
-	}
-	Main::map.setRadius(this->x/blocksize,this->y/blocksize,4,11);
-}
-
+//function for nuke shoots one big mother of all bombs
 void Weapon::nukeShot() {
 	for(uint8_t i = 0; i < 200; i++) {
 		moveTo(x - dx, y - dy);
@@ -145,8 +104,7 @@ void Weapon::nukeShot() {
 	Main::map.explosion(this->x/blocksize,this->y/blocksize,10);
 	damageToPlayers(200,10);
 }
-
-
+//function for grenade shoots a bouncy ball which explodes
 void Weapon::grenade() {
 	for(uint8_t i = 0; i < 200; i++) {
 		moveTo(x - dx, y - dy);
@@ -165,13 +123,13 @@ void Weapon::grenade() {
 	Main::map.explosion(this->x/blocksize,this->y/blocksize,4);
 	damageToPlayers(150,4);
 }
-
+//function for triple shot shoots three standard projectiles in rapid succesion
 void Weapon::tripleShot() {
 	for(uint8_t count = 0; count < 3; count++){
 		Weapon(x, y, 1, dx*10, dy*10);
 	}
 }
-
+//function for laser shoots one hell of a large beam of destruction
 void Weapon::laser(){
 	while(1){
 		damageToPlayers(2,2);
@@ -184,7 +142,7 @@ void Weapon::laser(){
 	_delay_ms(500);
 	Main::draw();
 }
-
+//function for updating projectile
 void Weapon::clear() {
 	if(y < blocksize/2) {
 		Main::tft.setCursor(x,verticalOffset+1);
@@ -200,7 +158,7 @@ void Weapon::clear() {
 		Main::tft.fillCircle(this->x,this->y+verticalOffset,blocksize/2,ILI9341_CYAN);
 	}
 }
-
+//function for drawing projectile
 void Weapon::draw() {
 	if(y < blocksize/2) {
 		Main::tft.setCursor(x,verticalOffset+1);
@@ -216,14 +174,14 @@ void Weapon::draw() {
 		Main::tft.fillCircle(this->x,this->y+verticalOffset,blocksize/2,ILI9341_BLACK);
 	}
 }
-
+//coordination of the destination of the projectile
 void Weapon::moveTo(float x, float y) {
 	clear();
 	this->x = x;
 	this->y = y;
 	draw();
 }
-
+//function for getting the name of the weapon in the weapon selection panel
 String Weapon::getName(uint8_t type){
 	String name;
 	switch(type){
@@ -236,17 +194,8 @@ String Weapon::getName(uint8_t type){
 		case 3:
 		return F("Nuke");
 		case 4:
-		return F("Strike");
-		case 5:
-		return F("EMP");
-		case 6:
 		return F("Laser");
-		case 7:
+		case 5:
 		return F("Triple");
-		case 8:
-		return F("number8");
-		case 9:
-		return F("number9");
-		
 	}
 }

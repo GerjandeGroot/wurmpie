@@ -17,7 +17,7 @@ Menu::Menu()
 Menu::~Menu()
 {
 } //~Menu
-
+//function for switching between menu panels
 void Menu::setPanel(uint8_t panel) {
 	while(panel > 0) {
 		switch(panel) {
@@ -31,32 +31,29 @@ void Menu::setPanel(uint8_t panel) {
 				panel = joinPanel();
 				break;
 			case 4:
-				panel = newGamePanel();
-				break;
-			case 5:
 				panel = mapSelectionPanel();
 				break;
-			case 6:
+			case 5:
 				panel = newGameLobbyPanel();
 				break;
 		}
 	}
 }
-
+//function for drawing a standard title
 void Menu::drawTitle(uint16_t x, uint16_t color, String naam){
 	Main::tft.setCursor(x, 10);
 	Main::tft.setTextColor(color);
 	Main::tft.setTextSize(5);
 	Main::tft.println(naam);
 }
-
+//function for drawing a standard lable
 void Menu::drawLable(uint16_t x, uint16_t y,uint16_t color, String naam){
 	Main::tft.setCursor(x, y);
 	Main::tft.setTextColor(color);
 	Main::tft.setTextSize(2);
 	Main::tft.println(naam);
 }
-
+//function for main menu panel
 uint8_t Menu::mainPanel() {
 	Main::tft.fillScreen(ILI9341_BLACK);
 	drawTitle(40, 0xFFFF, "Wurmpies");
@@ -68,7 +65,7 @@ uint8_t Menu::mainPanel() {
 	while(1){
 		Button::update();
 		if(new_game.clicked()){
-			return 5;
+			return 4;
 		}
 		if(join.clicked()){
 			return 3;
@@ -78,7 +75,7 @@ uint8_t Menu::mainPanel() {
 		}
 	}
 }
-
+//function for settings panel
 uint8_t Menu::settingsPanel() {
 	Main::tft.fillScreen(ILI9341_BLACK);
 	drawTitle(40, 0xFFFF, "Settings");
@@ -151,7 +148,7 @@ uint8_t Menu::settingsPanel() {
 		}
 	}
 }
-
+//function for join game panel
 uint8_t Menu::joinPanel() {
 	Main::tft.fillScreen(ILI9341_BLACK);
 	drawTitle(25, 0xFFFF, "Join game"); //25 voor midden (9 characters)
@@ -170,29 +167,7 @@ uint8_t Menu::joinPanel() {
 		}
 	}
 }
-
-uint8_t Menu::newGamePanel() {
-	Main::tft.fillScreen(ILI9341_BLACK);
-	drawTitle(40, 0xFFFF, "New game"); //40 voor midden (8 characters)
-	
-	Button random_map(75, 60, 170, 30, "Random map", ILI9341_BLUE);
-	Button existing_map(75, 100, 170, 30, "Existing map", ILI9341_BLUE);
-	Button back(260, 210, 60, 30, "Back", ILI9341_BLUE);
-	
-	while(1){
-		Button::update();
-		if(random_map.clicked()){
-			return 6;
-		}
-		if(existing_map.clicked()){
-			return 5;
-		}
-		if(back.clicked()){
-			return 1;
-		}
-	}
-}
-
+//function for map selection panel
 uint8_t Menu::mapSelectionPanel(){
 	Main::tft.fillScreen(ILI9341_BLACK);
 	drawTitle(10, 0xFFFF, "Select map");	//10 voor midden (10 characters)
@@ -227,11 +202,12 @@ uint8_t Menu::mapSelectionPanel(){
 			return 1;
 		}
 		if(next.clicked()){
-			return 6;
+			return 5
+			;
 		}
 	}
 }
-
+//function for new game waiting panel
 uint8_t Menu::newGameLobbyPanel(){
 	Main::tft.fillScreen(ILI9341_BLACK);
 	drawTitle(40, 0xFFFF, "New Game"); //40 voor midden (8 characters)
@@ -250,7 +226,7 @@ uint8_t Menu::newGameLobbyPanel(){
 		}
 	}
 }
-
+//function for end panel message will contain your turn or enemy turn
 uint8_t Menu::endPanel(String msg) {
 	Main::tft.fillScreen(ILI9341_BLACK);
 	drawTitle(40, 0xFFFF, msg); //40 voor midden (8 characters)
@@ -264,13 +240,13 @@ uint8_t Menu::endPanel(String msg) {
 		}
 	}
 }
-
+//function for weapon selection panel, this menu is in game
 uint8_t Menu::weaponSelectionPanel(Player *player){
 	Main::tft.fillScreen(ILI9341_BLACK);
 	drawTitle(60, 0xFFFF, F("Weapons"));
-	Button* buttons[9];
+	Button* buttons[5];
 	uint8_t aantalButtons = 0;
-	for(int i = 0; i < 9; i++){
+	for(int i = 0; i < 5; i++){
 		uint16_t x,y;
 		
 		switch(i){
@@ -297,18 +273,6 @@ uint8_t Menu::weaponSelectionPanel(Player *player){
 			case 5:
 			x = 215;
 			y = 130;
-			break;
-			case 6:
-			x = 5;
-			y = 190;
-			break;
-			case 7:
-			x = 110;
-			y = 190;
-			break;
-			case 8:
-			x = 215;
-			y = 190;
 			break;
 		}
 		uint8_t weaponName = player->weapon[i];
