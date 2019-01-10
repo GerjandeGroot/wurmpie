@@ -26,16 +26,16 @@ Powerup::~Powerup()
 } //~Powerup
 
 void Powerup::draw(){
-	Main::tft.fillRect(xpos, ypos, blocksize, blocksize, ILI9341_PINK);
+	Main::tft.fillRect(xpos, ypos+verticalOffset, blocksize, blocksize, ILI9341_PINK);
 	
 }
 
 void Powerup::clear(){
-	Main::tft.fillRect(xpos, ypos, blocksize, blocksize, Main::map.backgroundColor);
+	Main::tft.fillRect(xpos, ypos+verticalOffset, blocksize, blocksize, Main::map.backgroundColor);
 }
 
 void Powerup::drop(){
-	while(Main::map.isEmpty((xpos/blocksize), (ypos+blocksize)/blocksize, 1)){
+	while(Main::map.isEmpty((xpos/blocksize), (ypos)/blocksize+1, 1)){
 		moveTo(ypos+1);
 		_delay_ms(10);
 	}
@@ -50,6 +50,7 @@ bool Powerup::send(){
 	Communication::send(xpos);
 	Communication::send(14);
 	return Communication::endCommand();
+
 	
 }
 
@@ -65,3 +66,7 @@ void Powerup::collision(Player *player){
 		}
 	}
 }
+
+
+/*bool Powerup::updateAll()*/
+

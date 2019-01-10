@@ -49,6 +49,9 @@ public:
 	void reset();
 	void addWeapon(uint8_t x);
 	void removeWeapon(uint8_t x);
+	void fuelBar();
+	void updateFuelBar();
+
 protected:
 private:
 }; //Player

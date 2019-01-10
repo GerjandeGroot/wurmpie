@@ -14,8 +14,9 @@
 #include "EEPROM.h"
 
 #define blocksize 8
-#define verticalSize 30 //60
+#define verticalSize 28 //60
 #define horizontalSize 40 //80
+#define verticalOffset 16
 #define verticalDifference 10
 #define horizontalDifference 10
 

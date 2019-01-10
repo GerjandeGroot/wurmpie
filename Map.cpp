@@ -43,7 +43,7 @@ void Map::createRandomMap(uint16_t seed) {
 		int i = 0;
 		int iHoogte = random(10,20);
 		for(int y = hoogte; y < verticalSize; y++) {
-			if(i++ < verticalSize) setBlock(x,y,1);
+			if(i++ < 4) setBlock(x,y,1);
 			else setBlock(x,y,2);
 		}
 	}
@@ -76,7 +76,7 @@ void Map::setBlock(uint8_t x,uint8_t y,uint8_t type) {
 }
 
 uint8_t Map::getBlock(uint8_t x,uint8_t y) {
-	if(x >= horizontalSize || x < 0 || y >= verticalSize || y < 0) return 255;
+	if(x >= horizontalSize || y >= verticalSize) return 0;
 	uint8_t gridX =  x / 2;
 	uint8_t bitX = x % 2 * 4;
 	uint8_t gridY =  y / 2;
@@ -85,7 +85,8 @@ uint8_t Map::getBlock(uint8_t x,uint8_t y) {
 }
 
 void Map::drawBlock(uint16_t x,uint16_t y, uint8_t type, uint8_t size) {
-	if(x > 320 || x < 0 || y > 240 || y < 0) return;
+	y += verticalOffset;
+	if(x > 320 || x < 0 || y > 240 || y < verticalOffset) return;
 	if(type == 1) {
 		Main::tft.fillRect(x,y,size,size,ILI9341_GREEN);
 	} else if (type == 2) {
@@ -210,7 +211,8 @@ bool Map::isEmpty(uint8_t x, uint8_t y, uint8_t size) {
 void Map::drawPart(int8_t x, int8_t y, uint8_t size) {
 	for(int dx = 0; dx < size; dx++) {
 		for(int dy = 0; dy < size; dy++) {
-			drawBlock((x+dx)*blocksize,(y+dy)*blocksize,getBlock(x+dx,y+dy),blocksize);
+			if(x+dx < horizontalSize && y+dy < verticalSize)
+				drawBlock((x+dx)*blocksize,(y+dy)*blocksize,getBlock(x+dx,y+dy),blocksize);
 		}
 	}
 }

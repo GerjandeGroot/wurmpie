@@ -150,3 +150,7 @@ ipch/
 
 *.opt
 *.cppproj
+*.xml
+*.xml
+*.xml
+__vm/.wurmpies.vsarduino.h

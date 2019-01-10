@@ -34,6 +34,7 @@ private:
 	uint16_t y;
 	uint16_t xSize;
 	uint16_t ySize;
+	static TS_Point touch;
 
 //functions
 public:
@@ -42,6 +43,7 @@ public:
 	void draw();
 	bool clicked();
 	static begin();
+	static update();
 protected:
 private:
 
