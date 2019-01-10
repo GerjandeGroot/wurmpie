@@ -146,7 +146,7 @@ void Weapon::grenade() {
 	for(uint8_t i = 0; i < 200; i++) {
 		moveTo(x - dx, y - dy);
 		this->dy -= 0.025;
-		if(Main::map.getBlock((x-dx)/blocksize, y/blocksize || x > 320 || x < 0)){
+		if(Main::map.getBlock((x-dx)/blocksize, y/blocksize)  || x > 320 || x < 0){
 			dx = dx*-0.65;
 		}
 		if(Main::map.getBlock(x/blocksize, (y-dy)/blocksize)){

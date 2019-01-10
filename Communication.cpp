@@ -8,26 +8,43 @@
 
 #include "Communication.h"
 
-static bool Communication::serial;
-volatile static uint16_t Communication::buffer[bufSize];
-volatile static bool Communication::acknowledge = false;
-volatile static bool Communication::_available = false;
 
+static bool Communication::serial;							//determines if serial or IR is used
+volatile static uint16_t Communication::buffer[bufSize];	//buffer where command and parameters are stored
+
+//start communication
 void Communication::begin() {
-	//Setup serial
+	//read option serial or IR from EEPROM
 	serial = !EEPROM.read(sendMethodAdres);
 	
 	if(serial) {	
+		//start serial
 	} else {
+		//start IR
+		//read frequency from EEPROM
 		uint8_t frequency = EEPROM.read(freqAdres);
 		IRLib::begin(frequency);
 	}
 } 
 
-bool Communication::handshake() {
-	return Communication::send(1);
+//send a handshake
+bool Communication::sendHandshake() {
+	Communication::send(1);
+	return Communication::endCommand();
 }
 
+//waits for a handshake
+bool Communication::waitForHandshake() {
+	Communication::update();
+	if(Communication::buffer[0] == 255 && Communication::buffer[1] == 1) {
+		Communication::next();
+		Communication::clearBuffer(2);
+		return true;
+	}
+	return false;
+}
+
+//sends a command or a parameter
 bool Communication::send(uint16_t data) {
 	if(serial) {
 		UDR0 = data;
@@ -38,15 +55,7 @@ bool Communication::send(uint16_t data) {
 	}
 }
 
-bool Communication::waitAcknowledge(uint16_t timeout) {
-	for(int i = 0; i < timeout; i++) {
-		if(Communication::acknowledge)
-			return true;
-		_delay_ms(1);
-	}
-	return false;
-}
-
+//adds a parameter to the buffer
 bool Communication::addParameter(uint16_t parameter) {
 	for(int i = bufSize-1; i >= 0; i--) {
 		Communication::buffer[i+1] = Communication::buffer[i];
@@ -55,6 +64,7 @@ bool Communication::addParameter(uint16_t parameter) {
 	return	true;
 }
 
+//removes a parameter from the buffer
 void Communication::removeParameter() {
 	if(Communication::buffer[0] == 255 && !serial) {
 		IRLib::sendAcknowledge(true);
@@ -65,12 +75,14 @@ void Communication::removeParameter() {
 	Communication::buffer[bufSize-1] = 0;
 }
 
+//removes multiple parameters from the buffer
 void Communication::clearBuffer(int amount) {
 	for(int i = 0; i < amount; i++) {
 		Communication::removeParameter();
 	}
 }
 
+//send a end command byte (255) and wait for a acknowledgment byte (254)
 bool Communication::endCommand() {
 	acknowledge = false;
 	Communication::send(255);
@@ -85,18 +97,12 @@ bool Communication::endCommand() {
 	return false;
 }
 
-bool Communication::available() {
-	return Communication::_available;
-}
+//sends a acknowledge
 void Communication::next() {
 	Communication::send(254);
-	Communication::_available = false;
 }
 
-void Communication::update() {
-	
-}
-
+//initialize USART 
 void Communication::USART_Init()
 {
 	cli();
@@ -112,6 +118,7 @@ void Communication::USART_Init()
 	sei();
 }
 
+//interrupt vector for receiving a byte from USART
 ISR(USART_RX_vect)
 {
 	Communication::addParameter(UDR0);

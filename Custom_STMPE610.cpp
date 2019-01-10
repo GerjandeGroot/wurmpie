@@ -1,3 +1,9 @@
+/*
+	Copy of the Adafruit_STMPE610 library with some edits
+	-Delay() replaced with _delay_ms()
+*/
+
+
 /*************************************************** 
   This is a library for the Adafruit STMPE610 Resistive
   touch screen controller breakout

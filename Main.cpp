@@ -104,6 +104,7 @@ void Main::update() {
 			beurt = 3;
 			menuWeapon.draw();
 		} else if (beurt == 3) {
+			Button::update();
 			if(menuWeapon.clicked()) {
 				Menu().weaponSelectionPanel(&player1);
 				draw();
@@ -113,7 +114,7 @@ void Main::update() {
 			player1.clear();
 			player1.draw();
 			player1.sendAim();
-			
+			player2.draw();
 			if(nunchuck.z) {
 				Communication::send(12);
 				Communication::endCommand();
@@ -153,6 +154,7 @@ void Main::parseData() {
 		Communication::removeParameter();
 		if(Communication::buffer[0] == 10) {
 			player2.moveTo(Communication::buffer[1], Communication::buffer[2], false);
+			player1.draw();
 			Communication::clearBuffer(3);
 			Communication::next();
 		}
@@ -161,6 +163,7 @@ void Main::parseData() {
 			player2.aimDx = Communication::buffer[1];
 			player2.aimDy = Communication::buffer[2];
 			player2.draw();
+			player1.draw();
 			Communication::clearBuffer(3);
 			Communication::next();
 		}
@@ -180,7 +183,7 @@ void Main::parseData() {
 			beurt = 1;
 			Communication::clearBuffer(1);
 			Communication::next();
-			drawTurn(F("your turn");
+			drawTurn(F("your turn"));
 			player1.fuelBar();
 		}
 		if(Communication::buffer[0] == 13) {
@@ -200,21 +203,6 @@ int Main::freeRam () {
 	extern int __heap_start, *__brkval;
 	int v;
 	return (int) &v - (__brkval == 0 ? (int) &__heap_start : (int) __brkval);
-}
-
-bool Main::sendHandshake() {
-	Communication::send(1);
-	return Communication::endCommand();
-}
-
-bool Main::waitForHandshake() {
-	Communication::update();
-	if(Communication::buffer[0] == 255 && Communication::buffer[1] == 1) {
-		Communication::next();
-		Communication::clearBuffer(2);
-		return true;
-	}
-	return false;
 }
 
 void Main::beginSlave() {
@@ -250,7 +238,6 @@ void Main::beginSlave() {
 	beurt = 5;
 }
 void Main::beginMaster() {
-	tft.fillScreen(ILI9341_BLUE);
 	player1 = Player(ILI9341_BLUE);
 	player2 = Player(ILI9341_RED);
 	
@@ -277,8 +264,16 @@ void Main::beginMaster() {
 }
 
 void Main::selectDrop() {
-	Nunchuck nunchuck;
+	tft.fillScreen(ILI9341_BLACK);
+	
 	map.drawMap();
+	tft.setCursor(10,0);
+	tft.setTextSize(2);
+	tft.setTextColor(ILI9341_WHITE);
+	tft.println(F("Select your drop location"));
+	
+	
+	Nunchuck nunchuck;
 	player1.moveTo(20,1,false);
 	while(true) {
 		nunchuck.update();
