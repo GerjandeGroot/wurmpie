@@ -14,6 +14,7 @@
 #include "Map.h"
 
 #define tankSize 2
+#define inventorySize 9
 
 
 class Player
@@ -49,7 +50,7 @@ public:
 	void fuelBar();
 	void updateFuelBar();
 	void reset();
-	void addWeapon(uint8_t x);
+	void addWeapon();
 	void removeWeapon(uint8_t x);
 protected:
 private:

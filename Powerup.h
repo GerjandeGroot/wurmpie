@@ -16,8 +16,8 @@ class Powerup
 {
 //variables
 public:
-	uint8_t xpos;
-	uint8_t ypos;
+	uint16_t xpos;
+	uint16_t ypos;
 	static Powerup* powerups[10];
 	static uint8_t powerupAmount;
 protected:
@@ -31,6 +31,7 @@ public:
 	void drop();
 	bool send();
 	static void collision(Player *player);
+	static void drawAll();
 protected:
 private:
 	void clear();

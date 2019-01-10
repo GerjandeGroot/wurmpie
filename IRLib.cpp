@@ -41,7 +41,7 @@ ISR(INT0_vect){
 		} else if (time > stopBit - negMargin && time < stopBit + posMargin) { //stop bit
 			
 			//lenght of byte check: data(8) + parity bit = 9
-			if(IRLib::bit != 9) 
+			if(IRLib::bit != 9) {
 				IRLib::sendAcknowledge(false); //byte length error, send non-acknowledge
 				return;
 			}

@@ -128,6 +128,7 @@ void Player::sendAim() {
 
 void Player::shoot() {
 	Weapon(this->x*blocksize+blocksize-aimDx, this->y*blocksize+blocksize-aimDy,weapon[selectedWeapon],aimDx,aimDy);
+	removeWeapon(selectedWeapon);
 }
 
 bool Player::sendLocation(uint8_t x, uint8_t y) {
@@ -137,12 +138,13 @@ bool Player::sendLocation(uint8_t x, uint8_t y) {
 	Communication::endCommand();
 }
 
-void Player::addWeapon(uint8_t x){
-	for(int i = 0; i<9; i++){
+void Player::addWeapon(){
+	uint8_t randomNumber = random(2,5);
+	for(int i = 0; i<inventorySize; i++){
 		if(weapon[i] == 0){
-			Player::weapon[i] = x;
+			Player::weapon[i] = randomNumber;
 			return;
-		}	
+		}
 	}	
 }
 
@@ -161,9 +163,9 @@ void Player::updateFuelBar(){
 }
 
 void Player::removeWeapon(uint8_t x){
-	for (int i = x; i < 8; i++)	{
+	for (int i = x; i < inventorySize-1; i++)	{
 		weapon[i] = weapon[i+1];
 	}
-	weapon[9] = 0;
+	weapon[inventorySize] = 0;
 	selectedWeapon = 0;
 }

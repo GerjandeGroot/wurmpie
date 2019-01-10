@@ -323,7 +323,7 @@ uint8_t Menu::weaponSelectionPanel(Player *player){
 		for(int i = 0; i < aantalButtons; i++){
 			if(buttons[i]->clicked()){
 				player->selectedWeapon = i;
-				Communication::send(i);
+				Communication::send(Main::player1.weapon[i]);
 				Communication::send(13);
 				Communication::endCommand();
 				Main::menuWeapon.text = Weapon::getName(player->weapon[player->selectedWeapon]);

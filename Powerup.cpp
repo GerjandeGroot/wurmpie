@@ -26,16 +26,16 @@ Powerup::~Powerup()
 } //~Powerup
 
 void Powerup::draw(){
-	Main::tft.fillRect(xpos, ypos+verticalOffset, blocksize, blocksize, ILI9341_PINK);
+	Main::tft.fillRect(xpos*blocksize, ypos+verticalOffset, blocksize, blocksize, ILI9341_PINK);
 	
 }
 
 void Powerup::clear(){
-	Main::tft.fillRect(xpos, ypos+verticalOffset, blocksize, blocksize, Main::map.backgroundColor);
+	Main::tft.fillRect(xpos*blocksize, ypos+verticalOffset, blocksize, blocksize, Main::map.backgroundColor);
 }
 
 void Powerup::drop(){
-	while(Main::map.isEmpty((xpos/blocksize), (ypos)/blocksize+1, 1)){
+	while(Main::map.isEmpty(xpos, ypos/blocksize+1, 1)){
 		moveTo(ypos+1);
 		_delay_ms(10);
 	}
@@ -52,8 +52,12 @@ bool Powerup::send(){
 	return Communication::endCommand();
 }
 
-/*bool Powerup::updateAll()*/
-	
+void Powerup::drawAll() {
+	Main::tft.setCursor(20,20);
+	Main::tft.println(Powerup::powerupAmount);
+	for(int i = 0; i < Powerup::powerupAmount; i++){
+		Powerup::powerups[i]->draw();
+	}
 }
 
 void Powerup::collision(Player *player){
@@ -62,9 +66,18 @@ void Powerup::collision(Player *player){
 	
 	//Loop array powerup
 	for(int i = 0; i < Powerup::powerupAmount; i++){
-		if(leftCoor == Powerup::powerups[i] || rightCoor == Powerup::powerups[i]){//xpos
-			uint8_t randomNumber = random(8);
-			player->addWeapon(randomNumber);
+		if(Powerup::powerups[i]->xpos >= player->x && Powerup::powerups[i]->xpos < player->x+tankSize && Powerup::powerups[i]->ypos/blocksize >= player->y && Powerup::powerups[i]->ypos/blocksize < player->y+tankSize){//xpos
+			uint8_t randomNumber = random(2,5);
+			delete powerups[i];
+			for(int o = i; o < Powerup::powerupAmount-1; o++){
+				powerups[i] = powerups[i+1];
+			}
+			Powerup::powerupAmount--;
+			
+			Communication::send(randomNumber);
+			Communication::send(i);
+			Communication::send(15);
+			Communication::endCommand();
 		}
 	}
 }

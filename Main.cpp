@@ -66,6 +66,14 @@ void Main::update() {
 		
 	while(player1.moveToDirection(3, false) | player2.moveToDirection(3, false)){
 		_delay_ms(80);
+		if(player1.health == 0) {
+			Menu().endPanel("YOU LOSE");
+			return;
+		}
+		if(player2.health == 0) {
+			Menu().endPanel("YOU WIN");
+			return;
+		}
 	}
 	while(1){
 		nunchuck.update();
@@ -124,7 +132,6 @@ void Main::update() {
 			}
 		} else if (beurt == 4) {
 			if(!player1.moveToDirection(3) && !map.updateMap()) {
-				master();
 				beurt = 5;
 				player1.fuel = 10;
 				Communication::send(4);
@@ -150,7 +157,6 @@ void Main::update() {
 }
 
 void Main::parseData() {
-	Communication::update();
 	if(Communication::buffer[0] == 255) {
 		Communication::removeParameter();
 		if(Communication::buffer[0] == 10) {
@@ -173,14 +179,8 @@ void Main::parseData() {
 			player2.shoot();
 			Communication::clearBuffer(1);
 		}
-		if(Communication::buffer[0] == 14){
-			uint8_t xpos = Communication::buffer[1];
-			Communication::next();
-			Powerup* powerup = new Powerup(xpos);
-			powerup->drop();
-			Communication::clearBuffer(1);
-		}
 		if(Communication::buffer[0] == 4) {
+			player1.addWeapon();
 			beurt = 1;
 			Communication::clearBuffer(1);
 			Communication::next();
@@ -188,7 +188,7 @@ void Main::parseData() {
 			player1.fuelBar();
 		}
 		if(Communication::buffer[0] == 13) {
-			player2.selectedWeapon = Communication::buffer[1];
+			player2.weapon[0] = Communication::buffer[1];
 			Communication::clearBuffer(2);
 			Communication::next();
 		}
@@ -212,7 +212,6 @@ void Main::beginSlave() {
 	player2 = Player(ILI9341_RED);	
 	
 	while (1) {
-		Communication::update();
 		if(Communication::buffer[0] == 255 && Communication::buffer[1] == 3) {
 			map.createRandomMap(Communication::buffer[2]);
 			Communication::clearBuffer(3);
@@ -224,7 +223,6 @@ void Main::beginSlave() {
 	selectDrop();
 	
 	while (1) {
-		Communication::update();
 		if(Communication::buffer[0] == 255 && Communication::buffer[1] == 10) {
 			player2.x = Communication::buffer[2];
 			player2.y = Communication::buffer[3];
@@ -251,7 +249,6 @@ void Main::beginMaster() {
 	player1.sendLocation(player1.x,player1.y);
 	
 	while (1) {
-		Communication::update();
 		if(Communication::buffer[0] == 255 && Communication::buffer[1] == 10) {
 			player2.x = Communication::buffer[2];
 			player2.y = Communication::buffer[3];
@@ -300,9 +297,7 @@ void Main::draw(){
 	map.drawMap();
 	player1.draw();
 	player2.draw();
-	for(int i = 0; i < Powerup::powerupAmount; i++){
-		Powerup::powerups[i]->draw();
-	}
+	Powerup::drawAll();
 	
 }
 
@@ -315,16 +310,6 @@ void Main::drawTurn(String tekst){
 	tft.println(tekst);
 	_delay_ms(1000);
 	draw();
-}
-
-void Main::master(){
-	uint8_t chance = random(100);
-	if(chance < 90){
-		uint8_t xpos = (random(1, horizontalSize)* blocksize);
-		Powerup* powerup = new Powerup(xpos);
-		powerup->send();
-		powerup->drop();
-	}
 }
 
 ISR(TIMER1_OVF_vect) {
