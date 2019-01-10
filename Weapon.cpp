@@ -27,6 +27,8 @@ Weapon::Weapon(float x, float y, uint8_t type, int8_t dx, int8_t dy)
 Weapon::~Weapon()
 {
 } //~Weapon
+
+//function to choose the shot that will be fired
 void Weapon::fireShot(uint8_t type){
 	switch(type){
 		case 1:
