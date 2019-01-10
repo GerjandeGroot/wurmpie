@@ -66,6 +66,11 @@ void Weapon::damageToPlayers(double damageMultiplier, uint8_t range) {
 	}
 }
 
+/*void Weapon::stunnedPlayers(){
+	
+}*/
+
+
 float Weapon::hitDectectie(uint8_t explosionX,uint8_t explosionY, uint8_t middleX,uint8_t middleY, uint8_t radius){
 	uint8_t dx = abs(explosionX - middleX);
 	uint8_t dy = abs(explosionY - middleY);

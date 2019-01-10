@@ -24,11 +24,12 @@ uint8_t x;
 uint8_t y;
 uint8_t health;
 uint16_t color;
-uint8_t weapon[9] = {1,2,3,4,5,6,7,8,9};
+uint8_t weapon[9] = {1};
 uint8_t selectedWeapon;
 int8_t aimDx;
 int8_t aimDy;
 uint8_t fuel;
+bool stunned;
 
 protected:
 private:
@@ -45,10 +46,11 @@ public:
 	bool moveToDirection(uint8_t direction,bool send=true);
 	bool sendLocation(uint8_t x, uint8_t y);
 	void shoot();
-
 	void fuelBar();
 	void updateFuelBar();
-
+	void reset();
+	void addWeapon(uint8_t x);
+	void removeWeapon(uint8_t x);
 protected:
 private:
 }; //Player

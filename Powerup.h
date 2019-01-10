@@ -9,8 +9,9 @@
 #ifndef __POWERUP_H__
 #define __POWERUP_H__
 
+#include "Player.h"
 #include "Main.h"
-
+class Player;
 class Powerup
 {
 //variables
@@ -29,6 +30,7 @@ public:
 	void draw();
 	void drop();
 	bool send();
+	static void collision(Player *player);
 protected:
 private:
 	void clear();

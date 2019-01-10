@@ -53,3 +53,18 @@ bool Powerup::send(){
 }
 
 /*bool Powerup::updateAll()*/
+	
+}
+
+void Powerup::collision(Player *player){
+	uint8_t leftCoor = abs(player->x /* - blocksize*/);
+	uint8_t rightCoor = abs(player->x /* + blocksize*/);
+	
+	//Loop array powerup
+	for(int i = 0; i < Powerup::powerupAmount; i++){
+		if(leftCoor == Powerup::powerups[i] || rightCoor == Powerup::powerups[i]){//xpos
+			uint8_t randomNumber = random(8);
+			player->addWeapon(randomNumber);
+		}
+	}
+}

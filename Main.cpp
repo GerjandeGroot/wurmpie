@@ -94,6 +94,7 @@ void Main::update() {
 				if(moved) {
 					player2.draw();					
 				}
+				Powerup::collision(&player1);
 				player1.fuel--;
 
 				player1.updateFuelBar();
