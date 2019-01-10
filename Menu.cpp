@@ -66,8 +66,9 @@ uint8_t Menu::mainPanel() {
 	Button settings(75, 140, 170, 30, "Settings", ILI9341_BLUE);
 	
 	while(1){
+		Button::update();
 		if(new_game.clicked()){
-			return 4;
+			return 5;
 		}
 		if(join.clicked()){
 			return 3;
@@ -113,6 +114,7 @@ uint8_t Menu::settingsPanel() {
 	optie4.draw();
 	
 	while(1){
+		Button::update();
 		if(back.clicked()){
 			return 1;
 		}
@@ -153,12 +155,13 @@ uint8_t Menu::settingsPanel() {
 uint8_t Menu::joinPanel() {
 	Main::tft.fillScreen(ILI9341_BLACK);
 	drawTitle(25, 0xFFFF, "Join game"); //25 voor midden (9 characters)
-	drawLable(20, 100, 0xFFFF, "Searching for master");
+	drawLable(20, 100, 0xFFFF, "Searching for host");
 	
 	Button cancel(75, 200, 170, 30, "Cancel", ILI9341_BLUE);
 	
 	while(1){
-		if(Main::sendHandshake()) {
+		Button::update();
+		if(Communication::sendHandshake()) {
 			Main::beginSlave();
 			return 0;
 		}
@@ -177,11 +180,8 @@ uint8_t Menu::newGamePanel() {
 	Button back(260, 210, 60, 30, "Back", ILI9341_BLUE);
 	
 	while(1){
+		Button::update();
 		if(random_map.clicked()){
-			uint8_t seed = EEPROM.read(3);
-			seed++;
-			EEPROM.write(3,seed);
-			Main::map.createRandomMap(seed);
 			return 6;
 		}
 		if(existing_map.clicked()){
@@ -197,17 +197,37 @@ uint8_t Menu::mapSelectionPanel(){
 	Main::tft.fillScreen(ILI9341_BLACK);
 	drawTitle(10, 0xFFFF, "Select map");	//10 voor midden (10 characters)
 	Button btnPrev(5, 115, 30, 30, "<", ILI9341_BLUE);
-	Main::map.drawMapSmall(60, 55, 5);
 	Button btnNext(285, 115, 30, 30, ">", ILI9341_BLUE);
-	Button back(260, 210, 60, 30, "Back", ILI9341_BLUE);
+	Button back(0, 210, 60, 30, "Back", ILI9341_BLUE);
+	Button next(260, 210, 60, 30, "Next", ILI9341_BLUE);
+	
+	uint8_t seed = EEPROM.read(3);
+	seed++;
+	EEPROM.write(3,seed);
+	Main::map.createRandomMap(seed);
+	Main::map.drawMapSmall(60, 55, 5);
 	
 	while(1){
+		Button::update();
 		if(btnPrev.clicked()){
+			seed = EEPROM.read(3);
+			seed--;
+			EEPROM.write(3,seed);
+			Main::map.createRandomMap(seed);
+			Main::map.drawMapSmall(60, 55, 5);
 		}
 		if(btnNext.clicked()){
+			seed = EEPROM.read(3);
+			seed++;
+			EEPROM.write(3,seed);
+			Main::map.createRandomMap(seed);
+			Main::map.drawMapSmall(60, 55, 5);
 		}
 		if(back.clicked()){
-			return 4;
+			return 1;
+		}
+		if(next.clicked()){
+			return 6;
 		}
 	}
 }
@@ -215,12 +235,13 @@ uint8_t Menu::mapSelectionPanel(){
 uint8_t Menu::newGameLobbyPanel(){
 	Main::tft.fillScreen(ILI9341_BLACK);
 	drawTitle(40, 0xFFFF, "New Game"); //40 voor midden (8 characters)
-	drawLable(20, 100, 0xFFFF, "Searching for other player");
+	drawLable(20, 100, 0xFFFF, "Searching for opponent");
 
 	Button cancel(75, 200, 170, 30, "Cancel", ILI9341_BLUE);
 
 	while(1){
-		if(Main::waitForHandshake()) {
+		Button::update();
+		if(Communication::waitForHandshake()) {
 			Main::beginMaster();
 			return 0;
 		}
@@ -237,6 +258,7 @@ uint8_t Menu::endPanel(String msg) {
 	Button menu(260, 210, 60, 30, "Menu", ILI9341_BLUE);
 	
 	while(1){
+		Button::update();
 		if(menu.clicked()){
 			return 0;
 		}
@@ -297,6 +319,7 @@ uint8_t Menu::weaponSelectionPanel(Player *player){
 		aantalButtons++;
 	}
 	while(1){
+		Button::update();
 		for(int i = 0; i < aantalButtons; i++){
 			if(buttons[i]->clicked()){
 				player->selectedWeapon = i;

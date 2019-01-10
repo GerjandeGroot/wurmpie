@@ -8,51 +8,54 @@
 
 #include "Communication.h"
 
-static bool Communication::serial;
-volatile static uint16_t Communication::buffer[bufSize];
-volatile static bool Communication::acknowledge = false;
-volatile static bool Communication::_available = false;
 
+static bool Communication::serial;							//determines if serial or IR is used
+volatile static uint16_t Communication::buffer[bufSize];	//buffer where command and parameters are stored
+
+//start communication
 void Communication::begin() {
-	//Setup serial
+	//read option serial or IR from EEPROM
 	serial = !EEPROM.read(sendMethodAdres);
 	
-	if(serial) {
-		Serial.println("serial");
-		//Serial.begin(serialSpeed);	
+	if(serial) {	
+		//start serial
 	} else {
-		Serial.println("ir");
+		//start IR
+		//read frequency from EEPROM
 		uint8_t frequency = EEPROM.read(freqAdres);
 		IRLib::begin(frequency);
 	}
 } 
 
-bool Communication::handshake() {
-	//Send handshake on serial
-	
-	//handshake on ir
-	Serial.println("sending handshake");
-	return Communication::send(1);
+//send a handshake
+bool Communication::sendHandshake() {
+	Communication::send(1);
+	return Communication::endCommand();
 }
 
+//waits for a handshake
+bool Communication::waitForHandshake() {
+	Communication::update();
+	if(Communication::buffer[0] == 255 && Communication::buffer[1] == 1) {
+		Communication::next();
+		Communication::clearBuffer(2);
+		return true;
+	}
+	return false;
+}
+
+//sends a command or a parameter
 bool Communication::send(uint16_t data) {
 	if(serial) {
-		Serial.write(data);
+		UDR0 = data;
+		while(!(UCSR0A &= 1 << TXC0));
 		return true;
 	} else {
 		return IRLib::sendWait(data);
 	}
 }
 
-bool Communication::waitAcknowledge(uint16_t timeout) {
-	for(int i = 0; i < timeout; i++) {
-		if(Communication::acknowledge)
-			return true;
-		_delay_ms(1);
-	}
-	return false;
-}
-
+//adds a parameter to the buffer
 bool Communication::addParameter(uint16_t parameter) {
 	for(int i = bufSize-1; i >= 0; i--) {
 		Communication::buffer[i+1] = Communication::buffer[i];
@@ -61,8 +64,9 @@ bool Communication::addParameter(uint16_t parameter) {
 	return	true;
 }
 
+//removes a parameter from the buffer
 void Communication::removeParameter() {
-	if(Communication::buffer[0] == 255) {
+	if(Communication::buffer[0] == 255 && !serial) {
 		IRLib::sendAcknowledge(true);
 	}
 	for(int i = 0; i < bufSize-1; i++) {
@@ -71,16 +75,17 @@ void Communication::removeParameter() {
 	Communication::buffer[bufSize-1] = 0;
 }
 
+//removes multiple parameters from the buffer
 void Communication::clearBuffer(int amount) {
 	for(int i = 0; i < amount; i++) {
 		Communication::removeParameter();
 	}
 }
 
+//send a end command byte (255) and wait for a acknowledgment byte (254)
 bool Communication::endCommand() {
 	acknowledge = false;
 	Communication::send(255);
-	
 	for(int i = 0; i < 99999999; i++) {
 		update();
 		if(buffer[0] == 254) {
@@ -92,21 +97,29 @@ bool Communication::endCommand() {
 	return false;
 }
 
-bool Communication::available() {
-	return Communication::_available;
-}
+//sends a acknowledge
 void Communication::next() {
 	Communication::send(254);
-	Communication::_available = false;
 }
 
-void Communication::update() {
-	while(Serial.available()) addParameter(Serial.read());
-}
-
-ISR(USART_RXC_vect)
+//initialize USART 
+void Communication::USART_Init()
 {
-	//ReceivedByte;
-	//ReceivedByte = UDR0; // Fetch the received byte value into the variable "ByteReceived"
-	//UDR0 = ReceivedByte; // Echo back the received byte back to the computer
+	cli();
+	//setting baud rate
+	UBRR0H = (uint8_t) (serialSpeed >> 8);
+	UBRR0L = (uint8_t) serialSpeed;
+	
+	//Enable receiver and transmitter
+	UCSR0B = (1<<RXEN0)|(1<<TXEN0)|(1<<RXCIE0);
+	
+	//1 stop bit 8 data bit
+	UCSR0C = (3<<UCSZ00);
+	sei();
+}
+
+//interrupt vector for receiving a byte from USART
+ISR(USART_RX_vect)
+{
+	Communication::addParameter(UDR0);
 }

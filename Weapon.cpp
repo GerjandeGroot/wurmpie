@@ -11,8 +11,6 @@
 // default constructor
 Weapon::Weapon(float x, float y, uint8_t type, int8_t dx, int8_t dy)
 {
-	Serial.print("type = ");
-	Serial.println(type);
 	this->x = x;
 	this->y = y;
 	this->type = type;
@@ -51,7 +49,7 @@ void Weapon::fireShot(uint8_t type){
 }
 
 void Weapon::damageToPlayers(double damageMultiplier, uint8_t range) {
-	float damage = hitDectectie(x/blocksize, y/blocksize, Main::player1.x+1, Main::player1.y+1, range);
+	float damage = hitDectectie(x/blocksize, (y)/blocksize, Main::player1.x+1, Main::player1.y+1, range);
 	int8_t health = Main::player1.health - damage*damageMultiplier;
 	if(health < 1)	{
 		Main::player1.health = 0;
@@ -59,28 +57,29 @@ void Weapon::damageToPlayers(double damageMultiplier, uint8_t range) {
 		Main::player1.health = health;
 	}
 	
-	damage = hitDectectie(x/blocksize, y/blocksize, Main::player2.x+1, Main::player2.y+1, range);
+	damage = hitDectectie(x/blocksize, (y)/blocksize, Main::player2.x+1, Main::player2.y+1, range);
 	health = Main::player2.health - damage*damageMultiplier;
 	if(health < 1)	{
 		Main::player2.health = 0;
 	} else {
 		Main::player2.health = health;
 	}
-	//Serial.println(damage);
 }
+
+/*void Weapon::stunnedPlayers(){
+	
+}*/
+
 
 float Weapon::hitDectectie(uint8_t explosionX,uint8_t explosionY, uint8_t middleX,uint8_t middleY, uint8_t radius){
 	uint8_t dx = abs(explosionX - middleX);
 	uint8_t dy = abs(explosionY - middleY);
 	float distance = sqrt(dx*dx + dy*dy);
 	
-	Serial.println(distance/radius);
-	
+
 	if(distance > radius) {
-		Serial.println("not hit");
 		return 0;
 	} else {
-		Serial.println("hit");
 		return 1-distance/radius;
 	}
 	
@@ -107,6 +106,9 @@ void Weapon::defaultShot() {
 		moveTo(x - dx, y - dy);
 		this->dy -= 0.025;
 		if(Main::map.getBlock((x+dx)/blocksize, (y+dy)/blocksize)) break;
+		if(x > 320 || x < 0 || y > 240){
+			break;
+		}
 		_delay_ms(10);
 	}
 	Main::map.explosion(this->x/blocksize,this->y/blocksize,2);
@@ -118,6 +120,9 @@ void Weapon::emp() {
 		moveTo(x - dx, y - dy);
 		this->dy -= 0.025;
 		if(Main::map.getBlock((x+dx)/blocksize, (y+dy)/blocksize)) break;
+		if(x > 320 || x < 0 || y > 240){
+			break;
+		}
 		_delay_ms(10);
 	}
 	for(int i = 0; i<20; i++){
@@ -132,6 +137,9 @@ void Weapon::nukeShot() {
 		moveTo(x - dx, y - dy);
 		this->dy -= 0.025;
 		if(Main::map.getBlock(x/blocksize, y/blocksize)) break;
+		if(x > 320 || x < 0 || y > 240){
+			break;
+		}
 		_delay_ms(10);
 	}
 	Main::map.explosion(this->x/blocksize,this->y/blocksize,10);
@@ -143,11 +151,14 @@ void Weapon::grenade() {
 	for(uint8_t i = 0; i < 200; i++) {
 		moveTo(x - dx, y - dy);
 		this->dy -= 0.025;
-		if(Main::map.getBlock((x-dx)/blocksize, y/blocksize)){
+		if(Main::map.getBlock((x-dx)/blocksize, y/blocksize)  || x > 320 || x < 0){
 			dx = dx*-0.65;
 		}
 		if(Main::map.getBlock(x/blocksize, (y-dy)/blocksize)){
 			dy = dy*-0.65;
+		}
+		if(y > 240){
+			break;
 		}
 		_delay_ms(10);
 	}
@@ -163,9 +174,9 @@ void Weapon::tripleShot() {
 
 void Weapon::laser(){
 	while(1){
-		Main::map.setRadius((x - dx*2)/8, (y - dy*2)/8, 2, 0, false);
 		damageToPlayers(2,2);
 		moveTo(x - dx*2, y - dy*2);
+		Main::map.setRadius(x/blocksize, y/blocksize, 2, 0, false);
 		if(x > 320 || x < 0 || y > 240 || y < 0){
 			break;
 		}
@@ -175,20 +186,34 @@ void Weapon::laser(){
 }
 
 void Weapon::clear() {
+	if(y < blocksize/2) {
+		Main::tft.setCursor(x,verticalOffset+1);
+		Main::tft.setTextColor(Main::map.backgroundColor);
+		Main::tft.setTextSize(2);
+		Main::tft.print("^");
+		return;
+	}
 	if(type == 6){
 		
 	}
 	else{
-		Main::tft.fillCircle(this->x,this->y,blocksize/2,ILI9341_CYAN);
+		Main::tft.fillCircle(this->x,this->y+verticalOffset,blocksize/2,ILI9341_CYAN);
 	}
 }
 
 void Weapon::draw() {
+	if(y < blocksize/2) {
+		Main::tft.setCursor(x,verticalOffset+1);
+		Main::tft.setTextColor(ILI9341_BLACK);
+		Main::tft.setTextSize(2);
+		Main::tft.print("^");
+		return;
+	}
 	if(type == 6){
-		Main::tft.fillCircle(this->x,this->y,blocksize/2,ILI9341_YELLOW);
+		Main::tft.fillCircle(this->x,this->y+verticalOffset,blocksize/2,ILI9341_YELLOW);
 	}
 	else{
-		Main::tft.fillCircle(this->x,this->y,blocksize/2,ILI9341_BLACK);
+		Main::tft.fillCircle(this->x,this->y+verticalOffset,blocksize/2,ILI9341_BLACK);
 	}
 }
 

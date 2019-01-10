@@ -18,35 +18,20 @@ Player::Player(uint16_t color)
 	aimDy = 10;
 	fuel = 10;
 	health = 100;
-	weapon[0] = 1;
+	weapon[9] = 1;
 	selectedWeapon = 0;
+	stunned = false;
 } //Player
 
 // default destructor
 Player::~Player()
 {
-} //~Player
-
-
-//void fuelBar(){
-//    
-// tft.fillRect(2,2, 98, 18, GREEN);
-//    for(int i = 96; i >= 0; i--){
-//      if(i == 65){
-//        tft.fillRect(2,2, i, 18, ORANGE);
-//      } else if(i == 34){
-//        tft.fillRect(2,2, i, 18, RED);
-//      } else{
-//      tft.fillRect(2 + i, 2, 2, 18, CYAN);
-//      }
-//    _delay_ms(10);
-//   }
-//}
+} //~Player*
 void Player::draw() {
-	Main::tft.fillRoundRect(this->x*blocksize, this->y*blocksize+blocksize, blocksize*2,blocksize, blocksize/4,this->color);
-	Main::tft.fillCircle(this->x*blocksize+blocksize, this->y*blocksize+blocksize, blocksize/2, this->color);
- 	Main::tft.drawLine(this->x*blocksize+blocksize, this->y*blocksize+blocksize, this->x*blocksize+blocksize-aimDx, this->y*blocksize+blocksize-aimDy, this->color);
-	Main::tft.setCursor(x*blocksize, y*blocksize-10);
+	Main::tft.fillRoundRect(this->x*blocksize, this->y*blocksize+blocksize+verticalOffset, blocksize*2,blocksize, blocksize/4,this->color);
+	Main::tft.fillCircle(this->x*blocksize+blocksize, this->y*blocksize+blocksize+verticalOffset, blocksize/2, this->color);
+ 	Main::tft.drawLine(this->x*blocksize+blocksize, this->y*blocksize+blocksize+verticalOffset, this->x*blocksize+blocksize-aimDx, this->y*blocksize+blocksize+verticalOffset-aimDy, this->color);
+	Main::tft.setCursor(x*blocksize, y*blocksize+verticalOffset-8);
 	Main::tft.setTextColor(ILI9341_RED);
 	Main::tft.setTextSize(1);
 	Main::tft.println(health);
@@ -76,7 +61,7 @@ bool Player::moveToDirection(uint8_t direction, bool send) {
 			moveTo(x-1,y-1,send);
 			return true;
 		}
-	} else if (direction == 2) {			//rechts
+	} else if (direction == 2 && x < horizontalSize-2) {			//rechts
 		if(Main::map.isEmpty(x+1,y,tankSize)) {
 			moveTo(x+1,y,send);
 			return true;	
@@ -98,7 +83,7 @@ bool Player::moveToDirection(uint8_t direction, bool send) {
 			moveTo(x-1,y+1,send);
 			return true;
 		}
-	} else if (direction == 4) {			//links
+	} else if (direction == 4 && x > 1) {			//links
 			if(Main::map.isEmpty(x-1,y,tankSize)) {
 				moveTo(x-1,y,send);
 				return true;
@@ -121,9 +106,13 @@ bool Player::moveToDirection(uint8_t direction, bool send) {
 }
 
 void Player::moveTo(int x, int y, bool send) {
+	if(y > verticalSize){
+		health = 0;
+	}
 	if(send) {
 		sendLocation(x,y);
 	}
+	
 	clear();
 	this->x = x;
 	this->y = y;
@@ -148,21 +137,33 @@ bool Player::sendLocation(uint8_t x, uint8_t y) {
 	Communication::endCommand();
 }
 
-
-
+void Player::addWeapon(uint8_t x){
+	for(int i = 0; i<9; i++){
+		if(weapon[i] == 0){
+			Player::weapon[i] = x;
+			return;
+		}	
+	}	
+}
 
 void Player::fuelBar(){
-	Main::tft.fillRect(2,2, 100, 18, ILI9341_GREEN);
-	Main::tft.drawRect(1, 1, 102, 20, ILI9341_BLACK);	
+	Main::tft.fillRect(0,0, 100, 16, ILI9341_GREEN);	
 }
 
 void Player::updateFuelBar(){
 	if(fuel == 7){
-		Main::tft.fillRect(2,2, fuel*10, 18, ILI9341_ORANGE);
+		Main::tft.fillRect(0,0, fuel*10, 16, ILI9341_ORANGE);
 	} else if(fuel == 3){
-		Main::tft.fillRect(2,2, fuel*10, 18, ILI9341_RED);
+		Main::tft.fillRect(0,0, fuel*10, 16, ILI9341_RED);
 	}
-	Main::tft.fillRect(2 + fuel*10, 2, 10, 18, ILI9341_CYAN);
+	Main::tft.fillRect(0 + fuel*10, 0, 10, 16, ILI9341_BLACK);
 	
 }
 
+void Player::removeWeapon(uint8_t x){
+	for (int i = x; i < 8; i++)	{
+		weapon[i] = weapon[i+1];
+	}
+	weapon[9] = 0;
+	selectedWeapon = 0;
+}

@@ -57,7 +57,7 @@
     <ListValues>
       <Value>__AVR_ATmega328p__</Value>
       <Value>__AVR_ATmega328P__</Value>
-      <Value>ARDUINO=10900</Value>
+      <Value>ARDUINO=10805</Value>
       <Value>ARDUINO_MAIN</Value>
       <Value>F_CPU=16000000L</Value>
       <Value>__AVR__</Value>
@@ -67,21 +67,21 @@
   </avrgcc.compiler.symbols.DefSymbols>
   <avrgcc.compiler.directories.IncludePaths>
     <ListValues>
-      <Value>../../../wurmpie</Value>
-      <Value>C:/Users/kapte/Documents/Arduino/libraries/Adafruit-GFX-Library-master</Value>
-      <Value>C:/Users/kapte/AppData/Local/arduino15/packages/arduino/hardware/avr/1.6.21/libraries/SPI/src</Value>
-      <Value>C:/Users/kapte/AppData/Local/arduino15/packages/arduino/hardware/avr/1.6.21/libraries/Wire/src</Value>
-      <Value>C:/Users/kapte/AppData/Local/arduino15/packages/arduino/hardware/avr/1.6.21/libraries/EEPROM/src</Value>
-      <Value>C:/Users/kapte/Downloads/arduino-nightly-windows/arduino-nightly/libraries</Value>
-      <Value>C:/Users/kapte/Documents/Arduino/libraries</Value>
-      <Value>C:/Users/kapte/AppData/Local/arduino15/packages/arduino/hardware/avr/1.6.21/libraries</Value>
-      <Value>C:/Users/kapte/AppData/Local/arduino15/packages/arduino/hardware/avr/1.6.21/cores/arduino</Value>
-      <Value>C:/Users/kapte/AppData/Local/arduino15/packages/arduino/hardware/avr/1.6.21/variants/standard</Value>
-      <Value>C:/Users/kapte/AppData/Local/arduino15/packages/arduino/tools/avr-gcc/4.9.2-atmel3.5.4-arduino2/avr/include</Value>
-      <Value>C:/Users/kapte/AppData/Local/arduino15/packages/arduino/tools/avr-gcc/4.9.2-atmel3.5.4-arduino2/avr/include/avr</Value>
-      <Value>C:/Users/kapte/AppData/Local/arduino15/packages/arduino/tools/avr-gcc/4.9.2-atmel3.5.4-arduino2/lib/gcc/avr/4.8.1/include</Value>
-      <Value>C:/Users/kapte/AppData/Local/arduino15/packages/arduino/tools/avr-gcc/4.9.2-atmel3.5.4-arduino2/lib/gcc/avr/4.9.2/include</Value>
-      <Value>C:/Users/kapte/AppData/Local/arduino15/packages/arduino/tools/avr-gcc/4.9.2-atmel3.5.4-arduino2/lib/gcc/avr/4.9.3/include</Value>
+      <Value>../../../wurmpies</Value>
+      <Value>C:/Users/gerja/Desktop/arduino/libraries/Adafruit-GFX-Library-master</Value>
+      <Value>C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries/SPI/src</Value>
+      <Value>C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries/Wire/src</Value>
+      <Value>C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries/EEPROM/src</Value>
+      <Value>C:/Program Files (x86)/Arduino/libraries</Value>
+      <Value>C:/Users/gerja/Desktop/arduino/libraries</Value>
+      <Value>C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries</Value>
+      <Value>C:/Program Files (x86)/Arduino/hardware/arduino/avr/cores/arduino</Value>
+      <Value>C:/Program Files (x86)/Arduino/hardware/arduino/avr/variants/standard</Value>
+      <Value>C:/Program Files (x86)/Arduino/hardware/tools/avr/avr/include</Value>
+      <Value>C:/Program Files (x86)/Arduino/hardware/tools/avr/avr/include/avr</Value>
+      <Value>C:/Program Files (x86)/Arduino/hardware/tools/avr/lib/gcc/avr/4.8.1/include</Value>
+      <Value>C:/Program Files (x86)/Arduino/hardware/tools/avr/lib/gcc/avr/4.9.2/include</Value>
+      <Value>C:/Program Files (x86)/Arduino/hardware/tools/avr/lib/gcc/avr/4.9.3/include</Value>
     </ListValues>
   </avrgcc.compiler.directories.IncludePaths>
   <avrgcc.compiler.optimization.level>Optimize (-O1)</avrgcc.compiler.optimization.level>
@@ -96,7 +96,7 @@
     <ListValues>
       <Value>__AVR_ATmega328p__</Value>
       <Value>__AVR_ATmega328P__</Value>
-      <Value>ARDUINO=10900</Value>
+      <Value>ARDUINO=10805</Value>
       <Value>ARDUINO_MAIN</Value>
       <Value>F_CPU=16000000L</Value>
       <Value>__AVR__</Value>
@@ -106,21 +106,21 @@
   </avrgcccpp.compiler.symbols.DefSymbols>
   <avrgcccpp.compiler.directories.IncludePaths>
     <ListValues>
-      <Value>../../../wurmpie</Value>
-      <Value>C:/Users/kapte/Documents/Arduino/libraries/Adafruit-GFX-Library-master</Value>
-      <Value>C:/Users/kapte/AppData/Local/arduino15/packages/arduino/hardware/avr/1.6.21/libraries/SPI/src</Value>
-      <Value>C:/Users/kapte/AppData/Local/arduino15/packages/arduino/hardware/avr/1.6.21/libraries/Wire/src</Value>
-      <Value>C:/Users/kapte/AppData/Local/arduino15/packages/arduino/hardware/avr/1.6.21/libraries/EEPROM/src</Value>
-      <Value>C:/Users/kapte/Downloads/arduino-nightly-windows/arduino-nightly/libraries</Value>
-      <Value>C:/Users/kapte/Documents/Arduino/libraries</Value>
-      <Value>C:/Users/kapte/AppData/Local/arduino15/packages/arduino/hardware/avr/1.6.21/libraries</Value>
-      <Value>C:/Users/kapte/AppData/Local/arduino15/packages/arduino/hardware/avr/1.6.21/cores/arduino</Value>
-      <Value>C:/Users/kapte/AppData/Local/arduino15/packages/arduino/hardware/avr/1.6.21/variants/standard</Value>
-      <Value>C:/Users/kapte/AppData/Local/arduino15/packages/arduino/tools/avr-gcc/4.9.2-atmel3.5.4-arduino2/avr/include</Value>
-      <Value>C:/Users/kapte/AppData/Local/arduino15/packages/arduino/tools/avr-gcc/4.9.2-atmel3.5.4-arduino2/avr/include/avr</Value>
-      <Value>C:/Users/kapte/AppData/Local/arduino15/packages/arduino/tools/avr-gcc/4.9.2-atmel3.5.4-arduino2/lib/gcc/avr/4.8.1/include</Value>
-      <Value>C:/Users/kapte/AppData/Local/arduino15/packages/arduino/tools/avr-gcc/4.9.2-atmel3.5.4-arduino2/lib/gcc/avr/4.9.2/include</Value>
-      <Value>C:/Users/kapte/AppData/Local/arduino15/packages/arduino/tools/avr-gcc/4.9.2-atmel3.5.4-arduino2/lib/gcc/avr/4.9.3/include</Value>
+      <Value>../../../wurmpies</Value>
+      <Value>C:/Users/gerja/Desktop/arduino/libraries/Adafruit-GFX-Library-master</Value>
+      <Value>C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries/SPI/src</Value>
+      <Value>C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries/Wire/src</Value>
+      <Value>C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries/EEPROM/src</Value>
+      <Value>C:/Program Files (x86)/Arduino/libraries</Value>
+      <Value>C:/Users/gerja/Desktop/arduino/libraries</Value>
+      <Value>C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries</Value>
+      <Value>C:/Program Files (x86)/Arduino/hardware/arduino/avr/cores/arduino</Value>
+      <Value>C:/Program Files (x86)/Arduino/hardware/arduino/avr/variants/standard</Value>
+      <Value>C:/Program Files (x86)/Arduino/hardware/tools/avr/avr/include</Value>
+      <Value>C:/Program Files (x86)/Arduino/hardware/tools/avr/avr/include/avr</Value>
+      <Value>C:/Program Files (x86)/Arduino/hardware/tools/avr/lib/gcc/avr/4.8.1/include</Value>
+      <Value>C:/Program Files (x86)/Arduino/hardware/tools/avr/lib/gcc/avr/4.9.2/include</Value>
+      <Value>C:/Program Files (x86)/Arduino/hardware/tools/avr/lib/gcc/avr/4.9.3/include</Value>
     </ListValues>
   </avrgcccpp.compiler.directories.IncludePaths>
   <avrgcccpp.compiler.optimization.level>Optimize (-O1)</avrgcccpp.compiler.optimization.level>
@@ -147,11 +147,11 @@
   <avrgcccpp.assembler.debugging.DebugLevel>Default (-Wa,-g)</avrgcccpp.assembler.debugging.DebugLevel>
 </AvrGccCpp>
     </ToolchainSettings>
-    <VMSETTING_IncludePaths>../../../wurmpies;C:/Users/gerja/Desktop/arduino/libraries/Adafruit-GFX-Library-master;C:/Users/gerja/Desktop/arduino/libraries/Adafruit_ILI9341-master;C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries/SPI/src;C:/Users/gerja/Desktop/arduino/libraries/Adafruit_STMPE610-master;C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries/Wire/src;C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries/EEPROM/src;C:/Program Files (x86)/Arduino/libraries;C:/Users/gerja/Desktop/arduino/libraries;C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries;C:/Program Files (x86)/Arduino/hardware/arduino/avr/cores/arduino;C:/Program Files (x86)/Arduino/hardware/arduino/avr/variants/standard;C:/Program Files (x86)/Arduino/hardware/tools/avr/avr/include;C:/Program Files (x86)/Arduino/hardware/tools/avr/avr/include/avr;C:/Program Files (x86)/Arduino/hardware/tools/avr/lib/gcc/avr/4.8.1/include;C:/Program Files (x86)/Arduino/hardware/tools/avr/lib/gcc/avr/4.9.2/include;C:/Program Files (x86)/Arduino/hardware/tools/avr/lib/gcc/avr/4.9.3/include;C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries/Wire/src/utility;../../../wurmpie;C:/Users/kapte/Documents/Arduino/libraries/Adafruit-GFX-Library-master;C:/Users/kapte/Documents/Arduino/libraries/Adafruit_ILI9341-master;C:/Users/kapte/AppData/Local/arduino15/packages/arduino/hardware/avr/1.6.21/libraries/SPI/src;C:/Users/kapte/Documents/Arduino/libraries/Adafruit_STMPE610-master;C:/Users/kapte/AppData/Local/arduino15/packages/arduino/hardware/avr/1.6.21/libraries/Wire/src;C:/Users/kapte/AppData/Local/arduino15/packages/arduino/hardware/avr/1.6.21/libraries/EEPROM/src;C:/Users/kapte/Downloads/arduino-nightly-windows/arduino-nightly/libraries;C:/Users/kapte/Documents/Arduino/libraries;C:/Users/kapte/AppData/Local/arduino15/packages/arduino/hardware/avr/1.6.21/libraries;C:/Users/kapte/AppData/Local/arduino15/packages/arduino/hardware/avr/1.6.21/cores/arduino;C:/Users/kapte/AppData/Local/arduino15/packages/arduino/hardware/avr/1.6.21/variants/standard;C:/Users/kapte/AppData/Local/arduino15/packages/arduino/tools/avr-gcc/4.9.2-atmel3.5.4-arduino2/avr/include;C:/Users/kapte/AppData/Local/arduino15/packages/arduino/tools/avr-gcc/4.9.2-atmel3.5.4-arduino2/avr/include/avr;C:/Users/kapte/AppData/Local/arduino15/packages/arduino/tools/avr-gcc/4.9.2-atmel3.5.4-arduino2/lib/gcc/avr/4.8.1/include;C:/Users/kapte/AppData/Local/arduino15/packages/arduino/tools/avr-gcc/4.9.2-atmel3.5.4-arduino2/lib/gcc/avr/4.9.2/include;C:/Users/kapte/AppData/Local/arduino15/packages/arduino/tools/avr-gcc/4.9.2-atmel3.5.4-arduino2/lib/gcc/avr/4.9.3/include;</VMSETTING_IncludePaths>
+    <VMSETTING_IncludePaths>../../../wurmpies;C:/Users/gerja/Desktop/arduino/libraries/Adafruit-GFX-Library-master;C:/Users/gerja/Desktop/arduino/libraries/Adafruit_ILI9341-master;C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries/SPI/src;C:/Users/gerja/Desktop/arduino/libraries/Adafruit_STMPE610-master;C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries/Wire/src;C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries/EEPROM/src;C:/Program Files (x86)/Arduino/libraries;C:/Users/gerja/Desktop/arduino/libraries;C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries;C:/Program Files (x86)/Arduino/hardware/arduino/avr/cores/arduino;C:/Program Files (x86)/Arduino/hardware/arduino/avr/variants/standard;C:/Program Files (x86)/Arduino/hardware/tools/avr/avr/include;C:/Program Files (x86)/Arduino/hardware/tools/avr/avr/include/avr;C:/Program Files (x86)/Arduino/hardware/tools/avr/lib/gcc/avr/4.8.1/include;C:/Program Files (x86)/Arduino/hardware/tools/avr/lib/gcc/avr/4.9.2/include;C:/Program Files (x86)/Arduino/hardware/tools/avr/lib/gcc/avr/4.9.3/include;C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries/Wire/src/utility;../../../wurmpie;C:/Users/kapte/Documents/Arduino/libraries/Adafruit-GFX-Library-master;C:/Users/kapte/Documents/Arduino/libraries/Adafruit_ILI9341-master;C:/Users/kapte/AppData/Local/arduino15/packages/arduino/hardware/avr/1.6.21/libraries/SPI/src;C:/Users/kapte/Documents/Arduino/libraries/Adafruit_STMPE610-master;C:/Users/kapte/AppData/Local/arduino15/packages/arduino/hardware/avr/1.6.21/libraries/Wire/src;C:/Users/kapte/AppData/Local/arduino15/packages/arduino/hardware/avr/1.6.21/libraries/EEPROM/src;C:/Users/kapte/Downloads/arduino-nightly-windows/arduino-nightly/libraries;C:/Users/kapte/Documents/Arduino/libraries;C:/Users/kapte/AppData/Local/arduino15/packages/arduino/hardware/avr/1.6.21/libraries;C:/Users/kapte/AppData/Local/arduino15/packages/arduino/hardware/avr/1.6.21/cores/arduino;C:/Users/kapte/AppData/Local/arduino15/packages/arduino/hardware/avr/1.6.21/variants/standard;C:/Users/kapte/AppData/Local/arduino15/packages/arduino/tools/avr-gcc/4.9.2-atmel3.5.4-arduino2/avr/include;C:/Users/kapte/AppData/Local/arduino15/packages/arduino/tools/avr-gcc/4.9.2-atmel3.5.4-arduino2/avr/include/avr;C:/Users/kapte/AppData/Local/arduino15/packages/arduino/tools/avr-gcc/4.9.2-atmel3.5.4-arduino2/lib/gcc/avr/4.8.1/include;C:/Users/kapte/AppData/Local/arduino15/packages/arduino/tools/avr-gcc/4.9.2-atmel3.5.4-arduino2/lib/gcc/avr/4.9.2/include;C:/Users/kapte/AppData/Local/arduino15/packages/arduino/tools/avr-gcc/4.9.2-atmel3.5.4-arduino2/lib/gcc/avr/4.9.3/include;C:/Users/kapte/AppData/Local/arduino15/packages/arduino/hardware/avr/1.6.21/libraries/Wire/src/utility;</VMSETTING_IncludePaths>
     <VisualMicroSettings>
       <VisualMicroSettings>
         <ValidatedAS7>1</ValidatedAS7>
-        <arduino.upload.port>COM9</arduino.upload.port>
+        <arduino.upload.port>COM12</arduino.upload.port>
       </VisualMicroSettings>
     </VisualMicroSettings>
   </PropertyGroup>
@@ -170,7 +170,7 @@
     <ListValues>
       <Value>__AVR_ATmega328p__</Value>
       <Value>__AVR_ATmega328P__</Value>
-      <Value>ARDUINO=10900</Value>
+      <Value>ARDUINO=10805</Value>
       <Value>ARDUINO_MAIN</Value>
       <Value>F_CPU=16000000L</Value>
       <Value>__AVR__</Value>
@@ -180,21 +180,21 @@
   </avrgcc.compiler.symbols.DefSymbols>
   <avrgcc.compiler.directories.IncludePaths>
     <ListValues>
-      <Value>../../../wurmpie</Value>
-      <Value>C:/Users/kapte/Documents/Arduino/libraries/Adafruit-GFX-Library-master</Value>
-      <Value>C:/Users/kapte/AppData/Local/arduino15/packages/arduino/hardware/avr/1.6.21/libraries/SPI/src</Value>
-      <Value>C:/Users/kapte/AppData/Local/arduino15/packages/arduino/hardware/avr/1.6.21/libraries/Wire/src</Value>
-      <Value>C:/Users/kapte/AppData/Local/arduino15/packages/arduino/hardware/avr/1.6.21/libraries/EEPROM/src</Value>
-      <Value>C:/Users/kapte/Downloads/arduino-nightly-windows/arduino-nightly/libraries</Value>
-      <Value>C:/Users/kapte/Documents/Arduino/libraries</Value>
-      <Value>C:/Users/kapte/AppData/Local/arduino15/packages/arduino/hardware/avr/1.6.21/libraries</Value>
-      <Value>C:/Users/kapte/AppData/Local/arduino15/packages/arduino/hardware/avr/1.6.21/cores/arduino</Value>
-      <Value>C:/Users/kapte/AppData/Local/arduino15/packages/arduino/hardware/avr/1.6.21/variants/standard</Value>
-      <Value>C:/Users/kapte/AppData/Local/arduino15/packages/arduino/tools/avr-gcc/4.9.2-atmel3.5.4-arduino2/avr/include</Value>
-      <Value>C:/Users/kapte/AppData/Local/arduino15/packages/arduino/tools/avr-gcc/4.9.2-atmel3.5.4-arduino2/avr/include/avr</Value>
-      <Value>C:/Users/kapte/AppData/Local/arduino15/packages/arduino/tools/avr-gcc/4.9.2-atmel3.5.4-arduino2/lib/gcc/avr/4.8.1/include</Value>
-      <Value>C:/Users/kapte/AppData/Local/arduino15/packages/arduino/tools/avr-gcc/4.9.2-atmel3.5.4-arduino2/lib/gcc/avr/4.9.2/include</Value>
-      <Value>C:/Users/kapte/AppData/Local/arduino15/packages/arduino/tools/avr-gcc/4.9.2-atmel3.5.4-arduino2/lib/gcc/avr/4.9.3/include</Value>
+      <Value>../../../wurmpies</Value>
+      <Value>C:/Users/gerja/Desktop/arduino/libraries/Adafruit-GFX-Library-master</Value>
+      <Value>C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries/SPI/src</Value>
+      <Value>C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries/Wire/src</Value>
+      <Value>C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries/EEPROM/src</Value>
+      <Value>C:/Program Files (x86)/Arduino/libraries</Value>
+      <Value>C:/Users/gerja/Desktop/arduino/libraries</Value>
+      <Value>C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries</Value>
+      <Value>C:/Program Files (x86)/Arduino/hardware/arduino/avr/cores/arduino</Value>
+      <Value>C:/Program Files (x86)/Arduino/hardware/arduino/avr/variants/standard</Value>
+      <Value>C:/Program Files (x86)/Arduino/hardware/tools/avr/avr/include</Value>
+      <Value>C:/Program Files (x86)/Arduino/hardware/tools/avr/avr/include/avr</Value>
+      <Value>C:/Program Files (x86)/Arduino/hardware/tools/avr/lib/gcc/avr/4.8.1/include</Value>
+      <Value>C:/Program Files (x86)/Arduino/hardware/tools/avr/lib/gcc/avr/4.9.2/include</Value>
+      <Value>C:/Program Files (x86)/Arduino/hardware/tools/avr/lib/gcc/avr/4.9.3/include</Value>
     </ListValues>
   </avrgcc.compiler.directories.IncludePaths>
   <avrgcc.compiler.optimization.level>Optimize (-O1)</avrgcc.compiler.optimization.level>
@@ -209,7 +209,7 @@
     <ListValues>
       <Value>__AVR_ATmega328p__</Value>
       <Value>__AVR_ATmega328P__</Value>
-      <Value>ARDUINO=10900</Value>
+      <Value>ARDUINO=10805</Value>
       <Value>ARDUINO_MAIN</Value>
       <Value>F_CPU=16000000L</Value>
       <Value>__AVR__</Value>
@@ -219,21 +219,21 @@
   </avrgcccpp.compiler.symbols.DefSymbols>
   <avrgcccpp.compiler.directories.IncludePaths>
     <ListValues>
-      <Value>../../../wurmpie</Value>
-      <Value>C:/Users/kapte/Documents/Arduino/libraries/Adafruit-GFX-Library-master</Value>
-      <Value>C:/Users/kapte/AppData/Local/arduino15/packages/arduino/hardware/avr/1.6.21/libraries/SPI/src</Value>
-      <Value>C:/Users/kapte/AppData/Local/arduino15/packages/arduino/hardware/avr/1.6.21/libraries/Wire/src</Value>
-      <Value>C:/Users/kapte/AppData/Local/arduino15/packages/arduino/hardware/avr/1.6.21/libraries/EEPROM/src</Value>
-      <Value>C:/Users/kapte/Downloads/arduino-nightly-windows/arduino-nightly/libraries</Value>
-      <Value>C:/Users/kapte/Documents/Arduino/libraries</Value>
-      <Value>C:/Users/kapte/AppData/Local/arduino15/packages/arduino/hardware/avr/1.6.21/libraries</Value>
-      <Value>C:/Users/kapte/AppData/Local/arduino15/packages/arduino/hardware/avr/1.6.21/cores/arduino</Value>
-      <Value>C:/Users/kapte/AppData/Local/arduino15/packages/arduino/hardware/avr/1.6.21/variants/standard</Value>
-      <Value>C:/Users/kapte/AppData/Local/arduino15/packages/arduino/tools/avr-gcc/4.9.2-atmel3.5.4-arduino2/avr/include</Value>
-      <Value>C:/Users/kapte/AppData/Local/arduino15/packages/arduino/tools/avr-gcc/4.9.2-atmel3.5.4-arduino2/avr/include/avr</Value>
-      <Value>C:/Users/kapte/AppData/Local/arduino15/packages/arduino/tools/avr-gcc/4.9.2-atmel3.5.4-arduino2/lib/gcc/avr/4.8.1/include</Value>
-      <Value>C:/Users/kapte/AppData/Local/arduino15/packages/arduino/tools/avr-gcc/4.9.2-atmel3.5.4-arduino2/lib/gcc/avr/4.9.2/include</Value>
-      <Value>C:/Users/kapte/AppData/Local/arduino15/packages/arduino/tools/avr-gcc/4.9.2-atmel3.5.4-arduino2/lib/gcc/avr/4.9.3/include</Value>
+      <Value>../../../wurmpies</Value>
+      <Value>C:/Users/gerja/Desktop/arduino/libraries/Adafruit-GFX-Library-master</Value>
+      <Value>C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries/SPI/src</Value>
+      <Value>C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries/Wire/src</Value>
+      <Value>C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries/EEPROM/src</Value>
+      <Value>C:/Program Files (x86)/Arduino/libraries</Value>
+      <Value>C:/Users/gerja/Desktop/arduino/libraries</Value>
+      <Value>C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries</Value>
+      <Value>C:/Program Files (x86)/Arduino/hardware/arduino/avr/cores/arduino</Value>
+      <Value>C:/Program Files (x86)/Arduino/hardware/arduino/avr/variants/standard</Value>
+      <Value>C:/Program Files (x86)/Arduino/hardware/tools/avr/avr/include</Value>
+      <Value>C:/Program Files (x86)/Arduino/hardware/tools/avr/avr/include/avr</Value>
+      <Value>C:/Program Files (x86)/Arduino/hardware/tools/avr/lib/gcc/avr/4.8.1/include</Value>
+      <Value>C:/Program Files (x86)/Arduino/hardware/tools/avr/lib/gcc/avr/4.9.2/include</Value>
+      <Value>C:/Program Files (x86)/Arduino/hardware/tools/avr/lib/gcc/avr/4.9.3/include</Value>
     </ListValues>
   </avrgcccpp.compiler.directories.IncludePaths>
   <avrgcccpp.compiler.optimization.level>Optimize (-O1)</avrgcccpp.compiler.optimization.level>
@@ -260,11 +260,11 @@
   <avrgcccpp.assembler.debugging.DebugLevel>Default (-Wa,-g)</avrgcccpp.assembler.debugging.DebugLevel>
 </AvrGccCpp>
     </ToolchainSettings>
-    <VMSETTING_IncludePaths>../../../wurmpies;C:/Users/gerja/Desktop/arduino/libraries/Adafruit-GFX-Library-master;C:/Users/gerja/Desktop/arduino/libraries/Adafruit_ILI9341-master;C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries/SPI/src;C:/Users/gerja/Desktop/arduino/libraries/Adafruit_STMPE610-master;C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries/Wire/src;C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries/EEPROM/src;C:/Program Files (x86)/Arduino/libraries;C:/Users/gerja/Desktop/arduino/libraries;C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries;C:/Program Files (x86)/Arduino/hardware/arduino/avr/cores/arduino;C:/Program Files (x86)/Arduino/hardware/arduino/avr/variants/standard;C:/Program Files (x86)/Arduino/hardware/tools/avr/avr/include;C:/Program Files (x86)/Arduino/hardware/tools/avr/avr/include/avr;C:/Program Files (x86)/Arduino/hardware/tools/avr/lib/gcc/avr/4.8.1/include;C:/Program Files (x86)/Arduino/hardware/tools/avr/lib/gcc/avr/4.9.2/include;C:/Program Files (x86)/Arduino/hardware/tools/avr/lib/gcc/avr/4.9.3/include;C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries/Wire/src/utility;../../../wurmpie;C:/Users/kapte/Documents/Arduino/libraries/Adafruit-GFX-Library-master;C:/Users/kapte/Documents/Arduino/libraries/Adafruit_ILI9341-master;C:/Users/kapte/AppData/Local/arduino15/packages/arduino/hardware/avr/1.6.21/libraries/SPI/src;C:/Users/kapte/Documents/Arduino/libraries/Adafruit_STMPE610-master;C:/Users/kapte/AppData/Local/arduino15/packages/arduino/hardware/avr/1.6.21/libraries/Wire/src;C:/Users/kapte/AppData/Local/arduino15/packages/arduino/hardware/avr/1.6.21/libraries/EEPROM/src;C:/Users/kapte/Downloads/arduino-nightly-windows/arduino-nightly/libraries;C:/Users/kapte/Documents/Arduino/libraries;C:/Users/kapte/AppData/Local/arduino15/packages/arduino/hardware/avr/1.6.21/libraries;C:/Users/kapte/AppData/Local/arduino15/packages/arduino/hardware/avr/1.6.21/cores/arduino;C:/Users/kapte/AppData/Local/arduino15/packages/arduino/hardware/avr/1.6.21/variants/standard;C:/Users/kapte/AppData/Local/arduino15/packages/arduino/tools/avr-gcc/4.9.2-atmel3.5.4-arduino2/avr/include;C:/Users/kapte/AppData/Local/arduino15/packages/arduino/tools/avr-gcc/4.9.2-atmel3.5.4-arduino2/avr/include/avr;C:/Users/kapte/AppData/Local/arduino15/packages/arduino/tools/avr-gcc/4.9.2-atmel3.5.4-arduino2/lib/gcc/avr/4.8.1/include;C:/Users/kapte/AppData/Local/arduino15/packages/arduino/tools/avr-gcc/4.9.2-atmel3.5.4-arduino2/lib/gcc/avr/4.9.2/include;C:/Users/kapte/AppData/Local/arduino15/packages/arduino/tools/avr-gcc/4.9.2-atmel3.5.4-arduino2/lib/gcc/avr/4.9.3/include;</VMSETTING_IncludePaths>
+    <VMSETTING_IncludePaths>../../../wurmpies;C:/Users/gerja/Desktop/arduino/libraries/Adafruit-GFX-Library-master;C:/Users/gerja/Desktop/arduino/libraries/Adafruit_ILI9341-master;C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries/SPI/src;C:/Users/gerja/Desktop/arduino/libraries/Adafruit_STMPE610-master;C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries/Wire/src;C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries/EEPROM/src;C:/Program Files (x86)/Arduino/libraries;C:/Users/gerja/Desktop/arduino/libraries;C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries;C:/Program Files (x86)/Arduino/hardware/arduino/avr/cores/arduino;C:/Program Files (x86)/Arduino/hardware/arduino/avr/variants/standard;C:/Program Files (x86)/Arduino/hardware/tools/avr/avr/include;C:/Program Files (x86)/Arduino/hardware/tools/avr/avr/include/avr;C:/Program Files (x86)/Arduino/hardware/tools/avr/lib/gcc/avr/4.8.1/include;C:/Program Files (x86)/Arduino/hardware/tools/avr/lib/gcc/avr/4.9.2/include;C:/Program Files (x86)/Arduino/hardware/tools/avr/lib/gcc/avr/4.9.3/include;C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries/Wire/src/utility;../../../wurmpie;C:/Users/kapte/Documents/Arduino/libraries/Adafruit-GFX-Library-master;C:/Users/kapte/Documents/Arduino/libraries/Adafruit_ILI9341-master;C:/Users/kapte/AppData/Local/arduino15/packages/arduino/hardware/avr/1.6.21/libraries/SPI/src;C:/Users/kapte/Documents/Arduino/libraries/Adafruit_STMPE610-master;C:/Users/kapte/AppData/Local/arduino15/packages/arduino/hardware/avr/1.6.21/libraries/Wire/src;C:/Users/kapte/AppData/Local/arduino15/packages/arduino/hardware/avr/1.6.21/libraries/EEPROM/src;C:/Users/kapte/Downloads/arduino-nightly-windows/arduino-nightly/libraries;C:/Users/kapte/Documents/Arduino/libraries;C:/Users/kapte/AppData/Local/arduino15/packages/arduino/hardware/avr/1.6.21/libraries;C:/Users/kapte/AppData/Local/arduino15/packages/arduino/hardware/avr/1.6.21/cores/arduino;C:/Users/kapte/AppData/Local/arduino15/packages/arduino/hardware/avr/1.6.21/variants/standard;C:/Users/kapte/AppData/Local/arduino15/packages/arduino/tools/avr-gcc/4.9.2-atmel3.5.4-arduino2/avr/include;C:/Users/kapte/AppData/Local/arduino15/packages/arduino/tools/avr-gcc/4.9.2-atmel3.5.4-arduino2/avr/include/avr;C:/Users/kapte/AppData/Local/arduino15/packages/arduino/tools/avr-gcc/4.9.2-atmel3.5.4-arduino2/lib/gcc/avr/4.8.1/include;C:/Users/kapte/AppData/Local/arduino15/packages/arduino/tools/avr-gcc/4.9.2-atmel3.5.4-arduino2/lib/gcc/avr/4.9.2/include;C:/Users/kapte/AppData/Local/arduino15/packages/arduino/tools/avr-gcc/4.9.2-atmel3.5.4-arduino2/lib/gcc/avr/4.9.3/include;C:/Users/kapte/AppData/Local/arduino15/packages/arduino/hardware/avr/1.6.21/libraries/Wire/src/utility;</VMSETTING_IncludePaths>
     <VisualMicroSettings>
       <VisualMicroSettings>
         <ValidatedAS7>1</ValidatedAS7>
-        <arduino.upload.port>COM9</arduino.upload.port>
+        <arduino.upload.port>COM12</arduino.upload.port>
       </VisualMicroSettings>
     </VisualMicroSettings>
   </PropertyGroup>

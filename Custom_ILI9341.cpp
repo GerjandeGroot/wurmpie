@@ -1,3 +1,9 @@
+/*
+	Copy of the Adafruit_ILI9341 library with some edits
+	-Delay() replaced with _delay_ms()
+*/
+
+
 /*!
 * @file Adafruit_ILI9341.cpp
 *

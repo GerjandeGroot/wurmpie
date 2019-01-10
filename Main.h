@@ -49,8 +49,6 @@ public:
 	void menu();
 	static int freeRam();
 	void serialTest();
-	static bool waitForHandshake();
-	static bool sendHandshake();
 	static void beginMaster();
 	static void beginSlave();
 	void parseData();
