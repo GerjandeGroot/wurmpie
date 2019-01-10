@@ -52,14 +52,6 @@ bool Powerup::send(){
 	return Communication::endCommand();
 }
 
-void Powerup::drawAll() {
-	Main::tft.setCursor(20,20);
-	Main::tft.println(Powerup::powerupAmount);
-	for(int i = 0; i < Powerup::powerupAmount; i++){
-		Powerup::powerups[i]->draw();
-	}
-}
-
 void Powerup::collision(Player *player){
 	uint8_t leftCoor = abs(player->x /* - blocksize*/);
 	uint8_t rightCoor = abs(player->x /* + blocksize*/);

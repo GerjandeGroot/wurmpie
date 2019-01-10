@@ -77,7 +77,7 @@ uint32_t IRLib::custom_micros() {
 	sei();
 	return ((m << 8) + t) * (64 / 16);
 }
-
+//function to begin on a specific frequency
 void IRLib::begin(int frequency) {
 	//setup interrupt on pin 2
 	EICRA |= 1 << ISC00; //interrupt on change
@@ -90,20 +90,20 @@ void IRLib::begin(int frequency) {
 	OCR0A = 2000.0 / frequency / 2.0;
 	disableSignal;
 }
-
+//fuction to create a delay
 static void IRLib::custom_delay(uint32_t time) {
 	uint32_t start = custom_micros();
 	while(custom_micros() - start < time) {
 	}
 }
-
+//creating a pulse
 static void IRLib::sendPulse(uint16_t time) {
 	enableSignal;
 	custom_delay(time);
 	disableSignal;
 	custom_delay(spacer);
 }
-
+//sending a pulse
 static bool IRLib::send(uint16_t data) {
 	cli();
 	uint8_t count = 0;
@@ -125,7 +125,7 @@ static bool IRLib::send(uint16_t data) {
 	sei();
 }
 
-
+//send an acknowledge and wait for acknowledge
 static bool IRLib::sendWait(uint16_t data) {
 	for(int i = 0; i < 10000000; i++) {
 		IRLib::status = sending;
@@ -136,7 +136,7 @@ static bool IRLib::sendWait(uint16_t data) {
 	}
 	return false;
 }
-
+//send acknowlegde to other arduino
 void IRLib::sendAcknowledge(bool succes) {
 	 if(succes) {
 		 sendPulse(acknowledgeBit);
@@ -144,7 +144,7 @@ void IRLib::sendAcknowledge(bool succes) {
 		 sendPulse(nonAcknowledgeBit);
 	 }
 }
-
+//waiting for acknowledge from other arduino
 void IRLib::waitAcknowledge() {
 	for(int i = 0; i < 1000; i++) {
 		if(IRLib::status != waitingForAcknowledge) {

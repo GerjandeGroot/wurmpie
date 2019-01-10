@@ -25,12 +25,11 @@ uint8_t x;
 uint8_t y;
 uint8_t health;
 uint16_t color;
-uint8_t weapon[9] = {1};
+uint8_t weapon[5] = {1};
 uint8_t selectedWeapon;
 int8_t aimDx;
 int8_t aimDy;
 uint8_t fuel;
-bool stunned;
 
 protected:
 private:

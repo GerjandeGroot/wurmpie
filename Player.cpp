@@ -18,15 +18,16 @@ Player::Player(uint16_t color)
 	aimDy = 10;
 	fuel = 10;
 	health = 100;
-	weapon[9] = 1;
+	weapon[5] = 1;
 	selectedWeapon = 0;
-	stunned = false;
 } //Player
 
 // default destructor
 Player::~Player()
 {
 } //~Player*
+
+//draws a player which is made of a rectangle, a circle and a line
 void Player::draw() {
 	Main::tft.fillRoundRect(this->x*blocksize, this->y*blocksize+blocksize+verticalOffset, blocksize*2,blocksize, blocksize/4,this->color);
 	Main::tft.fillCircle(this->x*blocksize+blocksize, this->y*blocksize+blocksize+verticalOffset, blocksize/2, this->color);
@@ -36,12 +37,11 @@ void Player::draw() {
 	Main::tft.setTextSize(1);
 	Main::tft.println(health);
 }
-	
-
+//updates the area around hte player
 void Player::clear() {
 	Main::map.drawPart(x-3,y-3,8);
 }
-
+//function which moves the player into one of the four directions if that is possible
 bool Player::moveToDirection(uint8_t direction, bool send) {
 	if(direction == 0) {
 		if(y > 0 && Main::map.getBlock(x,y-2) == 0,Main::map.getBlock(x+1,y-2) == 0) {
@@ -104,7 +104,7 @@ bool Player::moveToDirection(uint8_t direction, bool send) {
 	}
 	return false;
 }
-
+//moves the player to the next position
 void Player::moveTo(int x, int y, bool send) {
 	if(y > verticalSize){
 		health = 0;
@@ -118,19 +118,19 @@ void Player::moveTo(int x, int y, bool send) {
 	this->y = y;
 	draw();
 }
-
+//function to send where the player aims
 void Player::sendAim() {
 	Communication::send(this->aimDy);
 	Communication::send(this->aimDx);
 	Communication::send(11);
 	Communication::endCommand();
 }
-
+//function to shoot
 void Player::shoot() {
 	Weapon(this->x*blocksize+blocksize-aimDx, this->y*blocksize+blocksize-aimDy,weapon[selectedWeapon],aimDx,aimDy);
 	removeWeapon(selectedWeapon);
 }
-
+//function to send the location of the player
 bool Player::sendLocation(uint8_t x, uint8_t y) {
 	Communication::send(y);
 	Communication::send(x);
@@ -138,6 +138,7 @@ bool Player::sendLocation(uint8_t x, uint8_t y) {
 	Communication::endCommand();
 }
 
+//function to add weapon to arsenal of the player
 void Player::addWeapon(){
 	uint8_t randomNumber = random(2,5);
 	for(int i = 0; i<inventorySize; i++){
@@ -147,11 +148,11 @@ void Player::addWeapon(){
 		}
 	}	
 }
-
+//function to fill the fuelbar 
 void Player::fuelBar(){
 	Main::tft.fillRect(0,0, 100, 16, ILI9341_GREEN);	
 }
-
+//function to update the fuelbar 
 void Player::updateFuelBar(){
 	if(fuel == 7){
 		Main::tft.fillRect(0,0, fuel*10, 16, ILI9341_ORANGE);
@@ -161,7 +162,7 @@ void Player::updateFuelBar(){
 	Main::tft.fillRect(0 + fuel*10, 0, 10, 16, ILI9341_BLACK);
 	
 }
-
+//function to remove a weapon from the arsenal
 void Player::removeWeapon(uint8_t x){
 	for (int i = x; i < inventorySize-1; i++)	{
 		weapon[i] = weapon[i+1];

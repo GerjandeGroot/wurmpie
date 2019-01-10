@@ -19,7 +19,7 @@ static Button Main::menuWeapon = Button(220, 0, 100, 16, "Default", ILI9341_BLUE
 //default constructor
 Main::Main()
 {
-	sei();
+	sei();					//enable interrupts
 	Communication::USART_Init();
 	DDRD |= 1 << PIND3;		//set pin 3 as output (brightness)
 	
@@ -31,8 +31,8 @@ Main::Main()
 	
 	//setup timer 1
 	//update brightness & multiplexing
-	TCCR1B |= 1 << CS11;
-	TIMSK1 |= 1 << TOIE1;
+	TCCR1B |= 1 << CS11;	//prescaler on 8
+	TIMSK1 |= 1 << TOIE1;	//enable overflow interrupt
 	
 	//setup timer 2
 	//brightness pwm & micros
@@ -57,7 +57,7 @@ Main::Main()
 Main::~Main()
 {
 } //~Main
-
+//function of the game (is explained in technisch ontwerp)
 void Main::update() {
 	Nunchuck nunchuck;
 	draw();
@@ -155,7 +155,7 @@ void Main::update() {
 		}
 	}
 }
-
+//function which reads incoming commands and linked parameters
 void Main::parseData() {
 	if(Communication::buffer[0] == 255) {
 		Communication::removeParameter();
@@ -194,18 +194,13 @@ void Main::parseData() {
 		}
 	}
 }
-
+//starts menu
 void Main::menu() {
 	Menu menu = Menu();
 	menu.setPanel(1);
 }
 
-int Main::freeRam () {
-	extern int __heap_start, *__brkval;
-	int v;
-	return (int) &v - (__brkval == 0 ? (int) &__heap_start : (int) __brkval);
-}
-
+//function to start the game in slave mode
 void Main::beginSlave() {
 	tft.fillScreen(ILI9341_BLUE);
 	player1 = Player(ILI9341_BLUE);
@@ -236,6 +231,7 @@ void Main::beginSlave() {
 	
 	beurt = 5;
 }
+//function to start the game in master mode
 void Main::beginMaster() {
 	player1 = Player(ILI9341_BLUE);
 	player2 = Player(ILI9341_RED);
@@ -260,7 +256,7 @@ void Main::beginMaster() {
 	
 	beurt = 1;
 }
-
+//function to select a spot on the map where the player wants to drop
 void Main::selectDrop() {
 	tft.fillScreen(ILI9341_BLACK);
 	
@@ -271,7 +267,7 @@ void Main::selectDrop() {
 	tft.println(F("Select your drop location"));
 	
 	
-	Nunchuck nunchuck;
+	Nunchuck nunchuck;							//read nunchuck data
 	player1.moveTo(20,1,false);
 	while(true) {
 		nunchuck.update();
@@ -292,7 +288,7 @@ void Main::selectDrop() {
 		_delay_ms(50);
 	}
 }
-
+//function to draw all objects which stay on the map
 void Main::draw(){
 	map.drawMap();
 	player1.draw();
@@ -300,7 +296,7 @@ void Main::draw(){
 	Powerup::drawAll();
 	
 }
-
+//draw a screen which tells who's turn it is
 void Main::drawTurn(String tekst){
 	uint8_t beginPixel = (320 - (tekst.length()*24))/2;
 	tft.fillScreen(ILI9341_BLACK);
