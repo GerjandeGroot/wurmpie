@@ -102,7 +102,6 @@ void Main::update() {
 				if(moved) {
 					player2.draw();					
 				}
-				Powerup::collision(&player1);
 				player1.fuel--;
 
 				player1.updateFuelBar();
@@ -181,6 +180,7 @@ void Main::parseData() {
 		}
 		if(Communication::buffer[0] == 4) {
 			player1.addWeapon();
+			player2.weapon[0] = 1;
 			beurt = 1;
 			Communication::clearBuffer(1);
 			Communication::next();
@@ -293,8 +293,6 @@ void Main::draw(){
 	map.drawMap();
 	player1.draw();
 	player2.draw();
-	Powerup::drawAll();
-	
 }
 //draw a screen which tells who's turn it is
 void Main::drawTurn(String tekst){

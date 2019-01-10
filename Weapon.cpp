@@ -151,7 +151,7 @@ void Weapon::clear() {
 		Main::tft.print("^");
 		return;
 	}
-	if(type == 6){
+	if(type == 4){
 		
 	}
 	else{
@@ -167,10 +167,11 @@ void Weapon::draw() {
 		Main::tft.print("^");
 		return;
 	}
-	if(type == 6){
+	if(type == 4){
 		Main::tft.fillCircle(this->x,this->y+verticalOffset,blocksize/2,ILI9341_YELLOW);
-	}
-	else{
+	} else if(type == 3){
+		Main::tft.fillCircle(this->x,this->y+verticalOffset,blocksize/2,ILI9341_RED);
+	} else{
 		Main::tft.fillCircle(this->x,this->y+verticalOffset,blocksize/2,ILI9341_BLACK);
 	}
 }

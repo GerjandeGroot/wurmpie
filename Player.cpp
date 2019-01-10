@@ -128,7 +128,8 @@ void Player::sendAim() {
 //function to shoot
 void Player::shoot() {
 	Weapon(this->x*blocksize+blocksize-aimDx, this->y*blocksize+blocksize-aimDy,weapon[selectedWeapon],aimDx,aimDy);
-	removeWeapon(selectedWeapon);
+	if(selectedWeapon != 0)
+		removeWeapon(selectedWeapon);
 }
 //function to send the location of the player
 bool Player::sendLocation(uint8_t x, uint8_t y) {
@@ -140,7 +141,7 @@ bool Player::sendLocation(uint8_t x, uint8_t y) {
 
 //function to add weapon to arsenal of the player
 void Player::addWeapon(){
-	uint8_t randomNumber = random(2,5);
+	uint8_t randomNumber = random(2,6);
 	for(int i = 0; i<inventorySize; i++){
 		if(weapon[i] == 0){
 			Player::weapon[i] = randomNumber;
@@ -169,4 +170,5 @@ void Player::removeWeapon(uint8_t x){
 	}
 	weapon[inventorySize] = 0;
 	selectedWeapon = 0;
+	Main::menuWeapon.text = Weapon::getName(weapon[0]);
 }
